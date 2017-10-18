@@ -30,3 +30,16 @@
 *.exe
 *.out
 *.app
+
+# misc
+Makefile
+.libs
+.deps
+stamp-h1
+autom4te.cache
+config.h
+config.log
+config.status
+*.pc
+libtool
+test/test-address
