@@ -1,0 +1,10 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: libpunica
+Description: C API for libpunica
+Version: @VERSION@
+Libs: -L${libdir} -lpunica
+Cflags: -I${includedir}

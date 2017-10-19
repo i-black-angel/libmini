@@ -13,23 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _APPLICATION_H_
-#define _APPLICATION_H_
+#include <punica/pxml.h>
 
 PUNICA_BEGIN_NAMESPACE
 
-class Application
+PXml::PXml()
 {
-public:
-    explicit Application();
-    virtual ~Application();
+}
 
-	static std::string name();
-	static std::string path();
-	static std::string absolutePath();
-	static uint32_t uptime();
-};
+PXml::~PXml()
+{
+}
 
 PUNICA_END_NAMESPACE
-
-#endif /* _APPLICATION_H_ */

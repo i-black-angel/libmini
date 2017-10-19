@@ -16,7 +16,28 @@
 #ifndef _PUNICA_H_
 #define _PUNICA_H_
 
-#include <punica/application.h>
-#include <punica/global.h>
+#include <punica/phttp.h>
+#include <punica/pglobal.h>
+#include <punica/psettings.h>
+#include <punica/pthread.h>
+#include <punica/plog.h>
+#include <punica/pxml.h>
+#include <punica/pfileinfo.h>
+#include <punica/pstring.h>
+#include <punica/pmongodb.h>
+#include <punica/papplication.h>
+#include <punica/pfile.h>
+#include <punica/pcoredef.h>
+#include <punica/pdir.h>
+#include <punica/psocket.h>
+#include <punica/prand.h>
+#include <punica/pcommandline.h>
+#include <punica/pwaitcondition.h>
+#include <punica/pdatetime.h>
+#include <punica/phostinfo.h>
+#include <punica/pmutex.h>
+#include <punica/phostaddress.h>
+#include <punica/pprocess.h>
+#include <punica/pjson.h>
 
 #endif /* _PUNICA_H_ */

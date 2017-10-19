@@ -13,32 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "application.h"
+#ifndef _PSETTINGS_H_
+#define _PSETTINGS_H_
+
+#include <punica/pcoredef.h>
 
 PUNICA_BEGIN_NAMESPACE
 
-Application::Application()
+class PSettings
 {
-}
-
-Application::~Application()
-{
-}
-
-std::string Application::name()
-{
-}
-
-std::string Application::path()
-{
-}
-
-std::string Application::absolutePath()
-{
-}
-
-uint32_t Application::uptime()
-{
-}
+public:
+    explicit PSettings();
+    virtual ~PSettings();
+};
 
 PUNICA_END_NAMESPACE
+
+#endif /* _PSETTINGS_H_ */
