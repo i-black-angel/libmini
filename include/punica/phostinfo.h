@@ -25,6 +25,9 @@ class PHostInfo
 public:
     explicit PHostInfo();
     virtual ~PHostInfo();
+
+	std::string hostName() const;
+	void setHostName(const std::string &name);
 };
 
 PUNICA_END_NAMESPACE

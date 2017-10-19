@@ -13,34 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _PAPPLICATION_H_
-#define _PAPPLICATION_H_
+#ifndef _PSYSINFO_H_
+#define _PSYSINFO_H_
 
 #include <punica/pcoredef.h>
 
 PUNICA_BEGIN_NAMESPACE
 
-class PApplication
+class PSysInfo
 {
 public:
-    explicit PApplication(int argc, char *argv[]);
-    virtual ~PApplication();
+    explicit PSysInfo();
+    virtual ~PSysInfo();
 
-	static std::string applicationDirPath();
-	static std::string applicationFilePath();
-	static std::string applicationName();
-	static std::string applicationVersion();
-	static int64_t applicationPid();
-	static uint32_t uptime();
+	static std::string hostName();
+	
+    static std::string buildCpuArchitecture();
+    static std::string currentCpuArchitecture();
+    static std::string buildAbi();
 
-	static void setApplicationName(const std::string &application);
-	static void setApplicationVersion(const std::string &version);
-
-private:
-	std::string _applicationName;
-	std::string _applicationVersion;
+    static std::string kernelType();
+    static std::string kernelVersion();
+    static std::string productType();
+    static std::string productVersion();
+    static std::string prettyProductName();
 };
 
 PUNICA_END_NAMESPACE
 
-#endif /* _PAPPLICATION_H_ */
+#endif /* _PSYSINFO_H_ */

@@ -17,7 +17,7 @@
 
 PUNICA_BEGIN_NAMESPACE
 
-PApplication::PApplication()
+PApplication::PApplication(int argc, char *argv[])
 {
 }
 
@@ -48,6 +48,16 @@ int64_t PApplication::applicationPid()
 
 uint32_t PApplication::uptime()
 {
+}
+
+void PApplication::setApplicationName(const std::string &application)
+{
+	_applicationName = application;
+}
+
+void PApplication::setApplicationVersion(const std::string &version)
+{
+	_applicationVersion = version;
 }
 
 PUNICA_END_NAMESPACE
