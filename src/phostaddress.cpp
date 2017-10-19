@@ -19,10 +19,176 @@ PUNICA_BEGIN_NAMESPACE
 
 PHostAddress::PHostAddress()
 {
+	_ip4addr = 0x00000000;
+}
+
+PHostAddress::PHostAddress(SpecialAddress address)
+{
+	setAddress(address);
+}
+
+PHostAddress::PHostAddress(const PHostAddress &copy)
+{
+	_ip4addr = copy._ip4addr;
+}
+
+PHostAddress::PHostAddress(uint32_t ip4Addr)
+{
+	setAddress(ip4Addr);
+}
+
+PHostAddress::PHostAddress(const std::string &address)
+{
+	setAddress(address);
 }
 
 PHostAddress::~PHostAddress()
 {
+}
+
+PHostAddress &PHostAddress::operator=(const PHostAddress &other)
+{
+	_ip4addr = other._ip4addr;
+	return *this;
+}
+
+PHostAddress &PHostAddress::operator=(SpecialAddress address)
+{
+	setAddress(address);
+	return *this;
+}
+
+
+void PHostAddress::setAddress(uint32_t ip4Addr)
+{
+	_ip4addr = ip4Addr;
+}
+
+bool PHostAddress::setAddress(const std::string &address)
+{
+	int res;
+	struct addrinfo *ailist = NULL, *aip = NULL;
+	struct addrinfo hint;
+	hint.ai_flags = 0;
+	hint.ai_family = 0;
+	hint.ai_socktype = SOCK_STREAM;
+	hint.ai_protocol = 0;
+	hint.ai_addrlen = 0;
+	hint.ai_canonname = NULL;
+	hint.ai_addr = NULL;
+	hint.ai_next = NULL;
+
+	getaddrinfo(address.c_str(), NULL, &hint, &ailist);
+
+	for (aip = ailist; aip != NULL; aip = aip->ai_next) {
+		struct sockaddr_in *addr = (sockaddr_in *)aip->ai_addr;
+		_ip4addr = htonl(addr->sin_addr.s_addr);
+		return true;
+	}
+	return false;
+}
+
+void PHostAddress::setAddress(SpecialAddress address)
+{
+	uint32_t ip4 = INADDR_ANY;
+	switch (address) {
+	case Null:
+		ip4 = INADDR_NONE;
+		break;;
+	case Broadcast:
+		ip4 = INADDR_BROADCAST;
+		break;
+	case LocalHost:
+		ip4 = INADDR_LOOPBACK;
+		break;
+	case Any:
+		break;
+	}
+
+	_ip4addr = ip4;
+}
+
+
+uint32_t PHostAddress::toIPv4Address() const
+{
+	return _ip4addr;
+}
+
+std::string PHostAddress::toString() const
+{
+	char str[INET_ADDRSTRLEN] = { 0x00 };
+	uint32_t ip4 = ntohl(_ip4addr);
+	if (NULL == inet_ntop(AF_INET, &ip4, str, sizeof(str))) {
+		return std::string();
+	}
+	return std::string(str);
+}
+
+bool PHostAddress::isEqual(const PHostAddress &address) const
+{
+	return _ip4addr == address._ip4addr;
+}
+
+bool PHostAddress::operator ==(const PHostAddress &address) const
+{
+	return isEqual(address);
+}
+
+bool PHostAddress::operator ==(SpecialAddress address) const
+{
+	uint32_t ip4 = INADDR_ANY;
+	switch (address) {
+	case Null:
+		ip4 = INADDR_NONE;
+		break;;
+	case Broadcast:
+		ip4 = INADDR_BROADCAST;
+		break;
+	case LocalHost:
+		ip4 = INADDR_LOOPBACK;
+		break;
+	case Any:
+		break;
+	}
+
+	return ip4 == _ip4addr;
+}
+
+bool PHostAddress::isNull() const
+{
+	if ((_ip4addr & 0xFFFFFFFF) == 0xFFFFFFFF)
+		return true;
+	return false;
+}
+
+bool PHostAddress::isLoopback() const
+{
+	if ((_ip4addr & 0xFF000000) == 0x7F000000)
+		return true;
+	return false;
+}
+
+bool PHostAddress::isMulticast() const
+{
+	if ((_ip4addr & 0xF0000000) == 0xE0000000)
+        return true; // 224.0.0.0-239.255.255.255 (including v4-mapped IPv6 addresses)
+	return false;
+}
+
+std::ostream &operator<<(std::ostream &out, const PHostAddress &address)
+{
+	char buf[12] = {0x00};
+	snprintf(buf, sizeof(buf) - 1, "0x%08x", address.toIPv4Address());
+	out << buf;
+	return out;
+}
+
+std::istream &operator>>(std::istream &in, PHostAddress &address)
+{
+	uint32_t ip4;
+	in >> ip4;
+	address.setAddress(ip4);
+	return in;
 }
 
 PUNICA_END_NAMESPACE

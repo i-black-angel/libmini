@@ -18,6 +18,31 @@
 int main(int argc, char *argv[])
 {
     std::cout << "PHostAddress test" << std::endl;
-	punica::PHostAddress addr;
+    punica::PHostAddress addr1;
+    punica::PHostAddress addr2(punica::PHostAddress::Null);
+    punica::PHostAddress addr3(punica::PHostAddress::Broadcast);
+    punica::PHostAddress addr4(punica::PHostAddress::LocalHost);
+    punica::PHostAddress addr5 = punica::PHostAddress::Any;
+    punica::PHostAddress addr6(0x0c224433);
+    punica::PHostAddress addr7("192.168.10.70");
+
+    std::cout << addr1.toString() << std::endl;
+    std::cout << addr2.toString() << std::endl;
+    std::cout << addr3.toString() << std::endl;
+    std::cout << addr4.toString() << std::endl;
+    std::cout << addr5.toString() << std::endl;
+    std::cout << addr6.toString() << std::endl;    
+    std::cout << addr7.toString() << std::endl;    
+
+    if (addr1 == punica::PHostAddress::Broadcast) {
+        std::cout << "addr1 is Any" << std::endl;
+    }
+
+    punica::PHostAddress addr8;
+    addr8.setAddress("www.sina.com");
+    std::cout << addr8.toString() << std::endl;
+    std::cout << addr8 << std::endl;
+    std::cout << addr6 << std::endl;
+
     return 0;
 }
