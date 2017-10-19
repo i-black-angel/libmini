@@ -26,9 +26,11 @@ public:
     explicit PApplication();
     virtual ~PApplication();
 
-	static std::string name();
-	static std::string path();
-	static std::string absolutePath();
+	static std::string applicationDirPath();
+	static std::string applicationFilePath();
+	static std::string applicationName();
+	static std::string applicationVersion();
+	static int64_t applicationPid();
 	static uint32_t uptime();
 };
 

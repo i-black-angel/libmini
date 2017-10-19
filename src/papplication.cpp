@@ -25,16 +25,25 @@ PApplication::~PApplication()
 {
 }
 
-std::string PApplication::name()
+std::string PApplication::applicationDirPath()
 {
 }
 
-std::string PApplication::path()
+std::string PApplication::applicationFilePath()
 {
 }
 
-std::string PApplication::absolutePath()
+std::string PApplication::applicationName()
 {
+}
+
+std::string PApplication::applicationVersion()
+{
+}
+
+int64_t PApplication::applicationPid()
+{
+    return getpid();
 }
 
 uint32_t PApplication::uptime()
