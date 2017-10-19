@@ -1,2 +1,2 @@
 # libpunica
-This is my personal global library
+This is my personal C++ global library
