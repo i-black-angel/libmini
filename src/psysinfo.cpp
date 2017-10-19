@@ -13,23 +13,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _PHOSTINFO_H_
-#define _PHOSTINFO_H_
-
-#include <punica/pcoredef.h>
+#include <punica/psysinfo.h>
 
 PUNICA_BEGIN_NAMESPACE
 
-class PHostInfo
+PSysInfo::PSysInfo()
 {
-public:
-    explicit PHostInfo();
-    virtual ~PHostInfo();
+}
 
-	std::string hostName() const;
-	void setHostName(const std::string &name);
-};
+PSysInfo::~PSysInfo()
+{
+}
+
+std::string PSysInfo::hostName()
+{
+}
+	
+std::string PSysInfo::buildCpuArchitecture()
+{
+}
+
+std::string PSysInfo::currentCpuArchitecture()
+{
+}
+
+std::string PSysInfo::buildAbi()
+{
+}
+
+std::string PSysInfo::kernelType()
+{
+}
+
+std::string PSysInfo::kernelVersion()
+{
+}
+
+std::string PSysInfo::productType()
+{
+}
+
+std::string PSysInfo::productVersion()
+{
+}
+
+std::string PSysInfo::prettyProductName()
+{
+}
 
 PUNICA_END_NAMESPACE
-
-#endif /* _PHOSTINFO_H_ */

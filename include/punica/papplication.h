@@ -33,9 +33,10 @@ public:
 	static int64_t applicationPid();
 	static uint32_t uptime();
 
-	static void setApplicationName(const std::string &application);
-	static void setApplicationVersion(const std::string &version);
+	void setApplicationName(const std::string &application);
+	void setApplicationVersion(const std::string &version);
 
+	static bool alreadyRunning(const std::string &lockfile);
 private:
 	std::string _applicationName;
 	std::string _applicationVersion;

@@ -25,6 +25,13 @@ class PProcess
 public:
     explicit PProcess();
     virtual ~PProcess();
+
+	int64_t pid() const;
+	std::string program() const;
+	std::string workingDirectory() const;
+	static int execute(const std::string &program, const std::vector<std::string> &arguments);
+	static int execute(const std::string &command);
+	static std::vector<std::string> systemEnvironment();
 };
 
 PUNICA_END_NAMESPACE

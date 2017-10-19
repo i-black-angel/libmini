@@ -60,4 +60,8 @@ void PApplication::setApplicationVersion(const std::string &version)
 	_applicationVersion = version;
 }
 
+bool PApplication::alreadyRunning(const std::string &lockfile)
+{
+}
+
 PUNICA_END_NAMESPACE

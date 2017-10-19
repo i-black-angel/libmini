@@ -10,25 +10,25 @@ libpunica_la_CPPFLAGS = -I$(top_srcdir)/include $(all_includes)
 libpunica_la_LIBADD = -lpthread
 
 libpunica_la_SOURCES =				\
-pwaitcondition.cpp				\
-phttp.cpp					\
-pdir.cpp					\
-pthread.cpp					\
-pxml.cpp					\
-pfile.cpp					\
-pstring.cpp					\
-phostaddress.cpp				\
-phostinfo.cpp					\
-plog.cpp					\
-pcommandline.cpp				\
-pjson.cpp					\
-pdatetime.cpp					\
-psocket.cpp					\
-pmutex.cpp					\
-pfileinfo.cpp					\
-pmongodb.cpp					\
 papplication.cpp				\
+pcommandline.cpp				\
+pdatetime.cpp					\
+pdir.cpp					\
+pfile.cpp					\
+pfileinfo.cpp					\
+pglobal.cpp					\
+phostaddress.cpp				\
+phttp.cpp					\
+pjson.cpp					\
+plog.cpp					\
+pmongodb.cpp					\
+pmutex.cpp					\
 pprocess.cpp					\
 prand.cpp					\
 psettings.cpp					\
-pglobal.cpp
+psocket.cpp					\
+pstring.cpp					\
+psysinfo.cpp					\
+pthread.cpp					\
+pwaitcondition.cpp				\
+pxml.cpp

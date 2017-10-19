@@ -34,7 +34,7 @@
 #include <punica/pcommandline.h>
 #include <punica/pwaitcondition.h>
 #include <punica/pdatetime.h>
-#include <punica/phostinfo.h>
+#include <punica/psysinfo.h>
 #include <punica/pmutex.h>
 #include <punica/phostaddress.h>
 #include <punica/pprocess.h>

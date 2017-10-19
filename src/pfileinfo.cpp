@@ -36,64 +36,170 @@ PFileInfo::~PFileInfo()
 {
 }
 
-	PFileInfo& operator=(const PFileInfo &fileinfo);
-	bool operator==(const PFileInfo &fileinfo) const;
-	inline operator!=(const PFileInfo &fileinfo) const { return !operator==(fileinfo); }
+PFileInfo& PFileInfo::operator=(const PFileInfo &fileinfo)
+{
+}
 
-	void setFile(const std::string &file);
-	// void setFile(const PFile &file);
-	// void setFile(const PDir &dir, const std::string &file);
-	bool exists() const;
-	static bool exists(const std::string &file);
-	void refresh();
+bool PFileInfo::operator==(const PFileInfo &fileinfo) const
+{
+}
 
-	std::string filePath() const;
-	std::string absoluteFilePath() const;
-	std::string canonicalFilePath() const;
-	std::string fileName() const;
-	std::string baseName() const;
-	std::string completeBaseName() const;
-	std::string suffix() const;
-	std::string bundleName() const;
-	std::string completeSuffix() const;
+void PFileInfo::setFile(const std::string &file)
+{
+}
 
-	std::string path() const;
-	std::string absolutePath() const;
-	std::string canonicalPath() const;
-	// Dir dir() const;
-	// Dir absoluteDir() const;
+// void setFile(const PFile &file);
+// void setFile(const PDir &dir, const std::string &file);
 
-	bool isReadable() const;
-	bool isWritable() const;
-	bool isExecutable() const;
-	bool isHidden() const;
-	bool isNativePath() const;
+bool PFileInfo::exists() const
+{
+}
 
-	bool isRelative() const;
-	inline bool isAbsolute() const { return !isRelative(); }
-	bool makeAbsolute();
+bool PFileInfo::exists(const std::string &file)
+{
+}
 
-	bool isFile() const;
-	bool isDir() const;
-	bool isSymLink() const;
-	bool isRoot() const;
-	bool isBundle() const;
+void PFileInfo::refresh()
+{
+}
 
-	std::string readLink() const;
-	inline std::string symLinkTarget() const { return readLink(); }
+std::string PFileInfo::filePath() const
+{
+}
 
-	std::string owner() const;
-	uint32_t ownerId() const;
-	std::string group() const;
-	uint32_t groupId() const;
+std::string PFileInfo::absoluteFilePath() const
+{
+}
 
-	// bool permission(PFile::Permissions permissions) const;
-	// PFile::Permissions permissions() const;
+std::string PFileInfo::canonicalFilePath() const
+{
+}
 
-	int64_t size() const;
+std::string PFileInfo::fileName() const
+{
+}
 
-	DateTime created() const;
-	DateTime lastModified() const;
-	DateTime lastRead() const;
+std::string PFileInfo::baseName() const
+{
+}
+
+std::string PFileInfo::completeBaseName() const
+{
+}
+
+std::string PFileInfo::suffix() const
+{
+}
+
+std::string PFileInfo::bundleName() const
+{
+}
+
+std::string PFileInfo::completeSuffix() const
+{
+}
+
+
+std::string PFileInfo::path() const
+{
+}
+
+std::string PFileInfo::absolutePath() const
+{
+}
+
+std::string PFileInfo::canonicalPath() const
+{
+}
+
+// Dir dir() const
+// Dir absoluteDir() const
+
+bool PFileInfo::isReadable() const
+{
+}
+
+bool PFileInfo::isWritable() const
+{
+}
+
+bool PFileInfo::isExecutable() const
+{
+}
+
+bool PFileInfo::isHidden() const
+{
+}
+
+bool PFileInfo::isNativePath() const
+{
+}
+
+bool PFileInfo::isRelative() const
+{
+}
+
+bool PFileInfo::makeAbsolute()
+{
+}
+
+bool PFileInfo::isFile() const
+{
+}
+
+bool PFileInfo::isDir() const
+{
+}
+
+bool PFileInfo::isSymLink() const
+{
+}
+
+bool PFileInfo::isRoot() const
+{
+}
+
+bool PFileInfo::isBundle() const
+{
+}
+
+std::string PFileInfo::readLink() const
+{
+}
+
+std::string PFileInfo::owner() const
+{
+}
+
+uint32_t PFileInfo::ownerId() const
+{
+}
+
+std::string PFileInfo::group() const
+{
+}
+
+uint32_t PFileInfo::groupId() const
+{
+}
+
+// bool permission(PFile::Permissions permissions) const
+// PFile::Permissions permissions() const
+
+int64_t PFileInfo::size() const
+{
+}
+
+PDateTime PFileInfo::created() const
+{
+}
+
+PDateTime PFileInfo::lastModified() const
+{
+}
+
+PDateTime PFileInfo::lastRead() const
+{
+}
 
 PUNICA_END_NAMESPACE

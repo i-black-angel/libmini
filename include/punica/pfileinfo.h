@@ -25,8 +25,6 @@ class PFileInfo
 {
 public:
     PFileInfo();
-    virtual ~PFileInfo();
-
 	PFileInfo(const std::string &file);
 	// PFileInfo(const PFile &file);
 	// PFileInfo(const PDir &dir, const std::string &file);
@@ -35,7 +33,7 @@ public:
 
 	PFileInfo& operator=(const PFileInfo &fileinfo);
 	bool operator==(const PFileInfo &fileinfo) const;
-	inline operator!=(const PFileInfo &fileinfo) const { return !operator==(fileinfo); }
+	inline bool operator!=(const PFileInfo &fileinfo) const { return !operator==(fileinfo); }
 
 	void setFile(const std::string &file);
 	// void setFile(const PFile &file);

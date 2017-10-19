@@ -37,6 +37,13 @@ public:
     static std::string productType();
     static std::string productVersion();
     static std::string prettyProductName();
+
+	static uint64_t memoryAvailSize();
+	static uint64_t memoryTotalSize();
+	static uint64_t memoryUsedSize();
+	static double memoryPercent();
+
+	static double cpuPercent();
 };
 
 PUNICA_END_NAMESPACE

@@ -39,7 +39,7 @@ punica/prand.h					\
 punica/pcommandline.h				\
 punica/pwaitcondition.h				\
 punica/pdatetime.h				\
-punica/phostinfo.h				\
+punica/psysinfo.h				\
 punica/pmutex.h					\
 punica/phostaddress.h				\
 punica/pprocess.h				\

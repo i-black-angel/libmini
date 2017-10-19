@@ -122,18 +122,18 @@ am__uninstall_files_from_dir = { \
 am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libpunica_la_DEPENDENCIES =
-am_libpunica_la_OBJECTS = libpunica_la-pwaitcondition.lo \
-	libpunica_la-phttp.lo libpunica_la-pdir.lo \
-	libpunica_la-pthread.lo libpunica_la-pxml.lo \
-	libpunica_la-pfile.lo libpunica_la-pstring.lo \
-	libpunica_la-phostaddress.lo libpunica_la-phostinfo.lo \
-	libpunica_la-plog.lo libpunica_la-pcommandline.lo \
-	libpunica_la-pjson.lo libpunica_la-pdatetime.lo \
-	libpunica_la-psocket.lo libpunica_la-pmutex.lo \
-	libpunica_la-pfileinfo.lo libpunica_la-pmongodb.lo \
-	libpunica_la-papplication.lo libpunica_la-pprocess.lo \
-	libpunica_la-prand.lo libpunica_la-psettings.lo \
-	libpunica_la-pglobal.lo
+am_libpunica_la_OBJECTS = libpunica_la-papplication.lo \
+	libpunica_la-pcommandline.lo libpunica_la-pdatetime.lo \
+	libpunica_la-pdir.lo libpunica_la-pfile.lo \
+	libpunica_la-pfileinfo.lo libpunica_la-pglobal.lo \
+	libpunica_la-phostaddress.lo libpunica_la-phttp.lo \
+	libpunica_la-pjson.lo libpunica_la-plog.lo \
+	libpunica_la-pmongodb.lo libpunica_la-pmutex.lo \
+	libpunica_la-pprocess.lo libpunica_la-prand.lo \
+	libpunica_la-psettings.lo libpunica_la-psocket.lo \
+	libpunica_la-pstring.lo libpunica_la-psysinfo.lo \
+	libpunica_la-pthread.lo libpunica_la-pwaitcondition.lo \
+	libpunica_la-pxml.lo
 libpunica_la_OBJECTS = $(am_libpunica_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -333,28 +333,28 @@ libpunica_la_CPPFLAGS = -I$(top_srcdir)/include $(all_includes)
 # libpunica_la_CXXFLAGS = $(LIBICONV_CFLAGS)
 libpunica_la_LIBADD = -lpthread
 libpunica_la_SOURCES = \
-pwaitcondition.cpp				\
-phttp.cpp					\
-pdir.cpp					\
-pthread.cpp					\
-pxml.cpp					\
-pfile.cpp					\
-pstring.cpp					\
-phostaddress.cpp				\
-phostinfo.cpp					\
-plog.cpp					\
-pcommandline.cpp				\
-pjson.cpp					\
-pdatetime.cpp					\
-psocket.cpp					\
-pmutex.cpp					\
-pfileinfo.cpp					\
-pmongodb.cpp					\
 papplication.cpp				\
+pcommandline.cpp				\
+pdatetime.cpp					\
+pdir.cpp					\
+pfile.cpp					\
+pfileinfo.cpp					\
+pglobal.cpp					\
+phostaddress.cpp				\
+phttp.cpp					\
+pjson.cpp					\
+plog.cpp					\
+pmongodb.cpp					\
+pmutex.cpp					\
 pprocess.cpp					\
 prand.cpp					\
 psettings.cpp					\
-pglobal.cpp
+psocket.cpp					\
+pstring.cpp					\
+psysinfo.cpp					\
+pthread.cpp					\
+pwaitcondition.cpp				\
+pxml.cpp
 
 all: all-am
 
@@ -443,7 +443,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libpunica_la-pfileinfo.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libpunica_la-pglobal.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libpunica_la-phostaddress.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libpunica_la-phostinfo.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libpunica_la-phttp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libpunica_la-pjson.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libpunica_la-plog.Plo@am__quote@
@@ -454,6 +453,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libpunica_la-psettings.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libpunica_la-psocket.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libpunica_la-pstring.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libpunica_la-psysinfo.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libpunica_la-pthread.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libpunica_la-pwaitcondition.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libpunica_la-pxml.Plo@am__quote@
@@ -482,75 +482,12 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LTCXXCOMPILE) -c -o $@ $<
 
-libpunica_la-pwaitcondition.lo: pwaitcondition.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-pwaitcondition.lo -MD -MP -MF $(DEPDIR)/libpunica_la-pwaitcondition.Tpo -c -o libpunica_la-pwaitcondition.lo `test -f 'pwaitcondition.cpp' || echo '$(srcdir)/'`pwaitcondition.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-pwaitcondition.Tpo $(DEPDIR)/libpunica_la-pwaitcondition.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pwaitcondition.cpp' object='libpunica_la-pwaitcondition.lo' libtool=yes @AMDEPBACKSLASH@
+libpunica_la-papplication.lo: papplication.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-papplication.lo -MD -MP -MF $(DEPDIR)/libpunica_la-papplication.Tpo -c -o libpunica_la-papplication.lo `test -f 'papplication.cpp' || echo '$(srcdir)/'`papplication.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-papplication.Tpo $(DEPDIR)/libpunica_la-papplication.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='papplication.cpp' object='libpunica_la-papplication.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-pwaitcondition.lo `test -f 'pwaitcondition.cpp' || echo '$(srcdir)/'`pwaitcondition.cpp
-
-libpunica_la-phttp.lo: phttp.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-phttp.lo -MD -MP -MF $(DEPDIR)/libpunica_la-phttp.Tpo -c -o libpunica_la-phttp.lo `test -f 'phttp.cpp' || echo '$(srcdir)/'`phttp.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-phttp.Tpo $(DEPDIR)/libpunica_la-phttp.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='phttp.cpp' object='libpunica_la-phttp.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-phttp.lo `test -f 'phttp.cpp' || echo '$(srcdir)/'`phttp.cpp
-
-libpunica_la-pdir.lo: pdir.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-pdir.lo -MD -MP -MF $(DEPDIR)/libpunica_la-pdir.Tpo -c -o libpunica_la-pdir.lo `test -f 'pdir.cpp' || echo '$(srcdir)/'`pdir.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-pdir.Tpo $(DEPDIR)/libpunica_la-pdir.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pdir.cpp' object='libpunica_la-pdir.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-pdir.lo `test -f 'pdir.cpp' || echo '$(srcdir)/'`pdir.cpp
-
-libpunica_la-pthread.lo: pthread.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-pthread.lo -MD -MP -MF $(DEPDIR)/libpunica_la-pthread.Tpo -c -o libpunica_la-pthread.lo `test -f 'pthread.cpp' || echo '$(srcdir)/'`pthread.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-pthread.Tpo $(DEPDIR)/libpunica_la-pthread.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pthread.cpp' object='libpunica_la-pthread.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-pthread.lo `test -f 'pthread.cpp' || echo '$(srcdir)/'`pthread.cpp
-
-libpunica_la-pxml.lo: pxml.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-pxml.lo -MD -MP -MF $(DEPDIR)/libpunica_la-pxml.Tpo -c -o libpunica_la-pxml.lo `test -f 'pxml.cpp' || echo '$(srcdir)/'`pxml.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-pxml.Tpo $(DEPDIR)/libpunica_la-pxml.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pxml.cpp' object='libpunica_la-pxml.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-pxml.lo `test -f 'pxml.cpp' || echo '$(srcdir)/'`pxml.cpp
-
-libpunica_la-pfile.lo: pfile.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-pfile.lo -MD -MP -MF $(DEPDIR)/libpunica_la-pfile.Tpo -c -o libpunica_la-pfile.lo `test -f 'pfile.cpp' || echo '$(srcdir)/'`pfile.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-pfile.Tpo $(DEPDIR)/libpunica_la-pfile.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pfile.cpp' object='libpunica_la-pfile.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-pfile.lo `test -f 'pfile.cpp' || echo '$(srcdir)/'`pfile.cpp
-
-libpunica_la-pstring.lo: pstring.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-pstring.lo -MD -MP -MF $(DEPDIR)/libpunica_la-pstring.Tpo -c -o libpunica_la-pstring.lo `test -f 'pstring.cpp' || echo '$(srcdir)/'`pstring.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-pstring.Tpo $(DEPDIR)/libpunica_la-pstring.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pstring.cpp' object='libpunica_la-pstring.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-pstring.lo `test -f 'pstring.cpp' || echo '$(srcdir)/'`pstring.cpp
-
-libpunica_la-phostaddress.lo: phostaddress.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-phostaddress.lo -MD -MP -MF $(DEPDIR)/libpunica_la-phostaddress.Tpo -c -o libpunica_la-phostaddress.lo `test -f 'phostaddress.cpp' || echo '$(srcdir)/'`phostaddress.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-phostaddress.Tpo $(DEPDIR)/libpunica_la-phostaddress.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='phostaddress.cpp' object='libpunica_la-phostaddress.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-phostaddress.lo `test -f 'phostaddress.cpp' || echo '$(srcdir)/'`phostaddress.cpp
-
-libpunica_la-phostinfo.lo: phostinfo.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-phostinfo.lo -MD -MP -MF $(DEPDIR)/libpunica_la-phostinfo.Tpo -c -o libpunica_la-phostinfo.lo `test -f 'phostinfo.cpp' || echo '$(srcdir)/'`phostinfo.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-phostinfo.Tpo $(DEPDIR)/libpunica_la-phostinfo.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='phostinfo.cpp' object='libpunica_la-phostinfo.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-phostinfo.lo `test -f 'phostinfo.cpp' || echo '$(srcdir)/'`phostinfo.cpp
-
-libpunica_la-plog.lo: plog.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-plog.lo -MD -MP -MF $(DEPDIR)/libpunica_la-plog.Tpo -c -o libpunica_la-plog.lo `test -f 'plog.cpp' || echo '$(srcdir)/'`plog.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-plog.Tpo $(DEPDIR)/libpunica_la-plog.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='plog.cpp' object='libpunica_la-plog.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-plog.lo `test -f 'plog.cpp' || echo '$(srcdir)/'`plog.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-papplication.lo `test -f 'papplication.cpp' || echo '$(srcdir)/'`papplication.cpp
 
 libpunica_la-pcommandline.lo: pcommandline.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-pcommandline.lo -MD -MP -MF $(DEPDIR)/libpunica_la-pcommandline.Tpo -c -o libpunica_la-pcommandline.lo `test -f 'pcommandline.cpp' || echo '$(srcdir)/'`pcommandline.cpp
@@ -559,13 +496,6 @@ libpunica_la-pcommandline.lo: pcommandline.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-pcommandline.lo `test -f 'pcommandline.cpp' || echo '$(srcdir)/'`pcommandline.cpp
 
-libpunica_la-pjson.lo: pjson.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-pjson.lo -MD -MP -MF $(DEPDIR)/libpunica_la-pjson.Tpo -c -o libpunica_la-pjson.lo `test -f 'pjson.cpp' || echo '$(srcdir)/'`pjson.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-pjson.Tpo $(DEPDIR)/libpunica_la-pjson.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pjson.cpp' object='libpunica_la-pjson.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-pjson.lo `test -f 'pjson.cpp' || echo '$(srcdir)/'`pjson.cpp
-
 libpunica_la-pdatetime.lo: pdatetime.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-pdatetime.lo -MD -MP -MF $(DEPDIR)/libpunica_la-pdatetime.Tpo -c -o libpunica_la-pdatetime.lo `test -f 'pdatetime.cpp' || echo '$(srcdir)/'`pdatetime.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-pdatetime.Tpo $(DEPDIR)/libpunica_la-pdatetime.Plo
@@ -573,19 +503,19 @@ libpunica_la-pdatetime.lo: pdatetime.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-pdatetime.lo `test -f 'pdatetime.cpp' || echo '$(srcdir)/'`pdatetime.cpp
 
-libpunica_la-psocket.lo: psocket.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-psocket.lo -MD -MP -MF $(DEPDIR)/libpunica_la-psocket.Tpo -c -o libpunica_la-psocket.lo `test -f 'psocket.cpp' || echo '$(srcdir)/'`psocket.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-psocket.Tpo $(DEPDIR)/libpunica_la-psocket.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='psocket.cpp' object='libpunica_la-psocket.lo' libtool=yes @AMDEPBACKSLASH@
+libpunica_la-pdir.lo: pdir.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-pdir.lo -MD -MP -MF $(DEPDIR)/libpunica_la-pdir.Tpo -c -o libpunica_la-pdir.lo `test -f 'pdir.cpp' || echo '$(srcdir)/'`pdir.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-pdir.Tpo $(DEPDIR)/libpunica_la-pdir.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pdir.cpp' object='libpunica_la-pdir.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-psocket.lo `test -f 'psocket.cpp' || echo '$(srcdir)/'`psocket.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-pdir.lo `test -f 'pdir.cpp' || echo '$(srcdir)/'`pdir.cpp
 
-libpunica_la-pmutex.lo: pmutex.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-pmutex.lo -MD -MP -MF $(DEPDIR)/libpunica_la-pmutex.Tpo -c -o libpunica_la-pmutex.lo `test -f 'pmutex.cpp' || echo '$(srcdir)/'`pmutex.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-pmutex.Tpo $(DEPDIR)/libpunica_la-pmutex.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pmutex.cpp' object='libpunica_la-pmutex.lo' libtool=yes @AMDEPBACKSLASH@
+libpunica_la-pfile.lo: pfile.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-pfile.lo -MD -MP -MF $(DEPDIR)/libpunica_la-pfile.Tpo -c -o libpunica_la-pfile.lo `test -f 'pfile.cpp' || echo '$(srcdir)/'`pfile.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-pfile.Tpo $(DEPDIR)/libpunica_la-pfile.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pfile.cpp' object='libpunica_la-pfile.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-pmutex.lo `test -f 'pmutex.cpp' || echo '$(srcdir)/'`pmutex.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-pfile.lo `test -f 'pfile.cpp' || echo '$(srcdir)/'`pfile.cpp
 
 libpunica_la-pfileinfo.lo: pfileinfo.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-pfileinfo.lo -MD -MP -MF $(DEPDIR)/libpunica_la-pfileinfo.Tpo -c -o libpunica_la-pfileinfo.lo `test -f 'pfileinfo.cpp' || echo '$(srcdir)/'`pfileinfo.cpp
@@ -594,6 +524,41 @@ libpunica_la-pfileinfo.lo: pfileinfo.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-pfileinfo.lo `test -f 'pfileinfo.cpp' || echo '$(srcdir)/'`pfileinfo.cpp
 
+libpunica_la-pglobal.lo: pglobal.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-pglobal.lo -MD -MP -MF $(DEPDIR)/libpunica_la-pglobal.Tpo -c -o libpunica_la-pglobal.lo `test -f 'pglobal.cpp' || echo '$(srcdir)/'`pglobal.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-pglobal.Tpo $(DEPDIR)/libpunica_la-pglobal.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pglobal.cpp' object='libpunica_la-pglobal.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-pglobal.lo `test -f 'pglobal.cpp' || echo '$(srcdir)/'`pglobal.cpp
+
+libpunica_la-phostaddress.lo: phostaddress.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-phostaddress.lo -MD -MP -MF $(DEPDIR)/libpunica_la-phostaddress.Tpo -c -o libpunica_la-phostaddress.lo `test -f 'phostaddress.cpp' || echo '$(srcdir)/'`phostaddress.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-phostaddress.Tpo $(DEPDIR)/libpunica_la-phostaddress.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='phostaddress.cpp' object='libpunica_la-phostaddress.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-phostaddress.lo `test -f 'phostaddress.cpp' || echo '$(srcdir)/'`phostaddress.cpp
+
+libpunica_la-phttp.lo: phttp.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-phttp.lo -MD -MP -MF $(DEPDIR)/libpunica_la-phttp.Tpo -c -o libpunica_la-phttp.lo `test -f 'phttp.cpp' || echo '$(srcdir)/'`phttp.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-phttp.Tpo $(DEPDIR)/libpunica_la-phttp.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='phttp.cpp' object='libpunica_la-phttp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-phttp.lo `test -f 'phttp.cpp' || echo '$(srcdir)/'`phttp.cpp
+
+libpunica_la-pjson.lo: pjson.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-pjson.lo -MD -MP -MF $(DEPDIR)/libpunica_la-pjson.Tpo -c -o libpunica_la-pjson.lo `test -f 'pjson.cpp' || echo '$(srcdir)/'`pjson.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-pjson.Tpo $(DEPDIR)/libpunica_la-pjson.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pjson.cpp' object='libpunica_la-pjson.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-pjson.lo `test -f 'pjson.cpp' || echo '$(srcdir)/'`pjson.cpp
+
+libpunica_la-plog.lo: plog.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-plog.lo -MD -MP -MF $(DEPDIR)/libpunica_la-plog.Tpo -c -o libpunica_la-plog.lo `test -f 'plog.cpp' || echo '$(srcdir)/'`plog.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-plog.Tpo $(DEPDIR)/libpunica_la-plog.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='plog.cpp' object='libpunica_la-plog.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-plog.lo `test -f 'plog.cpp' || echo '$(srcdir)/'`plog.cpp
+
 libpunica_la-pmongodb.lo: pmongodb.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-pmongodb.lo -MD -MP -MF $(DEPDIR)/libpunica_la-pmongodb.Tpo -c -o libpunica_la-pmongodb.lo `test -f 'pmongodb.cpp' || echo '$(srcdir)/'`pmongodb.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-pmongodb.Tpo $(DEPDIR)/libpunica_la-pmongodb.Plo
@@ -601,12 +566,12 @@ libpunica_la-pmongodb.lo: pmongodb.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-pmongodb.lo `test -f 'pmongodb.cpp' || echo '$(srcdir)/'`pmongodb.cpp
 
-libpunica_la-papplication.lo: papplication.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-papplication.lo -MD -MP -MF $(DEPDIR)/libpunica_la-papplication.Tpo -c -o libpunica_la-papplication.lo `test -f 'papplication.cpp' || echo '$(srcdir)/'`papplication.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-papplication.Tpo $(DEPDIR)/libpunica_la-papplication.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='papplication.cpp' object='libpunica_la-papplication.lo' libtool=yes @AMDEPBACKSLASH@
+libpunica_la-pmutex.lo: pmutex.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-pmutex.lo -MD -MP -MF $(DEPDIR)/libpunica_la-pmutex.Tpo -c -o libpunica_la-pmutex.lo `test -f 'pmutex.cpp' || echo '$(srcdir)/'`pmutex.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-pmutex.Tpo $(DEPDIR)/libpunica_la-pmutex.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pmutex.cpp' object='libpunica_la-pmutex.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-papplication.lo `test -f 'papplication.cpp' || echo '$(srcdir)/'`papplication.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-pmutex.lo `test -f 'pmutex.cpp' || echo '$(srcdir)/'`pmutex.cpp
 
 libpunica_la-pprocess.lo: pprocess.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-pprocess.lo -MD -MP -MF $(DEPDIR)/libpunica_la-pprocess.Tpo -c -o libpunica_la-pprocess.lo `test -f 'pprocess.cpp' || echo '$(srcdir)/'`pprocess.cpp
@@ -629,12 +594,47 @@ libpunica_la-psettings.lo: psettings.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-psettings.lo `test -f 'psettings.cpp' || echo '$(srcdir)/'`psettings.cpp
 
-libpunica_la-pglobal.lo: pglobal.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-pglobal.lo -MD -MP -MF $(DEPDIR)/libpunica_la-pglobal.Tpo -c -o libpunica_la-pglobal.lo `test -f 'pglobal.cpp' || echo '$(srcdir)/'`pglobal.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-pglobal.Tpo $(DEPDIR)/libpunica_la-pglobal.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pglobal.cpp' object='libpunica_la-pglobal.lo' libtool=yes @AMDEPBACKSLASH@
+libpunica_la-psocket.lo: psocket.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-psocket.lo -MD -MP -MF $(DEPDIR)/libpunica_la-psocket.Tpo -c -o libpunica_la-psocket.lo `test -f 'psocket.cpp' || echo '$(srcdir)/'`psocket.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-psocket.Tpo $(DEPDIR)/libpunica_la-psocket.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='psocket.cpp' object='libpunica_la-psocket.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-pglobal.lo `test -f 'pglobal.cpp' || echo '$(srcdir)/'`pglobal.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-psocket.lo `test -f 'psocket.cpp' || echo '$(srcdir)/'`psocket.cpp
+
+libpunica_la-pstring.lo: pstring.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-pstring.lo -MD -MP -MF $(DEPDIR)/libpunica_la-pstring.Tpo -c -o libpunica_la-pstring.lo `test -f 'pstring.cpp' || echo '$(srcdir)/'`pstring.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-pstring.Tpo $(DEPDIR)/libpunica_la-pstring.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pstring.cpp' object='libpunica_la-pstring.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-pstring.lo `test -f 'pstring.cpp' || echo '$(srcdir)/'`pstring.cpp
+
+libpunica_la-psysinfo.lo: psysinfo.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-psysinfo.lo -MD -MP -MF $(DEPDIR)/libpunica_la-psysinfo.Tpo -c -o libpunica_la-psysinfo.lo `test -f 'psysinfo.cpp' || echo '$(srcdir)/'`psysinfo.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-psysinfo.Tpo $(DEPDIR)/libpunica_la-psysinfo.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='psysinfo.cpp' object='libpunica_la-psysinfo.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-psysinfo.lo `test -f 'psysinfo.cpp' || echo '$(srcdir)/'`psysinfo.cpp
+
+libpunica_la-pthread.lo: pthread.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-pthread.lo -MD -MP -MF $(DEPDIR)/libpunica_la-pthread.Tpo -c -o libpunica_la-pthread.lo `test -f 'pthread.cpp' || echo '$(srcdir)/'`pthread.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-pthread.Tpo $(DEPDIR)/libpunica_la-pthread.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pthread.cpp' object='libpunica_la-pthread.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-pthread.lo `test -f 'pthread.cpp' || echo '$(srcdir)/'`pthread.cpp
+
+libpunica_la-pwaitcondition.lo: pwaitcondition.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-pwaitcondition.lo -MD -MP -MF $(DEPDIR)/libpunica_la-pwaitcondition.Tpo -c -o libpunica_la-pwaitcondition.lo `test -f 'pwaitcondition.cpp' || echo '$(srcdir)/'`pwaitcondition.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-pwaitcondition.Tpo $(DEPDIR)/libpunica_la-pwaitcondition.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pwaitcondition.cpp' object='libpunica_la-pwaitcondition.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-pwaitcondition.lo `test -f 'pwaitcondition.cpp' || echo '$(srcdir)/'`pwaitcondition.cpp
+
+libpunica_la-pxml.lo: pxml.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-pxml.lo -MD -MP -MF $(DEPDIR)/libpunica_la-pxml.Tpo -c -o libpunica_la-pxml.lo `test -f 'pxml.cpp' || echo '$(srcdir)/'`pxml.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-pxml.Tpo $(DEPDIR)/libpunica_la-pxml.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pxml.cpp' object='libpunica_la-pxml.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-pxml.lo `test -f 'pxml.cpp' || echo '$(srcdir)/'`pxml.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo
