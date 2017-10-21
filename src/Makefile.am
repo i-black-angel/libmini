@@ -22,7 +22,6 @@ phttp.cpp					\
 pjson.cpp					\
 plog.cpp					\
 pmongodb.cpp					\
-pmutex.cpp					\
 pprocess.cpp					\
 prand.cpp					\
 psettings.cpp					\

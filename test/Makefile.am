@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-noinst_PROGRAMS = hostaddress welcome
+noinst_PROGRAMS = hostaddress welcome assert mutex
 
 hostaddress_CPPFLAGS = -I$(top_srcdir)/include
 hostaddress_LDADD = ../src/libpunica.la
@@ -24,3 +24,11 @@ hostaddress_SOURCES = hostaddress.cpp
 welcome_CPPFLAGS = -I$(top_srcdir)/include
 welcome_LDADD = ../src/libpunica.la
 welcome_SOURCES = welcome.cpp
+
+assert_CPPFLAGS = -I$(top_srcdir)/include
+assert_LDADD = ../src/libpunica.la
+assert_SOURCES = assert.cpp
+
+mutex_CPPFLAGS = -I$(top_srcdir)/include
+mutex_LDADD = ../src/libpunica.la -lpthread
+mutex_SOURCES = mutex.cpp

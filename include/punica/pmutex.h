@@ -17,34 +17,110 @@
 #define _PMUTEX_H_
 
 #include <punica/pcoredef.h>
+#include <punica/pglobal.h>
 
 PUNICA_BEGIN_NAMESPACE
+
+#ifdef P_OS_WIN /* P_OS_WIN */
 
 class PMutex
 {
 public:
-    explicit PMutex();
-    virtual ~PMutex();
+    PMutex()
+		{
+			InitializeCriticalSection (&cs);
+		}
 
-	void lock();
-	bool unlock();
-	bool trylock();
+    ~PMutex()
+		{
+			DeleteCriticalSection (&cs);
+		}
+
+	inline void lock()
+		{
+			EnterCriticalSection (&cs);
+		}
+
+	inline bool trylock()
+		{
+			return (TryEnterCriticalSection (&cs)) ? true : false;
+		}
+
+	inline void unlock()
+		{
+			LeaveCriticalSection (&cs);
+		}
+
 private:
+
 	P_DISABLE_COPY(PMutex)
 
-	pthread_mutex_t _mutex;
+	CRITICAL_SECTION cs;
 };
+
+#else  /* P_OS_LINUX */
+
+class PMutex
+{
+public:
+    PMutex()
+		{
+			int rc = pthread_mutex_init (&mutex, NULL);
+			posix_assert (rc);
+		}
+
+    ~PMutex()
+		{
+            int rc = pthread_mutex_destroy (&mutex);
+            posix_assert (rc);			
+		}
+
+	inline void lock()
+		{
+            int rc = pthread_mutex_lock (&mutex);
+            posix_assert (rc);			
+		}
+
+	inline bool trylock()
+		{
+            int rc = pthread_mutex_trylock (&mutex);
+            if (rc == EBUSY)
+                return false;
+
+            posix_assert (rc);
+            return true;
+		}
+
+	inline void unlock()
+		{
+            int rc = pthread_mutex_unlock (&mutex);
+            posix_assert (rc);
+		}
+
+private:
+
+	P_DISABLE_COPY(PMutex)
+
+	pthread_mutex_t mutex;
+};
+
+#endif	/* P_OS_LINUX */
+
 
 class PMutexLocker
 {
 public:
     explicit PMutexLocker(PMutex &mutex)
-		: _mutex(mutex) {
-		_mutex.lock();
-	}
-    ~PMutexLocker() {
-		_mutex.unlock();
-	}
+		: _mutex(mutex)
+		{
+			_mutex.lock();
+		}
+	
+    ~PMutexLocker()
+		{
+			_mutex.unlock();
+		}
+	
 private:
 	P_DISABLE_COPY(PMutexLocker)
 	

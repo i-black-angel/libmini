@@ -128,8 +128,16 @@ typedef unsigned char byte;
 
 #endif /* __cplusplus */
 
+#if defined __GNUC__
+#define likely(x) __builtin_expect ((x), 1)
+#define unlikely(x) __builtin_expect ((x), 0)
+#else
+#define likely(x) (x)
+#define unlikely(x) (x)
+#endif
+
 /*
- * Disable copying 
+ * Disable copy construction and assignment.
  */
 #define P_DISABLE_COPY(Class)					\
     Class(const Class &) ;						\

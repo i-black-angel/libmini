@@ -13,16 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <punica/pmutex.h>
+#include <punica.h>
 
-PUNICA_BEGIN_NAMESPACE
-
-PMutex::PMutex()
+int main(int argc, char *argv[])
 {
+	punica::PMutex mutex;
+	mutex.lock();
+	mutex.unlock();
+	punica::PMutexLocker locker(mutex);
+	std::cout << mutex.trylock() << std::endl;
+    return 0;
 }
-
-PMutex::~PMutex()
-{
-}
-
-PUNICA_END_NAMESPACE

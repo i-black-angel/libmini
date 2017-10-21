@@ -95,7 +95,8 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-noinst_PROGRAMS = hostaddress$(EXEEXT) welcome$(EXEEXT)
+noinst_PROGRAMS = hostaddress$(EXEEXT) welcome$(EXEEXT) \
+	assert$(EXEEXT) mutex$(EXEEXT)
 subdir = test
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/depcomp
@@ -111,13 +112,19 @@ CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 PROGRAMS = $(noinst_PROGRAMS)
-am_hostaddress_OBJECTS = hostaddress-hostaddress.$(OBJEXT)
-hostaddress_OBJECTS = $(am_hostaddress_OBJECTS)
-hostaddress_DEPENDENCIES = ../src/libpunica.la
+am_assert_OBJECTS = assert-assert.$(OBJEXT)
+assert_OBJECTS = $(am_assert_OBJECTS)
+assert_DEPENDENCIES = ../src/libpunica.la
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
+am_hostaddress_OBJECTS = hostaddress-hostaddress.$(OBJEXT)
+hostaddress_OBJECTS = $(am_hostaddress_OBJECTS)
+hostaddress_DEPENDENCIES = ../src/libpunica.la
+am_mutex_OBJECTS = mutex-mutex.$(OBJEXT)
+mutex_OBJECTS = $(am_mutex_OBJECTS)
+mutex_DEPENDENCIES = ../src/libpunica.la
 am_welcome_OBJECTS = welcome-welcome.$(OBJEXT)
 welcome_OBJECTS = $(am_welcome_OBJECTS)
 welcome_DEPENDENCIES = ../src/libpunica.la
@@ -155,8 +162,10 @@ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
-SOURCES = $(hostaddress_SOURCES) $(welcome_SOURCES)
-DIST_SOURCES = $(hostaddress_SOURCES) $(welcome_SOURCES)
+SOURCES = $(assert_SOURCES) $(hostaddress_SOURCES) $(mutex_SOURCES) \
+	$(welcome_SOURCES)
+DIST_SOURCES = $(assert_SOURCES) $(hostaddress_SOURCES) \
+	$(mutex_SOURCES) $(welcome_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -308,6 +317,12 @@ hostaddress_SOURCES = hostaddress.cpp
 welcome_CPPFLAGS = -I$(top_srcdir)/include
 welcome_LDADD = ../src/libpunica.la
 welcome_SOURCES = welcome.cpp
+assert_CPPFLAGS = -I$(top_srcdir)/include
+assert_LDADD = ../src/libpunica.la
+assert_SOURCES = assert.cpp
+mutex_CPPFLAGS = -I$(top_srcdir)/include
+mutex_LDADD = ../src/libpunica.la -lpthread
+mutex_SOURCES = mutex.cpp
 all: all-am
 
 .SUFFIXES:
@@ -352,9 +367,17 @@ clean-noinstPROGRAMS:
 	echo " rm -f" $$list; \
 	rm -f $$list
 
+assert$(EXEEXT): $(assert_OBJECTS) $(assert_DEPENDENCIES) $(EXTRA_assert_DEPENDENCIES) 
+	@rm -f assert$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(assert_OBJECTS) $(assert_LDADD) $(LIBS)
+
 hostaddress$(EXEEXT): $(hostaddress_OBJECTS) $(hostaddress_DEPENDENCIES) $(EXTRA_hostaddress_DEPENDENCIES) 
 	@rm -f hostaddress$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(hostaddress_OBJECTS) $(hostaddress_LDADD) $(LIBS)
+
+mutex$(EXEEXT): $(mutex_OBJECTS) $(mutex_DEPENDENCIES) $(EXTRA_mutex_DEPENDENCIES) 
+	@rm -f mutex$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(mutex_OBJECTS) $(mutex_LDADD) $(LIBS)
 
 welcome$(EXEEXT): $(welcome_OBJECTS) $(welcome_DEPENDENCIES) $(EXTRA_welcome_DEPENDENCIES) 
 	@rm -f welcome$(EXEEXT)
@@ -366,7 +389,9 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/assert-assert.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hostaddress-hostaddress.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mutex-mutex.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/welcome-welcome.Po@am__quote@
 
 .cpp.o:
@@ -393,6 +418,20 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LTCXXCOMPILE) -c -o $@ $<
 
+assert-assert.o: assert.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assert_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT assert-assert.o -MD -MP -MF $(DEPDIR)/assert-assert.Tpo -c -o assert-assert.o `test -f 'assert.cpp' || echo '$(srcdir)/'`assert.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/assert-assert.Tpo $(DEPDIR)/assert-assert.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='assert.cpp' object='assert-assert.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assert_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o assert-assert.o `test -f 'assert.cpp' || echo '$(srcdir)/'`assert.cpp
+
+assert-assert.obj: assert.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assert_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT assert-assert.obj -MD -MP -MF $(DEPDIR)/assert-assert.Tpo -c -o assert-assert.obj `if test -f 'assert.cpp'; then $(CYGPATH_W) 'assert.cpp'; else $(CYGPATH_W) '$(srcdir)/assert.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/assert-assert.Tpo $(DEPDIR)/assert-assert.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='assert.cpp' object='assert-assert.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assert_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o assert-assert.obj `if test -f 'assert.cpp'; then $(CYGPATH_W) 'assert.cpp'; else $(CYGPATH_W) '$(srcdir)/assert.cpp'; fi`
+
 hostaddress-hostaddress.o: hostaddress.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(hostaddress_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT hostaddress-hostaddress.o -MD -MP -MF $(DEPDIR)/hostaddress-hostaddress.Tpo -c -o hostaddress-hostaddress.o `test -f 'hostaddress.cpp' || echo '$(srcdir)/'`hostaddress.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/hostaddress-hostaddress.Tpo $(DEPDIR)/hostaddress-hostaddress.Po
@@ -406,6 +445,20 @@ hostaddress-hostaddress.obj: hostaddress.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='hostaddress.cpp' object='hostaddress-hostaddress.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(hostaddress_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o hostaddress-hostaddress.obj `if test -f 'hostaddress.cpp'; then $(CYGPATH_W) 'hostaddress.cpp'; else $(CYGPATH_W) '$(srcdir)/hostaddress.cpp'; fi`
+
+mutex-mutex.o: mutex.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(mutex_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT mutex-mutex.o -MD -MP -MF $(DEPDIR)/mutex-mutex.Tpo -c -o mutex-mutex.o `test -f 'mutex.cpp' || echo '$(srcdir)/'`mutex.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/mutex-mutex.Tpo $(DEPDIR)/mutex-mutex.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='mutex.cpp' object='mutex-mutex.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(mutex_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o mutex-mutex.o `test -f 'mutex.cpp' || echo '$(srcdir)/'`mutex.cpp
+
+mutex-mutex.obj: mutex.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(mutex_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT mutex-mutex.obj -MD -MP -MF $(DEPDIR)/mutex-mutex.Tpo -c -o mutex-mutex.obj `if test -f 'mutex.cpp'; then $(CYGPATH_W) 'mutex.cpp'; else $(CYGPATH_W) '$(srcdir)/mutex.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/mutex-mutex.Tpo $(DEPDIR)/mutex-mutex.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='mutex.cpp' object='mutex-mutex.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(mutex_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o mutex-mutex.obj `if test -f 'mutex.cpp'; then $(CYGPATH_W) 'mutex.cpp'; else $(CYGPATH_W) '$(srcdir)/mutex.cpp'; fi`
 
 welcome-welcome.o: welcome.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(welcome_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT welcome-welcome.o -MD -MP -MF $(DEPDIR)/welcome-welcome.Tpo -c -o welcome-welcome.o `test -f 'welcome.cpp' || echo '$(srcdir)/'`welcome.cpp

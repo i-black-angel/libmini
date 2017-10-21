@@ -128,12 +128,11 @@ am_libpunica_la_OBJECTS = libpunica_la-papplication.lo \
 	libpunica_la-pfileinfo.lo libpunica_la-pglobal.lo \
 	libpunica_la-phostaddress.lo libpunica_la-phttp.lo \
 	libpunica_la-pjson.lo libpunica_la-plog.lo \
-	libpunica_la-pmongodb.lo libpunica_la-pmutex.lo \
-	libpunica_la-pprocess.lo libpunica_la-prand.lo \
-	libpunica_la-psettings.lo libpunica_la-psocket.lo \
-	libpunica_la-pstring.lo libpunica_la-psysinfo.lo \
-	libpunica_la-pthread.lo libpunica_la-pwaitcondition.lo \
-	libpunica_la-pxml.lo
+	libpunica_la-pmongodb.lo libpunica_la-pprocess.lo \
+	libpunica_la-prand.lo libpunica_la-psettings.lo \
+	libpunica_la-psocket.lo libpunica_la-pstring.lo \
+	libpunica_la-psysinfo.lo libpunica_la-pthread.lo \
+	libpunica_la-pwaitcondition.lo libpunica_la-pxml.lo
 libpunica_la_OBJECTS = $(am_libpunica_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -345,7 +344,6 @@ phttp.cpp					\
 pjson.cpp					\
 plog.cpp					\
 pmongodb.cpp					\
-pmutex.cpp					\
 pprocess.cpp					\
 prand.cpp					\
 psettings.cpp					\
@@ -447,7 +445,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libpunica_la-pjson.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libpunica_la-plog.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libpunica_la-pmongodb.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libpunica_la-pmutex.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libpunica_la-pprocess.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libpunica_la-prand.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libpunica_la-psettings.Plo@am__quote@
@@ -565,13 +562,6 @@ libpunica_la-pmongodb.lo: pmongodb.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pmongodb.cpp' object='libpunica_la-pmongodb.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-pmongodb.lo `test -f 'pmongodb.cpp' || echo '$(srcdir)/'`pmongodb.cpp
-
-libpunica_la-pmutex.lo: pmutex.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-pmutex.lo -MD -MP -MF $(DEPDIR)/libpunica_la-pmutex.Tpo -c -o libpunica_la-pmutex.lo `test -f 'pmutex.cpp' || echo '$(srcdir)/'`pmutex.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libpunica_la-pmutex.Tpo $(DEPDIR)/libpunica_la-pmutex.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pmutex.cpp' object='libpunica_la-pmutex.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libpunica_la-pmutex.lo `test -f 'pmutex.cpp' || echo '$(srcdir)/'`pmutex.cpp
 
 libpunica_la-pprocess.lo: pprocess.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libpunica_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libpunica_la-pprocess.lo -MD -MP -MF $(DEPDIR)/libpunica_la-pprocess.Tpo -c -o libpunica_la-pprocess.lo `test -f 'pprocess.cpp' || echo '$(srcdir)/'`pprocess.cpp

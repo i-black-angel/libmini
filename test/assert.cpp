@@ -13,30 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _PGLOBAL_H_
-#define _PGLOBAL_H_
+#include <punica.h>
 
-#include <punica/pcoredef.h>
-
-PUNICA_BEGIN_NAMESPACE
-
-const char *welcome();
-void abort(const char *errmsg);
-
-PUNICA_END_NAMESPACE
-
-// will be re-write in some whare
-#ifndef P_OS_WIN
-
-#define posix_assert(x)													\
-    do {																\
-        if (unlikely (x)) {												\
-            const char *errstr = strerror (x);							\
-            fprintf (stderr, "%s (%s:%d)\n", errstr, __FILE__, __LINE__); \
-            punica::abort (errstr);										\
-        }																\
-    } while (false)
-
-#endif /* P_OS_WIN */
-
-#endif /* _PGLOBAL_H_ */
+int main(int argc, char *argv[])
+{
+	/*
+	 * /usr/include/asm-generic/errno-base.h
+	 */
+	int err = EBUSY;
+    posix_assert(err);
+    return 0;
+}

@@ -22,4 +22,18 @@ const char *welcome()
 	return "Hello, welcome to libpunica.";
 }
 
+void abort(const char *errmsg)
+{
+#if defined P_OS_WIN
+
+    //  Raise STATUS_FATAL_APP_EXIT.
+    ULONG_PTR extra_info [1];
+    extra_info [0] = (ULONG_PTR) errmsg;
+    RaiseException (0x40000015, EXCEPTION_NONCONTINUABLE, 1, extra_info);
+#else
+    (void)errmsg;
+    ::abort ();
+#endif
+}
+
 PUNICA_END_NAMESPACE
