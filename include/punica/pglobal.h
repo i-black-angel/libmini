@@ -20,6 +20,7 @@
 
 PUNICA_BEGIN_NAMESPACE
 
+const char *welcome();
 // class PApplication
 // {
 // public:

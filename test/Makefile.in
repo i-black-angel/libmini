@@ -95,7 +95,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-noinst_PROGRAMS = hostaddress$(EXEEXT)
+noinst_PROGRAMS = hostaddress$(EXEEXT) welcome$(EXEEXT)
 subdir = test
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/depcomp
@@ -118,6 +118,9 @@ AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
+am_welcome_OBJECTS = welcome-welcome.$(OBJEXT)
+welcome_OBJECTS = $(am_welcome_OBJECTS)
+welcome_DEPENDENCIES = ../src/libpunica.la
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -152,8 +155,8 @@ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
-SOURCES = $(hostaddress_SOURCES)
-DIST_SOURCES = $(hostaddress_SOURCES)
+SOURCES = $(hostaddress_SOURCES) $(welcome_SOURCES)
+DIST_SOURCES = $(hostaddress_SOURCES) $(welcome_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -302,6 +305,9 @@ top_srcdir = @top_srcdir@
 hostaddress_CPPFLAGS = -I$(top_srcdir)/include
 hostaddress_LDADD = ../src/libpunica.la
 hostaddress_SOURCES = hostaddress.cpp
+welcome_CPPFLAGS = -I$(top_srcdir)/include
+welcome_LDADD = ../src/libpunica.la
+welcome_SOURCES = welcome.cpp
 all: all-am
 
 .SUFFIXES:
@@ -350,6 +356,10 @@ hostaddress$(EXEEXT): $(hostaddress_OBJECTS) $(hostaddress_DEPENDENCIES) $(EXTRA
 	@rm -f hostaddress$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(hostaddress_OBJECTS) $(hostaddress_LDADD) $(LIBS)
 
+welcome$(EXEEXT): $(welcome_OBJECTS) $(welcome_DEPENDENCIES) $(EXTRA_welcome_DEPENDENCIES) 
+	@rm -f welcome$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(welcome_OBJECTS) $(welcome_LDADD) $(LIBS)
+
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
 
@@ -357,6 +367,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hostaddress-hostaddress.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/welcome-welcome.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
@@ -395,6 +406,20 @@ hostaddress-hostaddress.obj: hostaddress.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='hostaddress.cpp' object='hostaddress-hostaddress.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(hostaddress_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o hostaddress-hostaddress.obj `if test -f 'hostaddress.cpp'; then $(CYGPATH_W) 'hostaddress.cpp'; else $(CYGPATH_W) '$(srcdir)/hostaddress.cpp'; fi`
+
+welcome-welcome.o: welcome.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(welcome_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT welcome-welcome.o -MD -MP -MF $(DEPDIR)/welcome-welcome.Tpo -c -o welcome-welcome.o `test -f 'welcome.cpp' || echo '$(srcdir)/'`welcome.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/welcome-welcome.Tpo $(DEPDIR)/welcome-welcome.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='welcome.cpp' object='welcome-welcome.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(welcome_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o welcome-welcome.o `test -f 'welcome.cpp' || echo '$(srcdir)/'`welcome.cpp
+
+welcome-welcome.obj: welcome.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(welcome_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT welcome-welcome.obj -MD -MP -MF $(DEPDIR)/welcome-welcome.Tpo -c -o welcome-welcome.obj `if test -f 'welcome.cpp'; then $(CYGPATH_W) 'welcome.cpp'; else $(CYGPATH_W) '$(srcdir)/welcome.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/welcome-welcome.Tpo $(DEPDIR)/welcome-welcome.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='welcome.cpp' object='welcome-welcome.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(welcome_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o welcome-welcome.obj `if test -f 'welcome.cpp'; then $(CYGPATH_W) 'welcome.cpp'; else $(CYGPATH_W) '$(srcdir)/welcome.cpp'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo

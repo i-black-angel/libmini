@@ -15,8 +15,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-noinst_PROGRAMS = hostaddress
+noinst_PROGRAMS = hostaddress welcome
 
 hostaddress_CPPFLAGS = -I$(top_srcdir)/include
 hostaddress_LDADD = ../src/libpunica.la
 hostaddress_SOURCES = hostaddress.cpp
+
+welcome_CPPFLAGS = -I$(top_srcdir)/include
+welcome_LDADD = ../src/libpunica.la
+welcome_SOURCES = welcome.cpp

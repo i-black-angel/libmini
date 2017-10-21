@@ -13,13 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <punica/pglobal.h>
+#include <punica.h>
 
-PUNICA_BEGIN_NAMESPACE
-
-const char *welcome()
+int main(int argc, char *argv[])
 {
-	return "Hello, welcome to libpunica.";
+	std::cout << punica::welcome() << std::endl;
+    return 0;
 }
-
-PUNICA_END_NAMESPACE
