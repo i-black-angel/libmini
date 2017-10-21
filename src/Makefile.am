@@ -29,5 +29,5 @@ psocket.cpp					\
 pstring.cpp					\
 psysinfo.cpp					\
 pthread.cpp					\
-pwaitcondition.cpp				\
+pcondition.cpp					\
 pxml.cpp

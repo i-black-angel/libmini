@@ -37,7 +37,7 @@ punica/pdir.h					\
 punica/psocket.h				\
 punica/prand.h					\
 punica/pcommandline.h				\
-punica/pwaitcondition.h				\
+punica/pcondition.h				\
 punica/pdatetime.h				\
 punica/psysinfo.h				\
 punica/pmutex.h					\

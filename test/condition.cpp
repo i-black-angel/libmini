@@ -13,32 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _PWAITCONDITION_H_
-#define _PWAITCONDITION_H_
+#include <punica.h>
 
-#include <punica/pcoredef.h>
-#include <punica/pmutex.h>
-#include <limits.h>
+punica::PCondition cond_;
+punica::PMutex mutex_;
 
-PUNICA_BEGIN_NAMESPACE
-
-class PWaitCondition
+void *threadCallback(void *pvoid)
 {
-public:
-    /*explicit */PWaitCondition();
-    virtual ~PWaitCondition();
+	punica::PMutexLocker locker(mutex_);
+	std::cout << pthread_self() << std::endl; 
+	cond_.wait(mutex_);
+	std::cout << "wakeup " << pthread_self() << std::endl;
+	return NULL;
+}
 
-	bool wait(PMutex *mutex, unsigned long time = ULONG_MAX);
+int main(int argc, char *argv[])
+{
+	pthread_t self;
+	for (int i = 0; i < 5; ++i) {
+		pthread_create(&self, NULL, threadCallback, NULL);
+	}
+	sleep(1);
 
-	void wake();
-	void wakeAll();
+	cond_.wake();
 
-private:
-	P_DISABLE_COPY(PWaitCondition)
+	sleep(2);
 
-	pthread_cond_t _cond;
-};
+	cond_.wakeAll();
 
-PUNICA_END_NAMESPACE
-
-#endif /* _PWAITCONDITION_H_ */
+	sleep(2);
+    return 0;
+}

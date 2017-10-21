@@ -65,25 +65,25 @@ class PMutex
 public:
     PMutex()
 		{
-			int rc = pthread_mutex_init (&mutex, NULL);
+			int rc = pthread_mutex_init (&_mutex, NULL);
 			posix_assert (rc);
 		}
 
     ~PMutex()
 		{
-            int rc = pthread_mutex_destroy (&mutex);
+            int rc = pthread_mutex_destroy (&_mutex);
             posix_assert (rc);			
 		}
 
 	inline void lock()
 		{
-            int rc = pthread_mutex_lock (&mutex);
+            int rc = pthread_mutex_lock (&_mutex);
             posix_assert (rc);			
 		}
 
 	inline bool trylock()
 		{
-            int rc = pthread_mutex_trylock (&mutex);
+            int rc = pthread_mutex_trylock (&_mutex);
             if (rc == EBUSY)
                 return false;
 
@@ -93,15 +93,19 @@ public:
 
 	inline void unlock()
 		{
-            int rc = pthread_mutex_unlock (&mutex);
+            int rc = pthread_mutex_unlock (&_mutex);
             posix_assert (rc);
 		}
 
+	inline pthread_mutex_t *mutex()
+		{
+			return &_mutex;
+		}
 private:
 
 	P_DISABLE_COPY(PMutex)
 
-	pthread_mutex_t mutex;
+	pthread_mutex_t _mutex;
 };
 
 #endif	/* P_OS_LINUX */

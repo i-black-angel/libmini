@@ -96,7 +96,7 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 noinst_PROGRAMS = hostaddress$(EXEEXT) welcome$(EXEEXT) \
-	assert$(EXEEXT) mutex$(EXEEXT)
+	assert$(EXEEXT) mutex$(EXEEXT) condition$(EXEEXT)
 subdir = test
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/depcomp
@@ -119,6 +119,9 @@ AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
+am_condition_OBJECTS = condition-condition.$(OBJEXT)
+condition_OBJECTS = $(am_condition_OBJECTS)
+condition_DEPENDENCIES = ../src/libpunica.la
 am_hostaddress_OBJECTS = hostaddress-hostaddress.$(OBJEXT)
 hostaddress_OBJECTS = $(am_hostaddress_OBJECTS)
 hostaddress_DEPENDENCIES = ../src/libpunica.la
@@ -162,10 +165,10 @@ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
-SOURCES = $(assert_SOURCES) $(hostaddress_SOURCES) $(mutex_SOURCES) \
-	$(welcome_SOURCES)
-DIST_SOURCES = $(assert_SOURCES) $(hostaddress_SOURCES) \
-	$(mutex_SOURCES) $(welcome_SOURCES)
+SOURCES = $(assert_SOURCES) $(condition_SOURCES) \
+	$(hostaddress_SOURCES) $(mutex_SOURCES) $(welcome_SOURCES)
+DIST_SOURCES = $(assert_SOURCES) $(condition_SOURCES) \
+	$(hostaddress_SOURCES) $(mutex_SOURCES) $(welcome_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -323,6 +326,9 @@ assert_SOURCES = assert.cpp
 mutex_CPPFLAGS = -I$(top_srcdir)/include
 mutex_LDADD = ../src/libpunica.la -lpthread
 mutex_SOURCES = mutex.cpp
+condition_CPPFLAGS = -I$(top_srcdir)/include
+condition_LDADD = ../src/libpunica.la -lpthread
+condition_SOURCES = condition.cpp
 all: all-am
 
 .SUFFIXES:
@@ -371,6 +377,10 @@ assert$(EXEEXT): $(assert_OBJECTS) $(assert_DEPENDENCIES) $(EXTRA_assert_DEPENDE
 	@rm -f assert$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(assert_OBJECTS) $(assert_LDADD) $(LIBS)
 
+condition$(EXEEXT): $(condition_OBJECTS) $(condition_DEPENDENCIES) $(EXTRA_condition_DEPENDENCIES) 
+	@rm -f condition$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(condition_OBJECTS) $(condition_LDADD) $(LIBS)
+
 hostaddress$(EXEEXT): $(hostaddress_OBJECTS) $(hostaddress_DEPENDENCIES) $(EXTRA_hostaddress_DEPENDENCIES) 
 	@rm -f hostaddress$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(hostaddress_OBJECTS) $(hostaddress_LDADD) $(LIBS)
@@ -390,6 +400,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/assert-assert.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/condition-condition.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hostaddress-hostaddress.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mutex-mutex.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/welcome-welcome.Po@am__quote@
@@ -431,6 +442,20 @@ assert-assert.obj: assert.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='assert.cpp' object='assert-assert.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assert_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o assert-assert.obj `if test -f 'assert.cpp'; then $(CYGPATH_W) 'assert.cpp'; else $(CYGPATH_W) '$(srcdir)/assert.cpp'; fi`
+
+condition-condition.o: condition.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(condition_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT condition-condition.o -MD -MP -MF $(DEPDIR)/condition-condition.Tpo -c -o condition-condition.o `test -f 'condition.cpp' || echo '$(srcdir)/'`condition.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/condition-condition.Tpo $(DEPDIR)/condition-condition.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='condition.cpp' object='condition-condition.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(condition_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o condition-condition.o `test -f 'condition.cpp' || echo '$(srcdir)/'`condition.cpp
+
+condition-condition.obj: condition.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(condition_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT condition-condition.obj -MD -MP -MF $(DEPDIR)/condition-condition.Tpo -c -o condition-condition.obj `if test -f 'condition.cpp'; then $(CYGPATH_W) 'condition.cpp'; else $(CYGPATH_W) '$(srcdir)/condition.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/condition-condition.Tpo $(DEPDIR)/condition-condition.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='condition.cpp' object='condition-condition.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(condition_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o condition-condition.obj `if test -f 'condition.cpp'; then $(CYGPATH_W) 'condition.cpp'; else $(CYGPATH_W) '$(srcdir)/condition.cpp'; fi`
 
 hostaddress-hostaddress.o: hostaddress.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(hostaddress_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT hostaddress-hostaddress.o -MD -MP -MF $(DEPDIR)/hostaddress-hostaddress.Tpo -c -o hostaddress-hostaddress.o `test -f 'hostaddress.cpp' || echo '$(srcdir)/'`hostaddress.cpp

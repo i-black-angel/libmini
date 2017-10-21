@@ -32,7 +32,7 @@
 #include <punica/psocket.h>
 #include <punica/prand.h>
 #include <punica/pcommandline.h>
-#include <punica/pwaitcondition.h>
+#include <punica/pcondition.h>
 #include <punica/pdatetime.h>
 #include <punica/psysinfo.h>
 #include <punica/pmutex.h>

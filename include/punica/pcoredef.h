@@ -61,6 +61,7 @@
 # include <pthread.h>
 # include <getopt.h>
 # include <syslog.h>
+# include <sys/time.h>
 #endif
 
 /* Definitions */

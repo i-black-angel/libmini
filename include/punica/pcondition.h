@@ -13,16 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <punica/pwaitcondition.h>
+#ifndef _PCONDITION_H_
+#define _PCONDITION_H_
+
+#include <punica/pcoredef.h>
+#include <punica/pmutex.h>
+#include <limits.h>
 
 PUNICA_BEGIN_NAMESPACE
 
-PWaitCondition::PWaitCondition()
+class PCondition
 {
-}
+public:
+    /*explicit */PCondition();
+    virtual ~PCondition();
 
-PWaitCondition::~PWaitCondition()
-{
-}
+	bool wait(PMutex &mutex, unsigned long timeout = ULONG_MAX);
+
+	void wake();
+	void wakeAll();
+
+private:
+	P_DISABLE_COPY(PCondition)
+
+#ifdef P_OS_WIN
+	HANDLE _cond;
+#else
+	pthread_cond_t _cond;
+#endif /* P_OS_WIN */
+};
 
 PUNICA_END_NAMESPACE
+
+#endif /* _PCONDITION_H_ */
