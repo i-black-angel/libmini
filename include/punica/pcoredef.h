@@ -128,4 +128,11 @@ typedef unsigned char byte;
 
 #endif /* __cplusplus */
 
+/*
+ * Disable copying 
+ */
+#define P_DISABLE_COPY(Class)					\
+    Class(const Class &) ;						\
+    Class &operator=(const Class &) ;
+
 #endif /* _PCOREDEF_H_ */

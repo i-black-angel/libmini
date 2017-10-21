@@ -21,17 +21,6 @@
 PUNICA_BEGIN_NAMESPACE
 
 const char *welcome();
-// class PApplication
-// {
-// public:
-//     explicit PApplication();
-//     virtual ~PApplication();
-
-// 	static std::string name();
-// 	static std::string path();
-// 	static std::string absolutePath();
-// 	static uint32_t uptime();
-// };
 
 PUNICA_END_NAMESPACE
 

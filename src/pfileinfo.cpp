@@ -23,6 +23,7 @@ PFileInfo::PFileInfo()
 
 PFileInfo::PFileInfo(const std::string &file)
 {
+	setFile(file);
 }
 
 // PFileInfo(const PFile &file);
@@ -30,6 +31,7 @@ PFileInfo::PFileInfo(const std::string &file)
 
 PFileInfo::PFileInfo(const PFileInfo &fileinfo)
 {
+	_file = fileinfo._file;
 }
 
 PFileInfo::~PFileInfo()
@@ -38,14 +40,18 @@ PFileInfo::~PFileInfo()
 
 PFileInfo& PFileInfo::operator=(const PFileInfo &fileinfo)
 {
+	_file = fileinfo._file;
+	return *this;
 }
 
 bool PFileInfo::operator==(const PFileInfo &fileinfo) const
 {
+	return _file == fileinfo._file;
 }
 
 void PFileInfo::setFile(const std::string &file)
 {
+	_file = file;
 }
 
 // void setFile(const PFile &file);
@@ -53,6 +59,17 @@ void PFileInfo::setFile(const std::string &file)
 
 bool PFileInfo::exists() const
 {
+	int err = 0;
+	if (_file.empty()) {
+		// log_error("filename is empty");
+		return false;
+	}
+	if ((err = access(_file.c_str(), F_OK)) != 0) {
+		// errno
+		// log_error(strerror(errno));
+		return false;
+	}
+	return true;
 }
 
 bool PFileInfo::exists(const std::string &file)

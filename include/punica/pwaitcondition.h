@@ -17,14 +17,26 @@
 #define _PWAITCONDITION_H_
 
 #include <punica/pcoredef.h>
+#include <punica/pmutex.h>
+#include <limits.h>
 
 PUNICA_BEGIN_NAMESPACE
 
 class PWaitCondition
 {
 public:
-    explicit PWaitCondition();
+    /*explicit */PWaitCondition();
     virtual ~PWaitCondition();
+
+	bool wait(PMutex *mutex, unsigned long time = ULONG_MAX);
+
+	void wake();
+	void wakeAll();
+
+private:
+	P_DISABLE_COPY(PWaitCondition)
+
+	pthread_cond_t _cond;
 };
 
 PUNICA_END_NAMESPACE

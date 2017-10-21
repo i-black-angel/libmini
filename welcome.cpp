@@ -13,44 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _PMUTEX_H_
-#define _PMUTEX_H_
+#include <punica.h>
 
-#include <punica/pcoredef.h>
-
-PUNICA_BEGIN_NAMESPACE
-
-class PMutex
+int main(int argc, char *argv[])
 {
-public:
-    explicit PMutex();
-    virtual ~PMutex();
+	std::cout << punica::welcome() << std::endl;
+    return 0;
+}
 
-	void lock();
-	bool unlock();
-	bool trylock();
-private:
-	P_DISABLE_COPY(PMutex)
-
-	pthread_mutex_t _mutex;
-};
-
-class PMutexLocker
-{
-public:
-    explicit PMutexLocker(PMutex &mutex)
-		: _mutex(mutex) {
-		_mutex.lock();
-	}
-    ~PMutexLocker() {
-		_mutex.unlock();
-	}
-private:
-	P_DISABLE_COPY(PMutexLocker)
-	
-	PMutex &_mutex;
-};
-
-PUNICA_END_NAMESPACE
-
-#endif /* _PMUTEX_H_ */
+// easy compile:
+// 
+//     g++ -o welcome welcome.cpp -lpunica
+//     

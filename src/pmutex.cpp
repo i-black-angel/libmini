@@ -25,12 +25,4 @@ PMutex::~PMutex()
 {
 }
 
-PMutexLocker::PMutexLocker(PMutex *mutex)
-{
-}
-
-PMutexLocker::~PMutexLocker()
-{
-}
-
 PUNICA_END_NAMESPACE
