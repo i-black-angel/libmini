@@ -27,10 +27,7 @@ public:
 		Null,
 		Broadcast,
 		LocalHost,
-		// LocalHostIPv6,
 		Any,
-		// AnyIPv6,
-		// AnyIPv4
 	};
 	PHostAddress();
 	PHostAddress(SpecialAddress address);

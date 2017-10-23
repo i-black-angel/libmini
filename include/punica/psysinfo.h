@@ -20,11 +20,11 @@
 
 PUNICA_BEGIN_NAMESPACE
 
-class PSysInfo
+class PSysinfo
 {
 public:
-    explicit PSysInfo();
-    virtual ~PSysInfo();
+    explicit PSysinfo();
+    virtual ~PSysinfo();
 
 	static std::string hostName();
 	
@@ -44,6 +44,10 @@ public:
 	static double memoryPercent();
 
 	static double cpuPercent();
+
+	static uint32_t uptimelong();
+    static std::string uptime(); // how long the system has been running
+	static std::string since();	// System up since, yyyy-mm-dd HH:MM:SS
 };
 
 PUNICA_END_NAMESPACE

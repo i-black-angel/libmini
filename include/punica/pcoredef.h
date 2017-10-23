@@ -40,8 +40,8 @@
 #  define P_OS_WIN
 # endif
 #else
-# ifndef P_OS_POSIX
-#  define P_OS_POSIX
+# ifndef P_OS_LINUX
+#  define P_OS_LINUX
 # endif
 #endif
 
@@ -62,6 +62,7 @@
 # include <getopt.h>
 # include <syslog.h>
 # include <sys/time.h>
+# include <fcntl.h>
 #endif
 
 /* Definitions */

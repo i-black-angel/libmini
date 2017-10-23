@@ -15,49 +15,156 @@
  */
 #include <punica/psysinfo.h>
 
+#ifdef P_OS_LINUX
+/* GNU's uptime.
+   Copyright (C) 1992-2013 Free Software Foundation, Inc.
+
+   This program is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+#define BAD_OPEN_MESSAGE											\
+	"Error: /proc must be mounted\n"								\
+	"  To mount /proc at boot you need an /etc/fstab line like:\n"	\
+	"      proc   /proc   proc    defaults\n"						\
+	"  In the meantime, run \"mount proc /proc -t proc\"\n"
+
+#define UPTIME_FILE  "/proc/uptime"
+static int uptime_fd = -1;
+#define MEMINFO_FILE "/proc/meminfo"
+static int meminfo_fd = -1;
+
+/* This macro opens filename only if necessary and seeks to 0 so
+ * that successive calls to the functions are more efficient.
+ * It also reads the current contents of the file into the global buf.
+ */
+#define FILE_TO_BUF(filename, fd, buf) do{							\
+		static int local_n;											\
+		if (fd == -1 && (fd = open(filename, O_RDONLY)) == -1) {	\
+			fputs(BAD_OPEN_MESSAGE, stderr);						\
+			fflush(NULL);											\
+			_exit(102);												\
+		}															\
+		lseek(fd, 0L, SEEK_SET);									\
+		if ((local_n = read(fd, buf, sizeof buf - 1)) < 0) {		\
+			perror(filename);										\
+			fflush(NULL);											\
+			_exit(103);												\
+		}															\
+		buf[local_n] = '\0';										\
+	}while(0)
+
+/* evals 'x' twice */
+#define SET_IF_DESIRED(x,y) do{  if(x) *(x) = (y); }while(0)
+
+/***********************************************************************/
+int uptime(double * uptime_secs, double * idle_secs) {
+	// As of 2.6.24 /proc/meminfo seems to need 888 on 64-bit,
+	// and would need 1258 if the obsolete fields were there.
+	char buf[2048] = {0x00};
+	double up=0, idle=0;
+	char *savelocale;
+
+	FILE_TO_BUF(UPTIME_FILE,uptime_fd, buf);
+	savelocale = strdup(setlocale(LC_NUMERIC, NULL));
+	setlocale(LC_NUMERIC,"C");
+	if (sscanf(buf, "%lf %lf", &up, &idle) < 2) {
+		setlocale(LC_NUMERIC,savelocale);
+		free(savelocale);
+		fputs("bad data in " UPTIME_FILE "\n", stderr);
+		return 0;
+	}
+	setlocale(LC_NUMERIC,savelocale);
+	free(savelocale);
+	SET_IF_DESIRED(uptime_secs, up);
+	SET_IF_DESIRED(idle_secs, idle);
+	return up;	/* assume never be zero seconds in practice */
+}
+#endif
+
 PUNICA_BEGIN_NAMESPACE
 
-PSysInfo::PSysInfo()
+PSysinfo::PSysinfo()
 {
 }
 
-PSysInfo::~PSysInfo()
+PSysinfo::~PSysinfo()
 {
 }
 
-std::string PSysInfo::hostName()
+std::string PSysinfo::hostName()
 {
 }
 	
-std::string PSysInfo::buildCpuArchitecture()
+std::string PSysinfo::buildCpuArchitecture()
 {
 }
 
-std::string PSysInfo::currentCpuArchitecture()
+std::string PSysinfo::currentCpuArchitecture()
 {
 }
 
-std::string PSysInfo::buildAbi()
+std::string PSysinfo::buildAbi()
 {
 }
 
-std::string PSysInfo::kernelType()
+std::string PSysinfo::kernelType()
 {
 }
 
-std::string PSysInfo::kernelVersion()
+std::string PSysinfo::kernelVersion()
 {
 }
 
-std::string PSysInfo::productType()
+std::string PSysinfo::productType()
 {
 }
 
-std::string PSysInfo::productVersion()
+std::string PSysinfo::productVersion()
 {
 }
 
-std::string PSysInfo::prettyProductName()
+std::string PSysinfo::prettyProductName()
+{
+}
+
+uint64_t PSysinfo::memoryAvailSize()
+{
+}
+
+uint64_t PSysinfo::memoryTotalSize()
+{
+}
+
+uint64_t PSysinfo::memoryUsedSize()
+{
+}
+
+double PSysinfo::memoryPercent()
+{
+}
+
+double PSysinfo::cpuPercent()
+{
+}
+
+uint32_t PSysinfo::uptimelong()
+{
+}
+
+std::string PSysinfo::uptime()
+{
+}
+
+std::string PSysinfo::since()
 {
 }
 
