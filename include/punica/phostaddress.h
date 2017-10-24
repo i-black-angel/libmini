@@ -30,40 +30,44 @@ public:
 		Any,
 	};
 	PHostAddress();
-	PHostAddress(SpecialAddress address);
+	PHostAddress(SpecialAddress address, uint16_t port = 0);
+	explicit PHostAddress(uint32_t ip4Addr, uint16_t port = 0);
+	explicit PHostAddress(const std::string &address, uint16_t port = 0);
 	PHostAddress(const PHostAddress &copy);
-	explicit PHostAddress(uint32_t ip4Addr);
-	explicit PHostAddress(const std::string &address);
 	virtual ~PHostAddress();
 
 	PHostAddress &operator=(const PHostAddress &other);
-	PHostAddress &operator=(SpecialAddress address);
+	// PHostAddress &operator=(SpecialAddress address);
 
 	void setAddress(uint32_t ip4Addr);
 	bool setAddress(const std::string &address);
 	void setAddress(SpecialAddress address);
-
+	void setPort(uint16_t port);
+	
+	std::string address() const;
 	uint32_t toIPv4Address() const;
+	uint16_t port() const;
 	std::string toString() const;
 
 	bool isEqual(const PHostAddress &address) const;
 	bool operator ==(const PHostAddress &address) const;
-	bool operator ==(SpecialAddress address) const;
+	// bool operator ==(SpecialAddress address) const;
 	inline bool operator !=(const PHostAddress &address) const
 		{ return !operator==(address); }
-	inline bool operator !=(SpecialAddress address) const
-		{ return !operator==(address); }
+	// inline bool operator !=(SpecialAddress address) const
+	// 	{ return !operator==(address); }
 	bool isNull() const;
 	bool isLoopback() const;
 	bool isMulticast() const;
 private:
 	uint32_t _ip4addr;
+	uint16_t _port;
 };
 
-inline bool operator ==(PHostAddress::SpecialAddress address1, const PHostAddress &address2)
-{ return address2 == address1; }
-inline bool operator !=(PHostAddress::SpecialAddress address1, const PHostAddress &address2)
-{ return address2 != address1; }
+// inline bool operator ==(PHostAddress::SpecialAddress address1, const PHostAddress &address2)
+// { return address2 == address1; }
+// inline bool operator !=(PHostAddress::SpecialAddress address1, const PHostAddress &address2)
+// { return address2 != address1; }
 
 std::ostream &operator<<(std::ostream &, const PHostAddress &);
 std::istream &operator>>(std::istream &, PHostAddress &);

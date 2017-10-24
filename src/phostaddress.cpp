@@ -20,26 +20,31 @@ PUNICA_BEGIN_NAMESPACE
 PHostAddress::PHostAddress()
 {
 	_ip4addr = 0x00000000;
+	_port = 0x0000;
 }
 
-PHostAddress::PHostAddress(SpecialAddress address)
+PHostAddress::PHostAddress(SpecialAddress address, uint16_t port)
 {
 	setAddress(address);
+	setPort(port);
 }
 
 PHostAddress::PHostAddress(const PHostAddress &copy)
 {
 	_ip4addr = copy._ip4addr;
+	_port = copy._port;
 }
 
-PHostAddress::PHostAddress(uint32_t ip4Addr)
+PHostAddress::PHostAddress(uint32_t ip4Addr, uint16_t port)
 {
 	setAddress(ip4Addr);
+	setPort(port);
 }
 
-PHostAddress::PHostAddress(const std::string &address)
+PHostAddress::PHostAddress(const std::string &address, uint16_t port)
 {
 	setAddress(address);
+	setPort(port);
 }
 
 PHostAddress::~PHostAddress()
@@ -49,14 +54,15 @@ PHostAddress::~PHostAddress()
 PHostAddress &PHostAddress::operator=(const PHostAddress &other)
 {
 	_ip4addr = other._ip4addr;
+	_port = other._port;
 	return *this;
 }
 
-PHostAddress &PHostAddress::operator=(SpecialAddress address)
-{
-	setAddress(address);
-	return *this;
-}
+// PHostAddress &PHostAddress::operator=(SpecialAddress address)
+// {
+// 	setAddress(address);
+// 	return *this;
+// }
 
 
 void PHostAddress::setAddress(uint32_t ip4Addr)
@@ -108,6 +114,10 @@ void PHostAddress::setAddress(SpecialAddress address)
 	_ip4addr = ip4;
 }
 
+void PHostAddress::setPort(uint16_t port)
+{
+	_port = port;
+}
 
 uint32_t PHostAddress::toIPv4Address() const
 {
@@ -115,6 +125,19 @@ uint32_t PHostAddress::toIPv4Address() const
 }
 
 std::string PHostAddress::toString() const
+{
+	std::string content;
+
+	int len = snprintf(NULL, 0, "%s:%d", address().c_str(), port());
+
+	content.resize(len + 2);
+
+	snprintf(&content[0], len + 1, "%s:%d", address().c_str(), port());
+
+	return content;
+}
+
+std::string PHostAddress::address() const
 {
 	char str[INET_ADDRSTRLEN] = { 0x00 };
 	uint32_t ip4 = ntohl(_ip4addr);
@@ -124,9 +147,15 @@ std::string PHostAddress::toString() const
 	return std::string(str);
 }
 
+uint16_t PHostAddress::port() const
+{
+	return _port;
+}
+
 bool PHostAddress::isEqual(const PHostAddress &address) const
 {
-	return _ip4addr == address._ip4addr;
+	return ( (_ip4addr == address._ip4addr) &&
+			 (_port == address._port) );
 }
 
 bool PHostAddress::operator ==(const PHostAddress &address) const
@@ -134,25 +163,25 @@ bool PHostAddress::operator ==(const PHostAddress &address) const
 	return isEqual(address);
 }
 
-bool PHostAddress::operator ==(SpecialAddress address) const
-{
-	uint32_t ip4 = INADDR_ANY;
-	switch (address) {
-	case Null:
-		ip4 = INADDR_NONE;
-		break;;
-	case Broadcast:
-		ip4 = INADDR_BROADCAST;
-		break;
-	case LocalHost:
-		ip4 = INADDR_LOOPBACK;
-		break;
-	case Any:
-		break;
-	}
+// bool PHostAddress::operator ==(SpecialAddress address) const
+// {
+// 	uint32_t ip4 = INADDR_ANY;
+// 	switch (address) {
+// 	case Null:
+// 		ip4 = INADDR_NONE;
+// 		break;;
+// 	case Broadcast:
+// 		ip4 = INADDR_BROADCAST;
+// 		break;
+// 	case LocalHost:
+// 		ip4 = INADDR_LOOPBACK;
+// 		break;
+// 	case Any:
+// 		break;
+// 	}
 
-	return ip4 == _ip4addr;
-}
+// 	return ip4 == _ip4addr;
+// }
 
 bool PHostAddress::isNull() const
 {
@@ -177,9 +206,7 @@ bool PHostAddress::isMulticast() const
 
 std::ostream &operator<<(std::ostream &out, const PHostAddress &address)
 {
-	char buf[12] = {0x00};
-	snprintf(buf, sizeof(buf) - 1, "0x%08x", address.toIPv4Address());
-	out << buf;
+	out << address.toString();
 	return out;
 }
 

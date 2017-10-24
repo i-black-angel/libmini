@@ -38,8 +38,8 @@ int main(int argc, char *argv[])
         std::cout << "addr1 is Any" << std::endl;
     }
 
-    punica::PHostAddress addr8;
-    addr8.setAddress("www.sina.com");
+    punica::PHostAddress addr8("www.sina.com", 8843);
+
     std::cout << addr8.toString() << std::endl;
     std::cout << addr8 << std::endl;
     std::cout << addr6 << std::endl;

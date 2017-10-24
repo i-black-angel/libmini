@@ -13,34 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <punica/psocket.h>
+#include <punica.h>
 
-PUNICA_BEGIN_NAMESPACE
-
-PSocket::PSocket(SocketType socketType)
+int main(int argc, char *argv[])
 {
-}
+	const uint8_t data[] = {0x00, 0x01, 0x02, 0x03};
 
-PSocket::~PSocket()
-{
-}
+	punica::PUdpSocket udpSocket;
+	punica::PHostAddress addr("localhost", 7753);
 
-PTcpSocket::PTcpSocket()
-	: PSocket(TcpSocket)
-{
-}
+	udpSocket.sendto(data, sizeof(data), addr);
 
-PTcpSocket::~PTcpSocket()
-{
+    return 0;
 }
-
-PUdpSocket::PUdpSocket()
-	: PSocket(UdpSocket)
-{
-}
-
-PUdpSocket::~PUdpSocket()
-{
-}
-
-PUNICA_END_NAMESPACE
