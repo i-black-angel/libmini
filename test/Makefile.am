@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-noinst_PROGRAMS = hostaddress welcome assert mutex condition
+noinst_PROGRAMS = hostaddress welcome assert mutex condition udpsocket
 
 hostaddress_CPPFLAGS = -I$(top_srcdir)/include
 hostaddress_LDADD = ../src/libpunica.la
@@ -36,3 +36,7 @@ mutex_SOURCES = mutex.cpp
 condition_CPPFLAGS = -I$(top_srcdir)/include
 condition_LDADD = ../src/libpunica.la -lpthread
 condition_SOURCES = condition.cpp
+
+udpsocket_CPPFLAGS = -I$(top_srcdir)/include
+udpsocket_LDADD = ../src/libpunica.la -lpthread
+udpsocket_SOURCES = udpsocket.cpp

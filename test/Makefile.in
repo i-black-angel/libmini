@@ -96,7 +96,8 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 noinst_PROGRAMS = hostaddress$(EXEEXT) welcome$(EXEEXT) \
-	assert$(EXEEXT) mutex$(EXEEXT) condition$(EXEEXT)
+	assert$(EXEEXT) mutex$(EXEEXT) condition$(EXEEXT) \
+	udpsocket$(EXEEXT)
 subdir = test
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/depcomp
@@ -128,6 +129,9 @@ hostaddress_DEPENDENCIES = ../src/libpunica.la
 am_mutex_OBJECTS = mutex-mutex.$(OBJEXT)
 mutex_OBJECTS = $(am_mutex_OBJECTS)
 mutex_DEPENDENCIES = ../src/libpunica.la
+am_udpsocket_OBJECTS = udpsocket-udpsocket.$(OBJEXT)
+udpsocket_OBJECTS = $(am_udpsocket_OBJECTS)
+udpsocket_DEPENDENCIES = ../src/libpunica.la
 am_welcome_OBJECTS = welcome-welcome.$(OBJEXT)
 welcome_OBJECTS = $(am_welcome_OBJECTS)
 welcome_DEPENDENCIES = ../src/libpunica.la
@@ -166,9 +170,11 @@ am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
 SOURCES = $(assert_SOURCES) $(condition_SOURCES) \
-	$(hostaddress_SOURCES) $(mutex_SOURCES) $(welcome_SOURCES)
+	$(hostaddress_SOURCES) $(mutex_SOURCES) $(udpsocket_SOURCES) \
+	$(welcome_SOURCES)
 DIST_SOURCES = $(assert_SOURCES) $(condition_SOURCES) \
-	$(hostaddress_SOURCES) $(mutex_SOURCES) $(welcome_SOURCES)
+	$(hostaddress_SOURCES) $(mutex_SOURCES) $(udpsocket_SOURCES) \
+	$(welcome_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -329,6 +335,9 @@ mutex_SOURCES = mutex.cpp
 condition_CPPFLAGS = -I$(top_srcdir)/include
 condition_LDADD = ../src/libpunica.la -lpthread
 condition_SOURCES = condition.cpp
+udpsocket_CPPFLAGS = -I$(top_srcdir)/include
+udpsocket_LDADD = ../src/libpunica.la -lpthread
+udpsocket_SOURCES = udpsocket.cpp
 all: all-am
 
 .SUFFIXES:
@@ -389,6 +398,10 @@ mutex$(EXEEXT): $(mutex_OBJECTS) $(mutex_DEPENDENCIES) $(EXTRA_mutex_DEPENDENCIE
 	@rm -f mutex$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(mutex_OBJECTS) $(mutex_LDADD) $(LIBS)
 
+udpsocket$(EXEEXT): $(udpsocket_OBJECTS) $(udpsocket_DEPENDENCIES) $(EXTRA_udpsocket_DEPENDENCIES) 
+	@rm -f udpsocket$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(udpsocket_OBJECTS) $(udpsocket_LDADD) $(LIBS)
+
 welcome$(EXEEXT): $(welcome_OBJECTS) $(welcome_DEPENDENCIES) $(EXTRA_welcome_DEPENDENCIES) 
 	@rm -f welcome$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(welcome_OBJECTS) $(welcome_LDADD) $(LIBS)
@@ -403,6 +416,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/condition-condition.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hostaddress-hostaddress.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mutex-mutex.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/udpsocket-udpsocket.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/welcome-welcome.Po@am__quote@
 
 .cpp.o:
@@ -484,6 +498,20 @@ mutex-mutex.obj: mutex.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='mutex.cpp' object='mutex-mutex.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(mutex_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o mutex-mutex.obj `if test -f 'mutex.cpp'; then $(CYGPATH_W) 'mutex.cpp'; else $(CYGPATH_W) '$(srcdir)/mutex.cpp'; fi`
+
+udpsocket-udpsocket.o: udpsocket.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(udpsocket_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT udpsocket-udpsocket.o -MD -MP -MF $(DEPDIR)/udpsocket-udpsocket.Tpo -c -o udpsocket-udpsocket.o `test -f 'udpsocket.cpp' || echo '$(srcdir)/'`udpsocket.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/udpsocket-udpsocket.Tpo $(DEPDIR)/udpsocket-udpsocket.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='udpsocket.cpp' object='udpsocket-udpsocket.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(udpsocket_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o udpsocket-udpsocket.o `test -f 'udpsocket.cpp' || echo '$(srcdir)/'`udpsocket.cpp
+
+udpsocket-udpsocket.obj: udpsocket.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(udpsocket_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT udpsocket-udpsocket.obj -MD -MP -MF $(DEPDIR)/udpsocket-udpsocket.Tpo -c -o udpsocket-udpsocket.obj `if test -f 'udpsocket.cpp'; then $(CYGPATH_W) 'udpsocket.cpp'; else $(CYGPATH_W) '$(srcdir)/udpsocket.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/udpsocket-udpsocket.Tpo $(DEPDIR)/udpsocket-udpsocket.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='udpsocket.cpp' object='udpsocket-udpsocket.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(udpsocket_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o udpsocket-udpsocket.obj `if test -f 'udpsocket.cpp'; then $(CYGPATH_W) 'udpsocket.cpp'; else $(CYGPATH_W) '$(srcdir)/udpsocket.cpp'; fi`
 
 welcome-welcome.o: welcome.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(welcome_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT welcome-welcome.o -MD -MP -MF $(DEPDIR)/welcome-welcome.Tpo -c -o welcome-welcome.o `test -f 'welcome.cpp' || echo '$(srcdir)/'`welcome.cpp

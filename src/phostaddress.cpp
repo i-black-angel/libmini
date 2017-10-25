@@ -119,7 +119,7 @@ void PHostAddress::setPort(uint16_t port)
 	_port = port;
 }
 
-uint32_t PHostAddress::toIPv4Address() const
+uint32_t PHostAddress::ipv4() const
 {
 	return _ip4addr;
 }

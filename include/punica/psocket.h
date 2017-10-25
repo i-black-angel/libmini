@@ -34,6 +34,7 @@ public:
     explicit PSocket(SocketType socketType);
     virtual ~PSocket();
 
+	bool bind(const PHostAddress &address);
 	bool bind(uint16_t port);
 	bool connect(const std::string &address, uint16_t port, int msecs = 30000);
 	bool connect(const PHostAddress &address, int msec = 30000);
@@ -45,6 +46,9 @@ public:
 	PHostAddress peerAddress() const;
 	std::string peerName() const;
 	SocketType socketType() const;
+protected:
+	SocketType _socketType;
+	int _sockfd;
 };
 
 class PTcpSocket : public PSocket

@@ -30,6 +30,7 @@ public:
 
 	inline void wait(unsigned long timeout = ULONG_MAX)
 		{
+			PMutexLocker lock(_mutex);
 		}
 
 	inline void post()

@@ -20,9 +20,11 @@ int main(int argc, char *argv[])
 	const uint8_t data[] = {0x00, 0x01, 0x02, 0x03};
 
 	punica::PUdpSocket udpSocket;
-	punica::PHostAddress addr("localhost", 7753);
+	// punica::PHostAddress addr("localhost", 7753);
 
-	udpSocket.sendto(data, sizeof(data), addr);
+	// ssize_t len = udpSocket.sendto(data, sizeof(data), addr);
+	// std::cout << "send len: " << len << std::endl;
+	udpSocket.bind(7753);
 
     return 0;
 }

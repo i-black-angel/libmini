@@ -45,7 +45,7 @@ public:
 	void setPort(uint16_t port);
 	
 	std::string address() const;
-	uint32_t toIPv4Address() const;
+	uint32_t ipv4() const;
 	uint16_t port() const;
 	std::string toString() const;
 
