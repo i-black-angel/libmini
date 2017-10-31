@@ -43,3 +43,19 @@ config.status
 *.pc
 libtool
 test/test-address
+
+# autogen temp files
+Makefile.in
+*/Makefile.in
+aclocal.m4
+ar-lib
+compile
+config.guess
+config.h.in
+config.sub
+configure
+depcomp
+install-sh
+ltmain.sh
+m4/
+missing
