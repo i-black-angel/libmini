@@ -1,5 +1,4 @@
-# Process this file with automake to produce Makefile.in (in this,
-# and all subdirectories).
+#!/bin/sh
 #
 # Copyright 2017 Shusheng Shao <iblackangel@163.com>
 #
@@ -15,9 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-SUBDIRS=src include test
-ACLOCAL_AMFLAGS=-I m4
-DISTCLEANFILES=libpunica.pc
-
-pkgconfigdir=$(libdir)/pkgconfig
-pkgconfig_DATA=libpunica.pc
+if [ -f Makefile ]; then
+	echo "Making make distclean..."
+	make distclean
+fi
+echo "Removing autogenned files..."
+rm -f config.guess config.sub configure install-sh missing mkinstalldirs Makefile.in ltmain.sh stamp-h.in */Makefile.in ltconfig stamp-h config.h.in config.h.in~ aclocal.m4 ar-lib compile depcomp
+rm -rf m4 autom4te.cache
+echo "Done."
