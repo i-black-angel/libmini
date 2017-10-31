@@ -66,6 +66,7 @@ bool PSocket::bind(const PHostAddress &address)
 		perror("bind error");
 		return false;
 	}
+	printf ("bind %s success\n", address.toString().c_str());
 	return true;
 }
 
@@ -117,8 +118,6 @@ int64_t PUdpSocket::recvfrom(uint8_t *data, size_t len, PHostAddress &host)
 	ssize_t rlen = ::recvfrom(_sockfd, data, len, 0, (sockaddr *)&addr, &slen);
 
 	if (rlen <= 0) return rlen;
-
-	printf("0x%08x\n", addr.sin_addr.s_addr);
 	
 	host.setAddress(ntohl(addr.sin_addr.s_addr));
 	host.setPort(ntohs(addr.sin_port));
@@ -149,7 +148,16 @@ bool PUdpServer::bind(uint16_t port)
 	try {
 
 		_buf = new uint8_t[_bufsize];
-		return _socket.bind(port);
+		_init = _socket.bind(port);
+		if (!_init) {
+			perror("bind()");
+			return false;
+		}
+		if (pipe(_pipefd) < 0) {
+			perror("pipe()");
+			return false;
+		}
+		return _init;
 
 	} catch (std::exception e) {
 
@@ -162,14 +170,44 @@ bool PUdpServer::bind(uint16_t port)
 
 void PUdpServer::run()
 {
+	if (!_init) return;
+	
 	size_t len = 0;
 	PHostAddress address;
+	int fd = _socket.sockfd();
+	int retval = 0;
+	
+	for (; ;) {
+		FD_ZERO(&_rfds);
+		FD_SET(fd, &_rfds);
+		FD_SET(_pipefd[0], &_rfds);
 
-	while (true) {
-		len = _socket.recvfrom(_buf, _bufsize, address);
+		_maxfds = std::max(fd, _pipefd[0]);
 
-		process(_buf, len, address);
+		retval = select(_maxfds + 1, &_rfds, NULL, NULL, NULL);
+		if (retval < 0) {
+			perror("select()");
+			break;
+		} 
+
+		if (FD_ISSET(fd, &_rfds)) {
+			len = _socket.recvfrom(_buf, _bufsize, address);
+			process(_buf, len, address);
+		}
+		if (FD_ISSET(_pipefd[0], &_rfds)) {
+			break;
+		}
 	}
+
+	close(_pipefd[0]);
+	close(_pipefd[1]);
+}
+
+void PUdpServer::stop()
+{
+	static const uint8_t xdata[4] = {0x01, 0x02, 0x03, 0x04};
+	write(_pipefd[1], xdata, sizeof(xdata));
+	PThread::stop();
 }
 
 void PUdpServer::process(const uint8_t *data, size_t len, const PHostAddress &host)

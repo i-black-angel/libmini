@@ -47,6 +47,9 @@ public:
 	PHostAddress peerAddress() const;
 	std::string peerName() const;
 	SocketType socketType() const;
+
+	int sockfd() const { return _sockfd; }
+	
 protected:
 	SocketType _socketType;
 	int _sockfd;
@@ -86,14 +89,23 @@ public:
     virtual ~PUdpServer();
 
 	bool bind(uint16_t port);
+	void stop();
+	
 protected:
-	virtual void run();
+	
+	void run();
+	
 	virtual void process(const uint8_t *data, size_t len, const punica::PHostAddress &host);
 
 	PUdpSocket _socket;
 	uint8_t *_buf;
 	int _bufsize;
 	bool _init;
+
+	// select module
+	int _pipefd[2];
+	fd_set _rfds;
+	int _maxfds;
 };
 
 PUNICA_END_NAMESPACE
