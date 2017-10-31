@@ -15,13 +15,109 @@
  */
 #include <punica/pthread.h>
 
+#ifdef P_OS_WIN
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	static unsigned int __stdcall thread_routine(void *arg)
+	{
+		punica::PThread *self = (punica::PThread *) arg;
+		if (NULL != self) {
+			self->exec();
+		}
+		return 0;
+	}
+	
+#ifdef __cplusplus
+}
+#endif
+
+#else  /* LINUX */
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	static void *thread_routine(void *arg)
+	{
+		punica::PThread *self = (punica::PThread *) arg;
+		if (NULL != self) {
+			self->exec();
+		}
+		return NULL;
+	}
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* P_OS_WIN */
+
+
 PUNICA_BEGIN_NAMESPACE
 
 PThread::PThread()
 {
+	_self = 0;
 }
 
 PThread::~PThread()
+{
+}
+
+bool PThread::start()
+{
+	int res = 0;
+	res = pthread_create(&_self, NULL, thread_routine, this);
+	if (0 != res)
+		perror("create thread");
+	return res == 0;
+}
+
+void PThread::stop()
+{
+}
+
+int PThread::join()
+{
+}
+
+int PThread::detach()
+{
+}
+
+int PThread::cancel()
+{
+}
+	
+int64_t PThread::currentId()
+{
+	return pthread_self();
+}
+
+int64_t PThread::id()
+{
+	return _self;
+}
+	
+void PThread::setPriority(Priority priority)
+{
+	_priority = priority;
+}
+
+PThread::Priority PThread::priority() const
+{
+	return _priority;
+}
+
+void PThread::exec()
+{
+	run();
+}
+
+void PThread::run()
 {
 }
 

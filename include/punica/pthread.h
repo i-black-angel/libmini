@@ -23,8 +23,56 @@ PUNICA_BEGIN_NAMESPACE
 class PThread
 {
 public:
+
+	enum Priority {
+        IdlePriority,
+
+        LowestPriority,
+        LowPriority,
+        NormalPriority,
+        HighPriority,
+        HighestPriority,
+
+        TimeCriticalPriority,
+
+        InheritPriority
+    };
+
     explicit PThread();
     virtual ~PThread();
+
+	bool start();
+	void stop();
+
+	int join();
+	int detach();
+	int cancel();
+	
+	static int64_t currentId();
+	int64_t id();
+	
+    void setPriority(Priority priority);
+    Priority priority() const;	
+
+	//  This is internal function. It should be private, however then
+	//  it would not be accessible from the main C routine of the thread.
+	void exec();
+
+protected:
+
+	virtual void run();
+
+private:
+
+#ifdef P_OS_WIN
+	HANDLE _self;
+#else
+	pthread_t _self;
+#endif /* P_OS_WIN */
+
+	Priority _priority;
+	
+	P_DISABLE_COPY(PThread)
 };
 
 PUNICA_END_NAMESPACE

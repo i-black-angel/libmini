@@ -97,7 +97,7 @@ build_triplet = @build@
 host_triplet = @host@
 noinst_PROGRAMS = hostaddress$(EXEEXT) welcome$(EXEEXT) \
 	assert$(EXEEXT) mutex$(EXEEXT) condition$(EXEEXT) \
-	udpsocket$(EXEEXT)
+	udpsocket$(EXEEXT) thread$(EXEEXT) udpclient$(EXEEXT)
 subdir = test
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/depcomp
@@ -129,6 +129,12 @@ hostaddress_DEPENDENCIES = ../src/libpunica.la
 am_mutex_OBJECTS = mutex-mutex.$(OBJEXT)
 mutex_OBJECTS = $(am_mutex_OBJECTS)
 mutex_DEPENDENCIES = ../src/libpunica.la
+am_thread_OBJECTS = thread-thread.$(OBJEXT)
+thread_OBJECTS = $(am_thread_OBJECTS)
+thread_DEPENDENCIES = ../src/libpunica.la
+am_udpclient_OBJECTS = udpclient-udpclient.$(OBJEXT)
+udpclient_OBJECTS = $(am_udpclient_OBJECTS)
+udpclient_DEPENDENCIES = ../src/libpunica.la
 am_udpsocket_OBJECTS = udpsocket-udpsocket.$(OBJEXT)
 udpsocket_OBJECTS = $(am_udpsocket_OBJECTS)
 udpsocket_DEPENDENCIES = ../src/libpunica.la
@@ -170,11 +176,11 @@ am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
 SOURCES = $(assert_SOURCES) $(condition_SOURCES) \
-	$(hostaddress_SOURCES) $(mutex_SOURCES) $(udpsocket_SOURCES) \
-	$(welcome_SOURCES)
+	$(hostaddress_SOURCES) $(mutex_SOURCES) $(thread_SOURCES) \
+	$(udpclient_SOURCES) $(udpsocket_SOURCES) $(welcome_SOURCES)
 DIST_SOURCES = $(assert_SOURCES) $(condition_SOURCES) \
-	$(hostaddress_SOURCES) $(mutex_SOURCES) $(udpsocket_SOURCES) \
-	$(welcome_SOURCES)
+	$(hostaddress_SOURCES) $(mutex_SOURCES) $(thread_SOURCES) \
+	$(udpclient_SOURCES) $(udpsocket_SOURCES) $(welcome_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -338,6 +344,12 @@ condition_SOURCES = condition.cpp
 udpsocket_CPPFLAGS = -I$(top_srcdir)/include
 udpsocket_LDADD = ../src/libpunica.la -lpthread
 udpsocket_SOURCES = udpsocket.cpp
+thread_CPPFLAGS = -I$(top_srcdir)/include
+thread_LDADD = ../src/libpunica.la -lpthread
+thread_SOURCES = thread.cpp
+udpclient_CPPFLAGS = -I$(top_srcdir)/include
+udpclient_LDADD = ../src/libpunica.la
+udpclient_SOURCES = udpclient.cpp
 all: all-am
 
 .SUFFIXES:
@@ -398,6 +410,14 @@ mutex$(EXEEXT): $(mutex_OBJECTS) $(mutex_DEPENDENCIES) $(EXTRA_mutex_DEPENDENCIE
 	@rm -f mutex$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(mutex_OBJECTS) $(mutex_LDADD) $(LIBS)
 
+thread$(EXEEXT): $(thread_OBJECTS) $(thread_DEPENDENCIES) $(EXTRA_thread_DEPENDENCIES) 
+	@rm -f thread$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(thread_OBJECTS) $(thread_LDADD) $(LIBS)
+
+udpclient$(EXEEXT): $(udpclient_OBJECTS) $(udpclient_DEPENDENCIES) $(EXTRA_udpclient_DEPENDENCIES) 
+	@rm -f udpclient$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(udpclient_OBJECTS) $(udpclient_LDADD) $(LIBS)
+
 udpsocket$(EXEEXT): $(udpsocket_OBJECTS) $(udpsocket_DEPENDENCIES) $(EXTRA_udpsocket_DEPENDENCIES) 
 	@rm -f udpsocket$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(udpsocket_OBJECTS) $(udpsocket_LDADD) $(LIBS)
@@ -416,6 +436,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/condition-condition.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hostaddress-hostaddress.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mutex-mutex.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/thread-thread.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/udpclient-udpclient.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/udpsocket-udpsocket.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/welcome-welcome.Po@am__quote@
 
@@ -498,6 +520,34 @@ mutex-mutex.obj: mutex.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='mutex.cpp' object='mutex-mutex.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(mutex_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o mutex-mutex.obj `if test -f 'mutex.cpp'; then $(CYGPATH_W) 'mutex.cpp'; else $(CYGPATH_W) '$(srcdir)/mutex.cpp'; fi`
+
+thread-thread.o: thread.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(thread_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT thread-thread.o -MD -MP -MF $(DEPDIR)/thread-thread.Tpo -c -o thread-thread.o `test -f 'thread.cpp' || echo '$(srcdir)/'`thread.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/thread-thread.Tpo $(DEPDIR)/thread-thread.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='thread.cpp' object='thread-thread.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(thread_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o thread-thread.o `test -f 'thread.cpp' || echo '$(srcdir)/'`thread.cpp
+
+thread-thread.obj: thread.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(thread_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT thread-thread.obj -MD -MP -MF $(DEPDIR)/thread-thread.Tpo -c -o thread-thread.obj `if test -f 'thread.cpp'; then $(CYGPATH_W) 'thread.cpp'; else $(CYGPATH_W) '$(srcdir)/thread.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/thread-thread.Tpo $(DEPDIR)/thread-thread.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='thread.cpp' object='thread-thread.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(thread_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o thread-thread.obj `if test -f 'thread.cpp'; then $(CYGPATH_W) 'thread.cpp'; else $(CYGPATH_W) '$(srcdir)/thread.cpp'; fi`
+
+udpclient-udpclient.o: udpclient.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(udpclient_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT udpclient-udpclient.o -MD -MP -MF $(DEPDIR)/udpclient-udpclient.Tpo -c -o udpclient-udpclient.o `test -f 'udpclient.cpp' || echo '$(srcdir)/'`udpclient.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/udpclient-udpclient.Tpo $(DEPDIR)/udpclient-udpclient.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='udpclient.cpp' object='udpclient-udpclient.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(udpclient_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o udpclient-udpclient.o `test -f 'udpclient.cpp' || echo '$(srcdir)/'`udpclient.cpp
+
+udpclient-udpclient.obj: udpclient.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(udpclient_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT udpclient-udpclient.obj -MD -MP -MF $(DEPDIR)/udpclient-udpclient.Tpo -c -o udpclient-udpclient.obj `if test -f 'udpclient.cpp'; then $(CYGPATH_W) 'udpclient.cpp'; else $(CYGPATH_W) '$(srcdir)/udpclient.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/udpclient-udpclient.Tpo $(DEPDIR)/udpclient-udpclient.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='udpclient.cpp' object='udpclient-udpclient.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(udpclient_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o udpclient-udpclient.obj `if test -f 'udpclient.cpp'; then $(CYGPATH_W) 'udpclient.cpp'; else $(CYGPATH_W) '$(srcdir)/udpclient.cpp'; fi`
 
 udpsocket-udpsocket.o: udpsocket.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(udpsocket_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT udpsocket-udpsocket.o -MD -MP -MF $(DEPDIR)/udpsocket-udpsocket.Tpo -c -o udpsocket-udpsocket.o `test -f 'udpsocket.cpp' || echo '$(srcdir)/'`udpsocket.cpp

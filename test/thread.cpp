@@ -15,41 +15,24 @@
  */
 #include <punica.h>
 
-class UdpServer : public punica::PUdpServer
+class WorkThread : public punica::PThread
 {
 public:
-    explicit UdpServer() { }
-    virtual ~UdpServer() { }
-protected:
-	virtual void process(const uint8_t *data, size_t len, const punica::PHostAddress &host)
-		{
-			for (int m = 0; m < len; ++m) {
-				printf ("%02X ", data[m]);
-			}
-			printf ("\n");
-			std::cout << host << std::endl;
-		}
-};
+    explicit WorkThread() { }
+    virtual ~WorkThread() { }
 
+protected:
+	virtual void run() {
+		std::cout << id() << std::endl;
+	}
+};
 
 int main(int argc, char *argv[])
 {
-	const uint8_t data[] = {0x00, 0x01, 0x02, 0x03};
-
-	// punica::PUdpSocket udpSocket;
-	// punica::PHostAddress addr("localhost", 7753);
-
-	// ssize_t len = udpSocket.sendto(data, sizeof(data), addr);
-	// std::cout << "send len: " << len << std::endl;
-	// udpSocket.bind(7753);
-
-	UdpServer srv;
-	srv.bind(7753);
-	srv.start();
-
-	while (true) {
-		sleep(10);
-	}
-	
+	WorkThread work;
+	work.start();
+	sleep(1);
+	std::cout << "work end" << std::endl;
+	std::cout << WorkThread::currentId() << std::endl;
     return 0;
 }

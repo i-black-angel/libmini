@@ -18,6 +18,7 @@
 
 #include <punica/pcoredef.h>
 #include <punica/phostaddress.h>
+#include <punica/pthread.h>
 
 PUNICA_BEGIN_NAMESPACE
 
@@ -71,8 +72,28 @@ public:
     explicit PUdpSocket();
     virtual ~PUdpSocket();
 
-	int64_t sendto(const uint8_t *data, size_t len);
+	// int64_t sendto(const uint8_t *data, size_t len);
 	int64_t sendto(const uint8_t *data, size_t len, const PHostAddress &host);
+	int64_t sendto(const uint8_t *data, size_t len, const std::string &address, uint16_t port);
+
+	int64_t recvfrom(uint8_t *data, size_t len, PHostAddress &address);
+};
+
+class PUdpServer : public PThread
+{
+public:
+    explicit PUdpServer(int bufsize = 2048);
+    virtual ~PUdpServer();
+
+	bool bind(uint16_t port);
+protected:
+	virtual void run();
+	virtual void process(const uint8_t *data, size_t len, const punica::PHostAddress &host);
+
+	PUdpSocket _socket;
+	uint8_t *_buf;
+	int _bufsize;
+	bool _init;
 };
 
 PUNICA_END_NAMESPACE

@@ -87,9 +87,12 @@ PUdpSocket::~PUdpSocket()
 {
 }
 
-int64_t PUdpSocket::sendto(const uint8_t *data, size_t len)
-{
-}
+// int64_t PUdpSocket::sendto(const uint8_t *data, size_t len)
+// {
+// 	sockaddr_in addr;
+// 	memset((uint8_t *)&addr, 0x00, sizeof(addr));
+// 	return ::sendto(_sockfd, data, len, 0, (const sockaddr *)&addr, sizeof(addr));
+// }
 
 int64_t PUdpSocket::sendto(const uint8_t *data, size_t len, const PHostAddress &host)
 {
@@ -99,6 +102,78 @@ int64_t PUdpSocket::sendto(const uint8_t *data, size_t len, const PHostAddress &
 	addr.sin_port = htons(host.port());
 
 	return ::sendto(_sockfd, data, len, 0, (const sockaddr *)&addr, sizeof(addr));
+}
+
+int64_t PUdpSocket::sendto(const uint8_t *data, size_t len, const std::string &address, uint16_t port)
+{
+	return sendto(data, len, PHostAddress(address, port));
+}
+
+int64_t PUdpSocket::recvfrom(uint8_t *data, size_t len, PHostAddress &host)
+{
+	sockaddr_in addr;
+	socklen_t slen = 0;
+	
+	ssize_t rlen = ::recvfrom(_sockfd, data, len, 0, (sockaddr *)&addr, &slen);
+
+	if (rlen <= 0) return rlen;
+
+	printf("0x%08x\n", addr.sin_addr.s_addr);
+	
+	host.setAddress(ntohl(addr.sin_addr.s_addr));
+	host.setPort(ntohs(addr.sin_port));
+
+	return rlen;
+}
+
+PUdpServer::PUdpServer(int bufsize)
+{
+	_buf = NULL;
+	_bufsize = bufsize;
+	_init = false;
+}
+
+PUdpServer::~PUdpServer()
+{
+}
+
+bool PUdpServer::bind(uint16_t port)
+{
+	if (_bufsize <= 0) return false;
+	
+	if (_buf != NULL) {
+		delete _buf;
+		_buf = NULL;
+	}
+
+	try {
+
+		_buf = new uint8_t[_bufsize];
+		return _socket.bind(port);
+
+	} catch (std::exception e) {
+
+		std::cerr << e.what() << std::endl;
+
+	}
+
+	return false;
+}
+
+void PUdpServer::run()
+{
+	size_t len = 0;
+	PHostAddress address;
+
+	while (true) {
+		len = _socket.recvfrom(_buf, _bufsize, address);
+
+		process(_buf, len, address);
+	}
+}
+
+void PUdpServer::process(const uint8_t *data, size_t len, const PHostAddress &host)
+{
 }
 
 PUNICA_END_NAMESPACE
