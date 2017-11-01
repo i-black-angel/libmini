@@ -20,6 +20,7 @@ PUNICA_BEGIN_NAMESPACE
 int errnum()
 {
 #ifdef P_OS_WIN
+	return GetLastError();
 #else	
 	return errno;
 #endif /* P_OS_WIN */
@@ -28,6 +29,20 @@ int errnum()
 std::string error(int code)
 {
 #ifdef P_OS_WIN
+	LPVOID lpMsgBuf;
+
+	FormatMessage(
+		FORMAT_MESSAGE_ALLOCATE_BUFFER|
+		FORMAT_MESSAGE_FROM_SYSTEM|
+		FORMAT_MESSAGE_IGNORE_INSERTS,
+		NULL, code, 0/*Default language*/,
+		(LPTSTR) &lpMsgBuf, 0, NULL);
+	if (NULL != lpMsgBuf) {
+		std::string errstr = lpMsgBuf;
+		LocalFree(lpMsgBuf);
+		return errstr;
+	}
+	return std::string();
 #else
 	return strerror(code);
 #endif /* P_OS_WIN */
