@@ -13,27 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <punica.h>
+#ifndef _PERROR_H_
+#define _PERROR_H_
 
-int main(int argc, char *argv[])
-{
-	const char *msg = "M^0001^1^108^彩票打印机脱机";
+#include <punica/pcoredef.h>
 
-	punica::PUdpSocket udpSocket;
-	punica::PHostAddress addr("192.168.7.47", 8309);
-	std::cout << addr << std::endl;
+PUNICA_BEGIN_NAMESPACE
 
-	std::cout << addr.ipv4() << std::endl;
-	printf("%08x\n", addr.ipv4());
-	
-	ssize_t len = udpSocket.sendto((const uint8_t *)msg, strlen(msg) + 1, addr);
-	sleep(1);
+int errnum();
+std::string error(int num = punica::errnum());
 
-	const char *dealing = "M^0001^2^ssq,2017105,101,1,2,1,XSLPT-20170828103056101729,00200001,2017-08-28 10:30,1";
-	len = udpSocket.sendto((const uint8_t *)dealing, strlen(dealing) + 1, addr);
-	sleep(1);
-	
-    return 0;
-}
+PUNICA_END_NAMESPACE
 
-
+#endif /* _PERROR_H_ */

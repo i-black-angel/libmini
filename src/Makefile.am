@@ -30,4 +30,5 @@ pstring.cpp					\
 psysinfo.cpp					\
 pthread.cpp					\
 pcondition.cpp					\
-pxml.cpp
+pxml.cpp					\
+perror.cpp

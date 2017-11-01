@@ -39,5 +39,6 @@
 #include <punica/phostaddress.h>
 #include <punica/pprocess.h>
 #include <punica/pjson.h>
+#include <punica/perror.h>
 
 #endif /* _PUNICA_H_ */

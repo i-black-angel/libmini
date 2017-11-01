@@ -43,4 +43,5 @@ punica/psysinfo.h				\
 punica/pmutex.h					\
 punica/phostaddress.h				\
 punica/pprocess.h				\
-punica/pjson.h    
+punica/pjson.h					\
+punica/perror.h
