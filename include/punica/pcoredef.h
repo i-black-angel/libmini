@@ -90,7 +90,7 @@ typedef     size_t         ssize_t;
 # define    chdir           _chdir
 # define    mkdir           _mkdir
 # define    rmdir           _rmdir
-# define    snprintf        _snprintf_s
+# define    snprintf        _snprintf
 # define    useconds_t      DWORD
 # define    sleep(n)        Sleep((n) * 1000)
 # define    usleep(n)       Sleep((n) / 1000)

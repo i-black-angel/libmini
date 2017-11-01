@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 #include <punica/psocket.h>
+#include <punica/perror.h>
 
 PUNICA_BEGIN_NAMESPACE
 
@@ -113,11 +114,14 @@ int64_t PUdpSocket::sendto(const uint8_t *data, size_t len, const std::string &a
 int64_t PUdpSocket::recvfrom(uint8_t *data, size_t len, PHostAddress &host)
 {
 	sockaddr_in addr;
-	socklen_t slen = 0;
+	socklen_t slen = sizeof(addr);
 	
 	ssize_t rlen = ::recvfrom(_sockfd, data, len, 0, (sockaddr *)&addr, &slen);
 
-	if (rlen <= 0) return rlen;
+	if (rlen <= 0) {
+		std::cerr << punica::error() << std::endl;
+		return rlen;
+	}
 	
 	host.setAddress(ntohl(addr.sin_addr.s_addr));
 	host.setPort(ntohs(addr.sin_port));

@@ -72,7 +72,6 @@ void PHostAddress::setAddress(uint32_t ip4Addr)
 
 bool PHostAddress::setAddress(const std::string &address)
 {
-	int res;
 	struct addrinfo *ailist = NULL, *aip = NULL;
 	struct addrinfo hint;
 	hint.ai_flags = 0;
@@ -89,8 +88,13 @@ bool PHostAddress::setAddress(const std::string &address)
 	for (aip = ailist; aip != NULL; aip = aip->ai_next) {
 		struct sockaddr_in *addr = (sockaddr_in *)aip->ai_addr;
 		_ip4addr = htonl(addr->sin_addr.s_addr);
+		freeaddrinfo(ailist);
 		return true;
 	}
+	
+	if (ailist != NULL)
+		freeaddrinfo(ailist);
+
 	return false;
 }
 

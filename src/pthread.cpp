@@ -55,7 +55,6 @@ extern "C" {
 
 #endif /* P_OS_WIN */
 
-
 PUNICA_BEGIN_NAMESPACE
 
 PThread::PThread()
