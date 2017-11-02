@@ -25,7 +25,7 @@ AC_PROG_LIBTOOL
 # PKG_CHECK_MODULES([HELLO], [libhello >= 1.0])
 
 # Checks for header files.
-AC_CHECK_HEADERS([arpa/inet.h netdb.h stdint.h stdlib.h string.h sys/socket.h syslog.h unistd.h])
+AC_CHECK_HEADERS([arpa/inet.h netdb.h stdint.h stdlib.h string.h sys/socket.h syslog.h unistd.h fcntl.h inttypes.h limits.h netinet/in.h sys/file.h sys/ioctl.h sys/time.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_TYPE_SIZE_T
@@ -34,6 +34,8 @@ AC_TYPE_UINT16_T
 AC_TYPE_UINT32_T
 
 # Checks for library functions.
+AC_FUNC_FORK
+AC_CHECK_FUNCS([ftruncate gettimeofday memset socket strtoul])
 
 AC_CONFIG_FILES([Makefile
                  include/Makefile

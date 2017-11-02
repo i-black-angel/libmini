@@ -40,5 +40,6 @@
 #include <punica/pprocess.h>
 #include <punica/pjson.h>
 #include <punica/perror.h>
+#include <punica/puuid.h>
 
 #endif /* _PUNICA_H_ */

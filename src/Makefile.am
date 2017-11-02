@@ -31,4 +31,5 @@ psysinfo.cpp					\
 pthread.cpp					\
 pcondition.cpp					\
 pxml.cpp					\
-perror.cpp
+perror.cpp					\
+puuid.cpp

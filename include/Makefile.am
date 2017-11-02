@@ -44,4 +44,5 @@ punica/pmutex.h					\
 punica/phostaddress.h				\
 punica/pprocess.h				\
 punica/pjson.h					\
-punica/perror.h
+punica/perror.h					\
+punica/puuid.h

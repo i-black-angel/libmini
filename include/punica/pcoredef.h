@@ -62,6 +62,9 @@
 # include <getopt.h>
 # include <syslog.h>
 # include <sys/time.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <sys/file.h>
 # include <fcntl.h>
 #endif
 
