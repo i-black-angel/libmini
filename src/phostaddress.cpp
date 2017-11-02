@@ -15,6 +15,11 @@
  */
 #include <punica/phostaddress.h>
 
+#ifdef _MSC_VER
+# pragma warning (push)
+# pragma warning (disable: 4996)
+#endif
+
 PUNICA_BEGIN_NAMESPACE
 
 PHostAddress::PHostAddress()
@@ -223,3 +228,7 @@ std::istream &operator>>(std::istream &in, PHostAddress &address)
 }
 
 PUNICA_END_NAMESPACE
+
+#ifdef _MSC_VER
+# pragma warning (pop)
+#endif

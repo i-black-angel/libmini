@@ -25,6 +25,12 @@ void abort(const char *errmsg);
 
 PUNICA_END_NAMESPACE
 
+#ifdef P_OS_WIN
+
+void gettimeofday (struct timeval *tv, void *dummy);
+
+#endif /* P_OS_WIN */
+
 // will be re-write in some whare
 #ifndef P_OS_WIN
 

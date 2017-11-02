@@ -38,7 +38,7 @@ std::string error(int code)
 		NULL, code, 0/*Default language*/,
 		(LPTSTR) &lpMsgBuf, 0, NULL);
 	if (NULL != lpMsgBuf) {
-		std::string errstr = lpMsgBuf;
+		std::string errstr = (const char *)lpMsgBuf;
 		LocalFree(lpMsgBuf);
 		return errstr;
 	}

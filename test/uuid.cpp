@@ -17,6 +17,8 @@
 
 int main(int argc, char *argv[])
 {
-	std::cout << punica::PUuid::gen() << std::endl;
+	for (size_t i = 0; i < 10; ++i) {
+		std::cout << punica::PUuid::gen() << std::endl;		
+	}
     return 0;
 }

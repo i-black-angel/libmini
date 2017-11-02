@@ -31,7 +31,6 @@
 #include <string>
 #include <vector>
 #include <sstream>
-#include <algorithm>
 #include <fstream>
 #include <locale>
 
@@ -67,6 +66,14 @@
 # include <sys/file.h>
 # include <fcntl.h>
 #endif
+
+#ifdef max
+#undef max
+#endif /* max */
+#ifdef min
+#undef min
+#endif /* min */
+#include <algorithm>
 
 /* Definitions */
 #ifdef P_OS_WIN

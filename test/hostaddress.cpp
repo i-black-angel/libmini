@@ -17,6 +17,15 @@
 
 int main(int argc, char *argv[])
 {
+#ifdef _MSC_VER
+	WSADATA wsaData;
+	int err = WSAStartup(WINSOCK_VERSION, &wsaData);
+	if (0 != err) {
+		fprintf(stderr, "WSAStartup failure!\n");
+		return 1;
+	}
+#endif
+	
     std::cout << "PHostAddress test" << std::endl;
     punica::PHostAddress addr1;
     punica::PHostAddress addr2(punica::PHostAddress::Null);
@@ -43,6 +52,10 @@ int main(int argc, char *argv[])
     std::cout << addr8.toString() << std::endl;
     std::cout << addr8 << std::endl;
     std::cout << addr6 << std::endl;
-
+	
+#ifdef _MSC_VER
+	WSACleanup();
+#endif
+	getchar();
     return 0;
 }

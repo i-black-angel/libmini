@@ -48,13 +48,9 @@
  * DAMAGE.
  * %End-Header%
  */
-typedef unsigned char uuid_t[16];
+#ifndef P_OS_WIN
 
-/*
- * Offset between 15-Oct-1582 and 1-Jan-70
- */
-#define TIME_OFFSET_HIGH 0x01B21DD2
-#define TIME_OFFSET_LOW  0x13814000
+typedef unsigned char uuid_t[16];
 
 struct uuid {
 	uint32_t	time_low;
@@ -76,35 +72,11 @@ static const char *fmt_upper =
 #define FMT_DEFAULT fmt_lower
 #endif
 
-#ifdef HAVE_TLS
-#define THREAD_LOCAL static __thread
-#else
-#define THREAD_LOCAL static
-#endif
-
-#ifdef _WIN32
-static void gettimeofday (struct timeval *tv, void *dummy)
-{
-	FILETIME	ftime;
-	uint64_t	n;
-
-	GetSystemTimeAsFileTime (&ftime);
-	n = (((uint64_t) ftime.dwHighDateTime << 32)
-	     + (uint64_t) ftime.dwLowDateTime);
-	if (n) {
-		n /= 10;
-		n -= ((369 * 365 + 89) * (uint64_t) 86400) * 1000000;
-	}
-
-	tv->tv_sec = n / 1000000;
-	tv->tv_usec = n % 1000000;
-}
-
-static int getuid (void)
-{
-	return 1;
-}
-#endif
+/*
+ * prototypes
+ */
+void uuid_pack(const struct uuid *uu, uuid_t ptr);
+void uuid_unpack(const uuid_t in, struct uuid *uu);
 
 /*
  * Get the ethernet hardware address, if we can find it...
@@ -204,7 +176,7 @@ static int get_random_fd(void)
 
 	if (fd == -2) {
 		gettimeofday(&tv, 0);
-#ifndef _WIN32
+
 		fd = open("/dev/urandom", O_RDONLY);
 		if (fd == -1)
 			fd = open("/dev/random", O_RDONLY | O_NONBLOCK);
@@ -213,7 +185,7 @@ static int get_random_fd(void)
 			if (i >= 0)
 				fcntl(fd, F_SETFD, i | FD_CLOEXEC);
 		}
-#endif
+
 		srand((getpid() << 16) ^ getuid() ^ tv.tv_sec ^ tv.tv_usec);
 	}
 	/* Crank the random number generator a few times */
@@ -269,11 +241,11 @@ static void get_random_bytes(void *buf, int nbytes)
 static int get_clock(uint32_t *clock_high, uint32_t *clock_low,
 		     uint16_t *ret_clock_seq, int *num)
 {
-	THREAD_LOCAL int		adjustment = 0;
-	THREAD_LOCAL struct timeval	last = {0, 0};
-	THREAD_LOCAL int		state_fd = -2;
-	THREAD_LOCAL FILE		*state_f;
-	THREAD_LOCAL uint16_t		clock_seq;
+	static int		adjustment = 0;
+	static struct timeval	last = {0, 0};
+	static int		state_fd = -2;
+	static FILE		*state_f;
+	static uint16_t		clock_seq;
 	struct timeval			tv;
 	uint64_t			clock_reg;
 	mode_t				save_umask;
@@ -379,63 +351,6 @@ try_again:
 	return ret;
 }
 
-void uuid_pack(const struct uuid *uu, uuid_t ptr)
-{
-	uint32_t	tmp;
-	unsigned char	*out = ptr;
-
-	tmp = uu->time_low;
-	out[3] = (unsigned char) tmp;
-	tmp >>= 8;
-	out[2] = (unsigned char) tmp;
-	tmp >>= 8;
-	out[1] = (unsigned char) tmp;
-	tmp >>= 8;
-	out[0] = (unsigned char) tmp;
-
-	tmp = uu->time_mid;
-	out[5] = (unsigned char) tmp;
-	tmp >>= 8;
-	out[4] = (unsigned char) tmp;
-
-	tmp = uu->time_hi_and_version;
-	out[7] = (unsigned char) tmp;
-	tmp >>= 8;
-	out[6] = (unsigned char) tmp;
-
-	tmp = uu->clock_seq;
-	out[9] = (unsigned char) tmp;
-	tmp >>= 8;
-	out[8] = (unsigned char) tmp;
-
-	memcpy(out+10, uu->node, 6);
-}
-
-void uuid_unpack(const uuid_t in, struct uuid *uu)
-{
-	const uint8_t	*ptr = in;
-	uint32_t		tmp;
-
-	tmp = *ptr++;
-	tmp = (tmp << 8) | *ptr++;
-	tmp = (tmp << 8) | *ptr++;
-	tmp = (tmp << 8) | *ptr++;
-	uu->time_low = tmp;
-
-	tmp = *ptr++;
-	tmp = (tmp << 8) | *ptr++;
-	uu->time_mid = tmp;
-
-	tmp = *ptr++;
-	tmp = (tmp << 8) | *ptr++;
-	uu->time_hi_and_version = tmp;
-
-	tmp = *ptr++;
-	tmp = (tmp << 8) | *ptr++;
-	uu->clock_seq = tmp;
-
-	memcpy(uu->node, ptr, 6);
-}
 
 int __uuid_generate_time(uuid_t out, int *num)
 {
@@ -560,6 +475,66 @@ void uuid_unparse(const uuid_t uu, char *out)
 	uuid_unparse_x(uu, out, FMT_DEFAULT);
 }
 
+void uuid_pack(const struct uuid *uu, uuid_t ptr)
+{
+	uint32_t	tmp;
+	unsigned char	*out = ptr;
+
+	tmp = uu->time_low;
+	out[3] = (unsigned char) tmp;
+	tmp >>= 8;
+	out[2] = (unsigned char) tmp;
+	tmp >>= 8;
+	out[1] = (unsigned char) tmp;
+	tmp >>= 8;
+	out[0] = (unsigned char) tmp;
+
+	tmp = uu->time_mid;
+	out[5] = (unsigned char) tmp;
+	tmp >>= 8;
+	out[4] = (unsigned char) tmp;
+
+	tmp = uu->time_hi_and_version;
+	out[7] = (unsigned char) tmp;
+	tmp >>= 8;
+	out[6] = (unsigned char) tmp;
+
+	tmp = uu->clock_seq;
+	out[9] = (unsigned char) tmp;
+	tmp >>= 8;
+	out[8] = (unsigned char) tmp;
+
+	memcpy(out+10, uu->node, 6);
+}
+
+void uuid_unpack(const uuid_t in, struct uuid *uu)
+{
+	const uint8_t	*ptr = in;
+	uint32_t		tmp;
+
+	tmp = *ptr++;
+	tmp = (tmp << 8) | *ptr++;
+	tmp = (tmp << 8) | *ptr++;
+	tmp = (tmp << 8) | *ptr++;
+	uu->time_low = tmp;
+
+	tmp = *ptr++;
+	tmp = (tmp << 8) | *ptr++;
+	uu->time_mid = tmp;
+
+	tmp = *ptr++;
+	tmp = (tmp << 8) | *ptr++;
+	uu->time_hi_and_version = tmp;
+
+	tmp = *ptr++;
+	tmp = (tmp << 8) | *ptr++;
+	uu->clock_seq = tmp;
+
+	memcpy(uu->node, ptr, 6);
+}
+
+#endif /* P_OS_LINUX */
+
 PUNICA_BEGIN_NAMESPACE
 
 PUuid::PUuid()
@@ -580,11 +555,31 @@ std::string PUuid::toString() const
 
 std::string PUuid::gen()
 {
-	char buf[64] = {0};
+    char buf[64] = {0};
+#ifdef P_OS_WIN
+    /**
+     * should be included <objbase.h>
+     */
+	GUID guid;
+	if (S_OK == ::CoCreateGuid(&guid)) {
+		_snprintf_s(buf, sizeof(buf) -1,
+					"%08x-%04x-%04x-%02x%02x-%02x%02x%02x%02x%02x%02x",
+					guid.Data1,
+					guid.Data2,
+					guid.Data3,
+					guid.Data4[0], guid.Data4[1],
+					guid.Data4[2], guid.Data4[3],
+					guid.Data4[4], guid.Data4[5],
+					guid.Data4[6], guid.Data4[7]);
+	}
+#else
+    /**
+     * should be included <uuid/uuid.h> and link with -luuid
+     */
 	uuid_t guid;
 	uuid_generate(guid);
 	uuid_unparse(guid, buf);
-
+#endif
 	return std::string(buf);
 }
 
