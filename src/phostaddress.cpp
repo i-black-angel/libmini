@@ -63,13 +63,6 @@ PHostAddress &PHostAddress::operator=(const PHostAddress &other)
 	return *this;
 }
 
-// PHostAddress &PHostAddress::operator=(SpecialAddress address)
-// {
-// 	setAddress(address);
-// 	return *this;
-// }
-
-
 void PHostAddress::setAddress(uint32_t ip4Addr)
 {
 	_ip4addr = ip4Addr;
@@ -171,26 +164,6 @@ bool PHostAddress::operator ==(const PHostAddress &address) const
 {
 	return isEqual(address);
 }
-
-// bool PHostAddress::operator ==(SpecialAddress address) const
-// {
-// 	uint32_t ip4 = INADDR_ANY;
-// 	switch (address) {
-// 	case Null:
-// 		ip4 = INADDR_NONE;
-// 		break;;
-// 	case Broadcast:
-// 		ip4 = INADDR_BROADCAST;
-// 		break;
-// 	case LocalHost:
-// 		ip4 = INADDR_LOOPBACK;
-// 		break;
-// 	case Any:
-// 		break;
-// 	}
-
-// 	return ip4 == _ip4addr;
-// }
 
 bool PHostAddress::isNull() const
 {
