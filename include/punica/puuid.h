@@ -20,16 +20,21 @@
 
 PUNICA_BEGIN_NAMESPACE
 
-class PUuid
-{
-public:
-    explicit PUuid();
-    explicit PUuid(const std::string &);
-    virtual ~PUuid();
+namespace uuid {
+	std::string generate();
+}
 
-	std::string toString() const;
-	static std::string gen();
-};
+// class PUuid
+// {
+// public:
+//     explicit PUuid();
+//     explicit PUuid(const std::string &);
+//     virtual ~PUuid();
+
+// 	std::string toString() const;
+
+// 	static std::string gen();
+// };
 
 PUNICA_END_NAMESPACE
 

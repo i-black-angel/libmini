@@ -14,11 +14,38 @@
  * limitations under the License.
  */
 #include <punica.h>
+#include "../src/puuid_p.h"
 
 int main(int argc, char *argv[])
 {
 	for (size_t i = 0; i < 10; ++i) {
-		std::cout << punica::PUuid::gen() << std::endl;		
+		std::cout << punica::uuidgen() << std::endl;
+		usleep(30000);
 	}
+
+	uuid_t uu1;
+	uuid_t uu2;
+	uuid_clear(uu1);
+	uuid_compare(uu1, uu2);
+	uuid_copy(uu1, uu2);
+	uuid_generate(uu1);
+	uuid_generate_random(uu1);
+	uuid_generate_time(uu2);
+	std::cout << uuid_generate_time_safe(uu2) << std::endl;
+	std::cout << uuid_is_null(uu2) << std::endl;
+	std::cout << uuid_is_null(uu1) << std::endl;
+
+	char buf[256] = {0};
+	uuid_unparse(uu1, buf); std::cout << buf << std::endl;
+	uuid_unparse(uu2, buf); std::cout << buf << std::endl;
+	std::cout << uuid_parse(buf, uu1) << std::endl;
+	uuid_unparse_lower(uu1, buf); std::cout << buf << std::endl;
+	uuid_unparse_upper(uu1, buf); std::cout << buf << std::endl;
+
+	struct timeval tv;
+	time_t time = uuid_time(uu1, &tv);
+	std::cout << time << std::endl;
+	std::cout << uuid_type(uu1) << std::endl;
+	std::cout << uuid_variant(uu1) << std::endl;
     return 0;
 }

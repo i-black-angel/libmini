@@ -22,6 +22,7 @@ PUNICA_BEGIN_NAMESPACE
 
 const char *welcome();
 void abort(const char *errmsg);
+std::string uuidgen();
 
 PUNICA_END_NAMESPACE
 

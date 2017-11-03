@@ -32,4 +32,6 @@ pthread.cpp					\
 pcondition.cpp					\
 pxml.cpp					\
 perror.cpp					\
-puuid.cpp
+puuid.cpp					\
+puuid_p.h					\
+puuid_unix.cpp

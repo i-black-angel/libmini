@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 #include <punica/pglobal.h>
+#include <punica/puuid.h>
 
 PUNICA_BEGIN_NAMESPACE
 
@@ -34,6 +35,11 @@ void abort(const char *errmsg)
     (void)errmsg;
     ::abort ();
 #endif
+}
+
+std::string uuidgen()
+{
+	return punica::uuid::generate();
 }
 
 PUNICA_END_NAMESPACE
