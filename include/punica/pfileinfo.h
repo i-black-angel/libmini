@@ -45,8 +45,9 @@ public:
 	std::string filePath() const;
 	std::string absoluteFilePath() const;
 	std::string canonicalFilePath() const;
-	std::string fileName() const;
-	std::string baseName() const;
+	std::string filename() const;
+	std::string basename() const;
+	std::string dirname() const;
 	std::string completeBaseName() const;
 	std::string suffix() const;
 	std::string bundleName() const;

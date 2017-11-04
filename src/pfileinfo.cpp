@@ -15,6 +15,8 @@
  */
 #include <punica/pfileinfo.h>
 
+PUNICA_BEGIN_NAMESPACE
+
 static bool __access(const std::string &__name, int __type)
 {
 	int err = 0;
@@ -30,7 +32,14 @@ static bool __access(const std::string &__name, int __type)
 	return true;
 }
 
-PUNICA_BEGIN_NAMESPACE
+static std::string slash()
+{
+#ifdef P_OS_WIN
+	return "/\\";
+#else
+	return "/";
+#endif /* P_OS_WIN */
+}
 
 PFileInfo::PFileInfo()
 {
@@ -88,7 +97,7 @@ void PFileInfo::refresh()
 
 std::string PFileInfo::filePath() const
 {
-	return std::string();
+	return dirname();
 }
 
 std::string PFileInfo::absoluteFilePath() const
@@ -99,20 +108,41 @@ std::string PFileInfo::canonicalFilePath() const
 {
 }
 
-std::string PFileInfo::fileName() const
+std::string PFileInfo::filename() const
 {
+	std::string file = basename();
+	size_t idx = file.find_last_of(".");
+	if (idx == std::string::npos) { return file; }
+    return file.substr(0, idx);	
 }
 
-std::string PFileInfo::baseName() const
+std::string PFileInfo::basename() const
 {
+	std::string file = _file;
+	size_t idx = file.find_last_of(slash().c_str());
+	if (idx == std::string::npos) { return file; }
+	return file.substr(idx + 1);
 }
 
 std::string PFileInfo::completeBaseName() const
 {
 }
 
+std::string PFileInfo::dirname() const
+{
+	std::string file = _file;
+	size_t idx = file.find_last_of(slash().c_str());
+	if (idx == std::string::npos) { return std::string("."); }
+	if (idx == 0) idx = 1;
+    return file.substr(0, idx);
+}
+
 std::string PFileInfo::suffix() const
 {
+	std::string file = basename();
+	size_t idx = file.find_last_of(".");
+	if (idx == std::string::npos) { return std::string(""); }
+    return file.substr(idx);
 }
 
 std::string PFileInfo::bundleName() const

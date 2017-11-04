@@ -27,5 +27,27 @@ int main(int argc, char *argv[])
 	std::cout << "isReadable " << cf.isReadable() << std::endl;
 	std::cout << "isWritable " << cf.isWritable() << std::endl;
 	std::cout << "isExecutable " << cf.isExecutable() << std::endl;
+
+	std::cout << cf.basename() << std::endl;
+	std::cout << cf.filename() << std::endl;
+	std::cout << cf.suffix() << std::endl;
+	std::cout << cf.dirname() << std::endl;
+
+	punica::PFileInfo test(cf.dirname());
+	std::cout << test.basename() << std::endl;
+	std::cout << test.filename() << std::endl;
+	std::cout << test.suffix() << std::endl;
+
+	punica::PFileInfo root("/");
+	std::cout << root.basename() << std::endl;
+	std::cout << root.filename() << std::endl;
+	std::cout << root.suffix() << std::endl;
+	std::cout << root.dirname() << std::endl;
+
+	punica::PFileInfo file("music.mp3");
+	std::cout << file.basename() << std::endl;
+	std::cout << file.filename() << std::endl;
+	std::cout << file.suffix() << std::endl;
+	std::cout << file.dirname() << std::endl;
     return 0;
 }
