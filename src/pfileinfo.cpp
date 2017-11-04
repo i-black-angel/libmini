@@ -59,21 +59,22 @@ void PFileInfo::setFile(const std::string &file)
 
 bool PFileInfo::exists() const
 {
+	return exists(_file);
+}
+
+bool PFileInfo::exists(const std::string &file)
+{
 	int err = 0;
-	if (_file.empty()) {
+	if (file.empty()) {
 		// log_error("filename is empty");
 		return false;
 	}
-	if ((err = access(_file.c_str(), F_OK)) != 0) {
+	if ((err = access(file.c_str(), F_OK)) != 0) {
 		// errno
 		// log_error(strerror(errno));
 		return false;
 	}
 	return true;
-}
-
-bool PFileInfo::exists(const std::string &file)
-{
 }
 
 void PFileInfo::refresh()
@@ -82,6 +83,7 @@ void PFileInfo::refresh()
 
 std::string PFileInfo::filePath() const
 {
+	return std::string();
 }
 
 std::string PFileInfo::absoluteFilePath() const
@@ -182,6 +184,39 @@ bool PFileInfo::isBundle() const
 
 std::string PFileInfo::readLink() const
 {
+	struct stat sb;
+	ssize_t r = 0;
+	char *linkname = NULL;
+
+	if (lstat(_file.c_str(), &sb) == -1) {
+		perror("lstat");
+		return std::string();
+	}
+	linkname = (char *) ::malloc(sb.st_size + 1);
+	if (linkname == NULL) {
+		fprintf(stderr, "insufficient memory\n");
+		return std::string();
+	}
+
+	r = ::readlink(_file.c_str(), linkname, sb.st_size + 1);
+
+	if (r == -1) {
+		perror("lstat");
+		return std::string();
+	}
+
+	if (r > sb.st_size) {
+		fprintf(stderr, "symlink increased in size "
+			"between lstat() and readlink()\n");
+		return std::string();
+	}
+
+	linkname[r] = '\0';
+
+	std::string res = linkname;
+	::free(linkname);
+	
+	return res;
 }
 
 std::string PFileInfo::owner() const

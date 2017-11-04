@@ -13,21 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _PFILE_H_
-#define _PFILE_H_
+#include <punica.h>
 
-#include <punica/pcoredef.h>
-
-PUNICA_BEGIN_NAMESPACE
-
-class PFile
+int main(int argc, char *argv[])
 {
-public:
-    explicit PFile();
-    explicit PFile(const std::string &);
-    virtual ~PFile();
-};
+	punica::PFileInfo fileinfo("/home/blackangel/ahp");
+	punica::PFileInfo cf(fileinfo);
+	std::cout << fileinfo.exists() << std::endl;
+	std::cout << fileinfo.filePath() << std::endl;
 
-PUNICA_END_NAMESPACE
-
-#endif /* _PFILE_H_ */
+	std::cout << fileinfo.readLink() << std::endl;
+    return 0;
+}
