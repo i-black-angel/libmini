@@ -45,9 +45,16 @@ int main(int argc, char *argv[])
 	std::cout << root.dirname() << std::endl;
 
 	punica::PFileInfo file("music.mp3");
+	std::string ext = file.suffix(); // ext = "mp3"
 	std::cout << file.basename() << std::endl;
 	std::cout << file.filename() << std::endl;
 	std::cout << file.suffix() << std::endl;
 	std::cout << file.dirname() << std::endl;
+
+	punica::PFileInfo rootfile("/etc/ts.conf");
+	std::cout << rootfile.exists() << std::endl;
+	std::cout << rootfile.isWritable() << std::endl;
+
+	std::cout << punica::PFileInfo::exists("/etc/resolv.conf") << std::endl;
     return 0;
 }

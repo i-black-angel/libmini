@@ -91,9 +91,9 @@ bool PFileInfo::exists(const std::string &file)
 	return __access(file, F_OK);
 }
 
-void PFileInfo::refresh()
-{
-}
+// void PFileInfo::refresh()
+// {
+// }
 
 std::string PFileInfo::filePath() const
 {
@@ -142,7 +142,7 @@ std::string PFileInfo::suffix() const
 	std::string file = basename();
 	size_t idx = file.find_last_of(".");
 	if (idx == std::string::npos) { return std::string(""); }
-    return file.substr(idx);
+    return file.substr(idx + 1);
 }
 
 std::string PFileInfo::bundleName() const
@@ -156,6 +156,7 @@ std::string PFileInfo::completeSuffix() const
 
 std::string PFileInfo::path() const
 {
+	return _file;
 }
 
 std::string PFileInfo::absolutePath() const

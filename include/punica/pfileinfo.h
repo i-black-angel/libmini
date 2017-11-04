@@ -40,16 +40,16 @@ public:
 	// void setFile(const PDir &dir, const std::string &file);
 	bool exists() const;
 	static bool exists(const std::string &file);
-	void refresh();
+	// void refresh();
 
 	std::string filePath() const;
 	std::string absoluteFilePath() const;
 	std::string canonicalFilePath() const;
-	std::string filename() const;
-	std::string basename() const;
 	std::string dirname() const;
-	std::string completeBaseName() const;
+	std::string basename() const;
+	std::string filename() const;
 	std::string suffix() const;
+	std::string completeBaseName() const;
 	std::string bundleName() const;
 	std::string completeSuffix() const;
 
