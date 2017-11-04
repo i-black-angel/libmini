@@ -17,11 +17,15 @@
 
 int main(int argc, char *argv[])
 {
-	punica::PFileInfo fileinfo("/home/blackangel/ahp");
+	punica::PFileInfo fileinfo(argv[0]);
 	punica::PFileInfo cf(fileinfo);
-	std::cout << fileinfo.exists() << std::endl;
 	std::cout << fileinfo.filePath() << std::endl;
 
 	std::cout << fileinfo.readLink() << std::endl;
+
+	std::cout << "exists " << fileinfo.exists() << std::endl;
+	std::cout << "isReadable " << cf.isReadable() << std::endl;
+	std::cout << "isWritable " << cf.isWritable() << std::endl;
+	std::cout << "isExecutable " << cf.isExecutable() << std::endl;
     return 0;
 }

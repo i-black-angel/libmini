@@ -15,6 +15,21 @@
  */
 #include <punica/pfileinfo.h>
 
+static bool __access(const std::string &__name, int __type)
+{
+	int err = 0;
+	if (__name.empty()) {
+		// log_error("filename is empty");
+		return false;
+	}
+	if ((err = access(__name.c_str(), __type)) != 0) {
+		// errno
+		// log_error(strerror(errno));
+		return false;
+	}
+	return true;
+}
+
 PUNICA_BEGIN_NAMESPACE
 
 PFileInfo::PFileInfo()
@@ -64,17 +79,7 @@ bool PFileInfo::exists() const
 
 bool PFileInfo::exists(const std::string &file)
 {
-	int err = 0;
-	if (file.empty()) {
-		// log_error("filename is empty");
-		return false;
-	}
-	if ((err = access(file.c_str(), F_OK)) != 0) {
-		// errno
-		// log_error(strerror(errno));
-		return false;
-	}
-	return true;
+	return __access(file, F_OK);
 }
 
 void PFileInfo::refresh()
@@ -136,14 +141,17 @@ std::string PFileInfo::canonicalPath() const
 
 bool PFileInfo::isReadable() const
 {
+	return __access(_file.c_str(), R_OK | F_OK);
 }
 
 bool PFileInfo::isWritable() const
 {
+	return __access(_file.c_str(), W_OK | F_OK);
 }
 
 bool PFileInfo::isExecutable() const
 {
+	return __access(_file.c_str(), X_OK | F_OK);
 }
 
 bool PFileInfo::isHidden() const
