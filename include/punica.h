@@ -41,5 +41,6 @@
 #include <punica/pjson.h>
 #include <punica/perror.h>
 #include <punica/puuid.h>
+#include <punica/phash.h>
 
 #endif /* _PUNICA_H_ */
