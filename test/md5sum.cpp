@@ -13,30 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _PLOG_H_
-#define _PLOG_H_
+#include <punica.h>
 
-#include <punica/pcoredef.h>
-
-PUNICA_BEGIN_NAMESPACE
-
-class PLog
+int main(int argc, char *argv[])
 {
-public:
-    explicit PLog();
-    virtual ~PLog();
-};
-
-PUNICA_END_NAMESPACE
-
-#define log_init(level)
-#define log_emerg(format, args...)
-#define log_alert(format, args...)
-#define log_crit(format, args...)
-#define log_error(format, args...)
-#define log_warn(format, args...)
-#define log_notice(format, args...)
-#define log_info(format, args...)
-#define log_debug(format, args...)
-
-#endif /* _PLOG_H_ */
+	std::cout << punica::md5sum("/bin/bash") << "\t" << "/bin/bash" << std::endl;
+    return 0;
+}

@@ -16,7 +16,7 @@
 # limitations under the License.
 
 noinst_PROGRAMS = hostaddress welcome assert mutex condition udpsocket
-noinst_PROGRAMS += thread udpclient error uuid fileinfo
+noinst_PROGRAMS += thread udpclient error uuid fileinfo md5sum
 
 hostaddress_CPPFLAGS = -I$(top_srcdir)/include
 hostaddress_LDADD = ../src/libpunica.la
@@ -61,3 +61,7 @@ uuid_SOURCES = uuid.cpp
 fileinfo_CPPFLAGS = -I$(top_srcdir)/include
 fileinfo_LDADD = ../src/libpunica.la
 fileinfo_SOURCES = fileinfo.cpp
+
+md5sum_CPPFLAGS = -I$(top_srcdir)/include
+md5sum_LDADD = ../src/libpunica.la
+md5sum_SOURCES = md5sum.cpp
