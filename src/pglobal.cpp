@@ -37,11 +37,6 @@ void abort(const char *errmsg)
 #endif
 }
 
-std::string uuidgen()
-{
-	return punica::uuid::generate();
-}
-
 PUNICA_END_NAMESPACE
 
 #ifdef P_OS_WIN

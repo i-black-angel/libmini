@@ -35,4 +35,6 @@ perror.cpp					\
 puuid.cpp					\
 puuid_p.h					\
 puuid_unix.cpp					\
-phash.cpp
+phash.cpp					\
+phash_md5.h					\
+phash_md5.c

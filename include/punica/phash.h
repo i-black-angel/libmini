@@ -20,12 +20,12 @@
 
 PUNICA_BEGIN_NAMESPACE
 
-class PHash
-{
-public:
-    explicit PHash();
-    virtual ~PHash();
-};
+std::string md5sum(const std::string &file);
+std::string sha1sum(const std::string &file);
+std::string sha224sum(const std::string &file);
+std::string sha256sum(const std::string &file);
+std::string sha384sum(const std::string &file);
+std::string sha512sum(const std::string &file);
 
 PUNICA_END_NAMESPACE
 

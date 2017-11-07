@@ -18,52 +18,10 @@
 
 PUNICA_BEGIN_NAMESPACE
 
-// PUuid::PUuid()
-// {
-// }
-
-// PUuid::PUuid(const std::string &str)
-// {
-// }
-
-// PUuid::~PUuid()
-// {
-// }
-
-// std::string PUuid::toString() const
-// {
-// }
-
-// std::string PUuid::gen()
-// {
-//     char buf[64] = {0};
-// #ifdef P_OS_WIN
-//     /**
-//      * should be included <objbase.h>
-//      */
-// 	GUID guid;
-// 	if (S_OK == ::CoCreateGuid(&guid)) {
-// 		_snprintf_s(buf, sizeof(buf) -1,
-// 					"%08x-%04x-%04x-%02x%02x-%02x%02x%02x%02x%02x%02x",
-// 					guid.Data1,
-// 					guid.Data2,
-// 					guid.Data3,
-// 					guid.Data4[0], guid.Data4[1],
-// 					guid.Data4[2], guid.Data4[3],
-// 					guid.Data4[4], guid.Data4[5],
-// 					guid.Data4[6], guid.Data4[7]);
-// 	}
-// #else
-//     /**
-//      * should be included <uuid/uuid.h> and link with -luuid,
-//      * BUT HEY, i load libuuid on this library, :D
-//      */
-// 	uuid_t guid;
-// 	uuid_generate(guid);
-// 	uuid_unparse(guid, buf);
-// #endif
-// 	return std::string(buf);
-// }
+std::string uuidgen()
+{
+	return punica::uuid::generate();
+}
 
 std::string uuid::generate()
 {

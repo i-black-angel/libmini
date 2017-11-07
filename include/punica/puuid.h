@@ -20,21 +20,13 @@
 
 PUNICA_BEGIN_NAMESPACE
 
+std::string uuidgen();
+
 namespace uuid {
+
+	// punica::uuidgen() is a convenience interface by libpunica provided
 	std::string generate();
 }
-
-// class PUuid
-// {
-// public:
-//     explicit PUuid();
-//     explicit PUuid(const std::string &);
-//     virtual ~PUuid();
-
-// 	std::string toString() const;
-
-// 	static std::string gen();
-// };
 
 PUNICA_END_NAMESPACE
 
