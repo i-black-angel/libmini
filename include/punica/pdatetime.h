@@ -20,6 +20,8 @@
 
 PUNICA_BEGIN_NAMESPACE
 
+std::string now();
+
 // class PDate
 // {
 // public:
