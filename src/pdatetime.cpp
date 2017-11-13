@@ -48,6 +48,83 @@ PDateTime::~PDateTime()
 {
 }
 
+PDateTime &PDateTime::operator=(const PDateTime &other)
+{
+	_d = other._d;
+	return *this;
+}
+
+int PDateTime::year() const
+{
+	return localtime(&_d)->tm_year + 1900;
+}
+
+int PDateTime::month() const
+{
+	return localtime(&_d)->tm_mon + 1;
+}
+
+int PDateTime::day() const
+{
+	return localtime(&_d)->tm_mday;
+}
+
+int PDateTime::hour() const
+{
+	return localtime(&_d)->tm_hour;
+}
+
+int PDateTime::minute() const
+{
+	return localtime(&_d)->tm_min;
+}
+
+int PDateTime::second() const
+{
+	return localtime(&_d)->tm_sec;
+}
+
+// int PDateTime::msec() const
+// {
+// }
+
+int PDateTime::dayOfWeek() const
+{
+	return localtime(&_d)->tm_wday;
+}
+
+int PDateTime::dayOfYear() const
+{
+	return localtime(&_d)->tm_yday;
+}
+
+// int PDateTime::daysInMonth() const
+// {
+// }
+
+// int PDateTime::daysInYear() const
+// {
+// }
+
+// bool PDateTime::isNull() const
+// {
+// }
+
+// bool PDateTime::isValid() const
+// {
+// }
+	
+std::string PDateTime::toString(const std::string &format) const
+{
+	std::string local_format = format;
+	if (format.empty()) {
+		local_format = "%Y-%m-%d %H:%M:%S";
+	}
+	char buffer[64] = {0};
+	strftime(buffer, sizeof(buffer), local_format.c_str(), localtime(&_d));
+	return std::string(buffer);
+}
+
 std::string PDateTime::now(const std::string &format)
 {
 	PDateTime datetime = currentDateTime();
@@ -65,6 +142,12 @@ PDateTime PDateTime::currentDateTime()
 	PDateTime datetime;
 	datetime._d = time(NULL);
 	return datetime;
+}
+
+std::ostream &operator<<(std::ostream &out, const PDateTime &datetime)
+{
+	out << datetime.toString();
+	return out;
 }
 
 PUNICA_END_NAMESPACE

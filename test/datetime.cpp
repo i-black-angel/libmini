@@ -18,5 +18,11 @@
 int main(int argc, char *argv[])
 {
     std::cout << punica::now() << std::endl;
+	punica::PDateTime datetime = punica::PDateTime::currentDateTime();
+	std::cout << datetime.year() << std::endl;
+	std::cout << datetime.dayOfWeek() << std::endl;
+	std::cout << datetime.dayOfYear() << std::endl;
+	std::cout << datetime.toString() << std::endl;
+	std::cout << datetime << std::endl;
     return 0;
 }

@@ -105,11 +105,11 @@ public:
 	int msec() const;
 	int dayOfWeek() const;
 	int dayOfYear() const;
-	int daysInMonth() const;
-	int daysInYear() const;
+	// int daysInMonth() const;
+	// int daysInYear() const;
 
-	bool isNull() const;
-	bool isValid() const;
+	// bool isNull() const;
+	// bool isValid() const;
 	
 	std::string toString(const std::string &format = "") const;
 
