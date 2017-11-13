@@ -17,12 +17,54 @@
 
 PUNICA_BEGIN_NAMESPACE
 
+std::string now()
+{
+	return PDateTime::now();
+}
+
 PDateTime::PDateTime()
 {
 }
 
+PDateTime::PDateTime(int y, int m, int d, int H, int M, int S)
+{
+	struct tm stm;
+	stm.tm_year = y - 1900;
+	stm.tm_mon = m - 1;
+	stm.tm_mday = d;
+	stm.tm_hour = H;
+	stm.tm_min = M;
+	stm.tm_sec = S;
+
+	_d = mktime(&stm);
+}
+
+PDateTime::PDateTime(const PDateTime &other)
+{
+	_d = other._d;
+}
+
 PDateTime::~PDateTime()
 {
+}
+
+std::string PDateTime::now(const std::string &format)
+{
+	PDateTime datetime = currentDateTime();
+	std::string local_format = format;
+	if (format.empty()) {
+		local_format = "%Y-%m-%d %H:%M:%S";
+	}
+	char buffer[64] = {0};
+	strftime(buffer, sizeof(buffer), local_format.c_str(), localtime(&(datetime._d)));
+	return std::string(buffer);
+}
+
+PDateTime PDateTime::currentDateTime()
+{
+	PDateTime datetime;
+	datetime._d = time(NULL);
+	return datetime;
 }
 
 PUNICA_END_NAMESPACE
