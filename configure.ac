@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([libpunica], [1.0.0], [iblackangel@163.com])
+AC_INIT([libpunica], 1.0.0, iblackangel@163.com)
 AC_CONFIG_SRCDIR([src/papplication.cpp])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])

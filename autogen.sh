@@ -57,5 +57,11 @@ mkdir -p m4
 
 autoreconf --force --install --verbose || exit $?
 
-cd "$_pwd"
-"$srcdir/configure" "$@"
+echo "You can now run \`./configure'."
+
+exit 0
+
+# cd "$_pwd"
+# "$srcdir/configure" "$@"
+
+### autogen.sh ends here
