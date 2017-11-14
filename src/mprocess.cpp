@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <punica/pprocess.h>
+#include <mini/mprocess.h>
 
-PUNICA_BEGIN_NAMESPACE
+MINI_BEGIN_NAMESPACE
 
-PProcess::PProcess()
+MProcess::MProcess()
 {
 }
 
-PProcess::~PProcess()
+MProcess::~MProcess()
 {
 }
 
-PUNICA_END_NAMESPACE
+MINI_END_NAMESPACE

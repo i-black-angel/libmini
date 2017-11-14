@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <punica/pmongodb.h>
+#include <mini/mmongodb.h>
 
-PUNICA_BEGIN_NAMESPACE
+MINI_BEGIN_NAMESPACE
 
-PMongoDB::PMongoDB()
+MMongoDB::MMongoDB()
 {
 }
 
-PMongoDB::~PMongoDB()
+MMongoDB::~MMongoDB()
 {
 }
 
-PUNICA_END_NAMESPACE
+MINI_END_NAMESPACE

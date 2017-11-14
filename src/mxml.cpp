@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <punica/pxml.h>
+#include <mini/mxml.h>
 
-PUNICA_BEGIN_NAMESPACE
+MINI_BEGIN_NAMESPACE
 
-PXml::PXml()
+MXml::MXml()
 {
 }
 
-PXml::~PXml()
+MXml::~MXml()
 {
 }
 
-PUNICA_END_NAMESPACE
+MINI_END_NAMESPACE

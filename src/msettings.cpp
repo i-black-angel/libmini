@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <punica/psettings.h>
+#include <mini/msettings.h>
 
-PUNICA_BEGIN_NAMESPACE
+MINI_BEGIN_NAMESPACE
 
-PSettings::PSettings()
+MSettings::MSettings()
 {
 }
 
-PSettings::~PSettings()
+MSettings::~MSettings()
 {
 }
 
-PUNICA_END_NAMESPACE
+MINI_END_NAMESPACE

@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <punica.h>
+#include <mini.h>
 
-class WorkThread : public punica::PThread
+class WorkThread : public mini::MThread
 {
 public:
     explicit WorkThread() { }

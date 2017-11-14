@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <punica/pthread.h>
+#include <mini/pthread.h>
 
-#ifdef P_OS_WIN
+#ifdef M_OS_WIN
 
 #ifdef __cplusplus
 extern "C" {
@@ -23,7 +23,7 @@ extern "C" {
 
 	static unsigned int __stdcall thread_routine(void *arg)
 	{
-		punica::PThread *self = (punica::PThread *) arg;
+		mini::MThread *self = (mini::MThread *) arg;
 		if (NULL != self) {
 			self->exec();
 		}
@@ -42,7 +42,7 @@ extern "C" {
 
 	static void *thread_routine(void *arg)
 	{
-		punica::PThread *self = (punica::PThread *) arg;
+		mini::MThread *self = (mini::MThread *) arg;
 		if (NULL != self) {
 			self->exec();
 		}
@@ -53,20 +53,20 @@ extern "C" {
 }
 #endif
 
-#endif /* P_OS_WIN */
+#endif /* M_OS_WIN */
 
-PUNICA_BEGIN_NAMESPACE
+MINI_BEGIN_NAMESPACE
 
-PThread::PThread()
+MThread::MThread()
 {
 	_self = 0;
 }
 
-PThread::~PThread()
+MThread::~MThread()
 {
 }
 
-bool PThread::start()
+bool MThread::start()
 {
 	int res = 0;
 	res = pthread_create(&_self, NULL, thread_routine, this);
@@ -75,49 +75,49 @@ bool PThread::start()
 	return res == 0;
 }
 
-void PThread::stop()
+void MThread::stop()
 {
 }
 
-int PThread::join()
+int MThread::join()
 {
 }
 
-int PThread::detach()
+int MThread::detach()
 {
 }
 
-int PThread::cancel()
+int MThread::cancel()
 {
 }
 	
-int64_t PThread::currentId()
+int64_t MThread::currentId()
 {
 	return pthread_self();
 }
 
-int64_t PThread::id()
+int64_t MThread::id()
 {
 	return _self;
 }
 	
-void PThread::setPriority(Priority priority)
+void MThread::setPriority(Priority priority)
 {
 	_priority = priority;
 }
 
-PThread::Priority PThread::priority() const
+MThread::Priority MThread::priority() const
 {
 	return _priority;
 }
 
-void PThread::exec()
+void MThread::exec()
 {
 	run();
 }
 
-void PThread::run()
+void MThread::run()
 {
 }
 
-PUNICA_END_NAMESPACE
+MINI_END_NAMESPACE

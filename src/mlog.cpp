@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <punica/plog.h>
+#include <mini/mlog.h>
 
-PUNICA_BEGIN_NAMESPACE
+MINI_BEGIN_NAMESPACE
 
-PLog::PLog()
+MLog::MLog()
 {
 }
 
-PLog::~PLog()
+MLog::~MLog()
 {
 }
 
-PUNICA_END_NAMESPACE
+MINI_END_NAMESPACE

@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <punica.h>
-#include "../src/puuid_p.h"
+#include <mini.h>
+#include "../src/muuid_p.h"
 
 int main(int argc, char *argv[])
 {
 	for (size_t i = 0; i < 10; ++i) {
-		std::cout << punica::uuidgen() << std::endl;
+		std::cout << mini::uuidgen() << std::endl;
 		usleep(30000);
 	}
 

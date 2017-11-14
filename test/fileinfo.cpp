@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <punica.h>
+#include <mini.h>
 
 int main(int argc, char *argv[])
 {
-	punica::PFileInfo fileinfo(argv[0]);
-	punica::PFileInfo cf(fileinfo);
+	mini::MFileInfo fileinfo(argv[0]);
+	mini::MFileInfo cf(fileinfo);
 	std::cout << fileinfo.filePath() << std::endl;
 
 	std::cout << fileinfo.readLink() << std::endl;
@@ -33,28 +33,28 @@ int main(int argc, char *argv[])
 	std::cout << cf.suffix() << std::endl;
 	std::cout << cf.dirname() << std::endl;
 
-	punica::PFileInfo test(cf.dirname());
+	mini::MFileInfo test(cf.dirname());
 	std::cout << test.basename() << std::endl;
 	std::cout << test.filename() << std::endl;
 	std::cout << test.suffix() << std::endl;
 
-	punica::PFileInfo root("/");
+	mini::MFileInfo root("/");
 	std::cout << root.basename() << std::endl;
 	std::cout << root.filename() << std::endl;
 	std::cout << root.suffix() << std::endl;
 	std::cout << root.dirname() << std::endl;
 
-	punica::PFileInfo file("music.mp3");
+	mini::MFileInfo file("music.mp3");
 	std::string ext = file.suffix(); // ext = "mp3"
 	std::cout << file.basename() << std::endl;
 	std::cout << file.filename() << std::endl;
 	std::cout << file.suffix() << std::endl;
 	std::cout << file.dirname() << std::endl;
 
-	punica::PFileInfo rootfile("/etc/ts.conf");
+	mini::MFileInfo rootfile("/etc/ts.conf");
 	std::cout << rootfile.exists() << std::endl;
 	std::cout << rootfile.isWritable() << std::endl;
 
-	std::cout << punica::PFileInfo::exists("/etc/resolv.conf") << std::endl;
+	std::cout << mini::MFileInfo::exists("/etc/resolv.conf") << std::endl;
     return 0;
 }

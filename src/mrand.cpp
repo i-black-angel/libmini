@@ -13,33 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <punica/prand.h>
+#include <mini/mrand.h>
 
-PUNICA_BEGIN_NAMESPACE
+MINI_BEGIN_NAMESPACE
 
-int PRand::rand()
+int MRand::rand()
 {
 	srand(time(NULL));
 	return ::rand();
 }
 
-int PRand::rand(int low, int high)
+int MRand::rand(int low, int high)
 {
 	int rlow = std::min(low, high);
 	int rhigh = std::max(low, high);
 	return (rand() % (1 + rhigh - rlow)) + rlow;
 }
 
-double PRand::range()
+double MRand::range()
 {
 	return (rand() % 101) / 100.0;
 }
 
-double PRand::range(double low, double high)
+double MRand::range(double low, double high)
 {
 	double rlow = std::min(low, high);
 	double rhigh = std::max(low, high);
 	return ((rand() % (int)(1 + rhigh * 100.0 - rlow * 100.0)) / 100.0) + rlow;
 }
 
-PUNICA_END_NAMESPACE
+MINI_END_NAMESPACE

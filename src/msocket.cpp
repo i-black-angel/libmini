@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <punica/psocket.h>
-#include <punica/perror.h>
+#include <mini/msocket.h>
+#include <mini/merror.h>
 
-PUNICA_BEGIN_NAMESPACE
+MINI_BEGIN_NAMESPACE
 
-PSocket::PSocket(SocketType socketType)
+MSocket::MSocket(SocketType socketType)
 {
 	int type = SOCK_STREAM;
 	
@@ -42,19 +42,19 @@ PSocket::PSocket(SocketType socketType)
 	}
 }
 
-PSocket::~PSocket()
+MSocket::~MSocket()
 {
 	if (_sockfd != -1)
 		::close(_sockfd);
 }
 
-bool PSocket::bind(uint16_t port)
+bool MSocket::bind(uint16_t port)
 {
 	PHostAddress address(PHostAddress::Any, port);
 	return bind(address);
 }
 
-bool PSocket::bind(const PHostAddress &address)
+bool MSocket::bind(const PHostAddress &address)
 {
 	if (_sockfd < 0) return false;
 	
@@ -71,32 +71,32 @@ bool PSocket::bind(const PHostAddress &address)
 	return true;
 }
 
-PTcpSocket::PTcpSocket()
-	: PSocket(TcpSocket)
+MTcpSocket::MTcpSocket()
+	: MSocket(TcpSocket)
 {
 }
 
-PTcpSocket::~PTcpSocket()
+MTcpSocket::~MTcpSocket()
 {
 }
 
-PUdpSocket::PUdpSocket()
-	: PSocket(UdpSocket)
+MUdpSocket::MUdpSocket()
+	: MSocket(UdpSocket)
 {
 }
 
-PUdpSocket::~PUdpSocket()
+MUdpSocket::~MUdpSocket()
 {
 }
 
-// int64_t PUdpSocket::sendto(const uint8_t *data, size_t len)
+// int64_t MUdpSocket::sendto(const uint8_t *data, size_t len)
 // {
 // 	sockaddr_in addr;
 // 	memset((uint8_t *)&addr, 0x00, sizeof(addr));
 // 	return ::sendto(_sockfd, data, len, 0, (const sockaddr *)&addr, sizeof(addr));
 // }
 
-int64_t PUdpSocket::sendto(const uint8_t *data, size_t len, const PHostAddress &host)
+int64_t MUdpSocket::sendto(const uint8_t *data, size_t len, const PHostAddress &host)
 {
 	sockaddr_in addr;
 	addr.sin_family = AF_INET;
@@ -106,12 +106,12 @@ int64_t PUdpSocket::sendto(const uint8_t *data, size_t len, const PHostAddress &
 	return ::sendto(_sockfd, data, len, 0, (const sockaddr *)&addr, sizeof(addr));
 }
 
-int64_t PUdpSocket::sendto(const uint8_t *data, size_t len, const std::string &address, uint16_t port)
+int64_t MUdpSocket::sendto(const uint8_t *data, size_t len, const std::string &address, uint16_t port)
 {
 	return sendto(data, len, PHostAddress(address, port));
 }
 
-int64_t PUdpSocket::recvfrom(uint8_t *data, size_t len, PHostAddress &host)
+int64_t MUdpSocket::recvfrom(uint8_t *data, size_t len, PHostAddress &host)
 {
 	sockaddr_in addr;
 	socklen_t slen = sizeof(addr);
@@ -119,7 +119,7 @@ int64_t PUdpSocket::recvfrom(uint8_t *data, size_t len, PHostAddress &host)
 	ssize_t rlen = ::recvfrom(_sockfd, data, len, 0, (sockaddr *)&addr, &slen);
 
 	if (rlen <= 0) {
-		std::cerr << punica::error() << std::endl;
+		std::cerr << mini::error() << std::endl;
 		return rlen;
 	}
 	
@@ -129,18 +129,18 @@ int64_t PUdpSocket::recvfrom(uint8_t *data, size_t len, PHostAddress &host)
 	return rlen;
 }
 
-PUdpServer::PUdpServer(int bufsize)
+MUdpServer::MUdpServer(int bufsize)
 {
 	_buf = NULL;
 	_bufsize = bufsize;
 	_init = false;
 }
 
-PUdpServer::~PUdpServer()
+MUdpServer::~MUdpServer()
 {
 }
 
-bool PUdpServer::bind(uint16_t port)
+bool MUdpServer::bind(uint16_t port)
 {
 	if (_bufsize <= 0) return false;
 	
@@ -172,7 +172,7 @@ bool PUdpServer::bind(uint16_t port)
 	return false;
 }
 
-void PUdpServer::run()
+void MUdpServer::run()
 {
 	if (!_init) return;
 	
@@ -207,15 +207,15 @@ void PUdpServer::run()
 	close(_pipefd[1]);
 }
 
-void PUdpServer::stop()
+void MUdpServer::stop()
 {
 	static const uint8_t xdata[4] = {0x01, 0x02, 0x03, 0x04};
 	write(_pipefd[1], xdata, sizeof(xdata));
-	PThread::stop();
+	MThread::stop();
 }
 
-void PUdpServer::process(const uint8_t *data, size_t len, const PHostAddress &host)
+void MUdpServer::process(const uint8_t *data, size_t len, const PHostAddress &host)
 {
 }
 
-PUNICA_END_NAMESPACE
+MINI_END_NAMESPACE

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "puuid_p.h"
+#include "muuid_p.h"
 
 /**
  * Copyright (C) 1996, 1997, 1998, 1999 Theodore Ts'o.

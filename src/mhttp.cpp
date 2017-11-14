@@ -17,27 +17,27 @@
 
 MINI_BEGIN_NAMESPACE
 
-PHttp::PHttp()
+MHttp::MHttp()
 {
 }
 
-PHttp::~PHttp()
+MHttp::~MHttp()
 {
 }
 
-PHttpServer::PHttpServer()
+MHttpServer::MHttpServer()
 {
 }
 
-PHttpServer::~PHttpServer()
+MHttpServer::~MHttpServer()
 {
 }
 
-PHttpClient::PHttpClient()
+MHttpClient::MHttpClient()
 {
 }
 
-PHttpClient::~PHttpClient()
+MHttpClient::~MHttpClient()
 {
 }
 

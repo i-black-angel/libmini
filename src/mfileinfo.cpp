@@ -51,7 +51,7 @@ MFileInfo::MFileInfo(const std::string &file)
 }
 
 // MFileInfo(const MFile &file);
-// MFileInfo(const PDir &dir, const std::string &file);
+// MFileInfo(const MDir &dir, const std::string &file);
 
 MFileInfo::MFileInfo(const MFileInfo &fileinfo)
 {
@@ -79,7 +79,7 @@ void MFileInfo::setFile(const std::string &file)
 }
 
 // void setFile(const MFile &file);
-// void setFile(const PDir &dir, const std::string &file);
+// void setFile(const MDir &dir, const std::string &file);
 
 bool MFileInfo::exists() const
 {
@@ -281,15 +281,15 @@ int64_t MFileInfo::size() const
 {
 }
 
-PDateTime MFileInfo::created() const
+MDateTime MFileInfo::created() const
 {
 }
 
-PDateTime MFileInfo::lastModified() const
+MDateTime MFileInfo::lastModified() const
 {
 }
 
-PDateTime MFileInfo::lastRead() const
+MDateTime MFileInfo::lastRead() const
 {
 }
 

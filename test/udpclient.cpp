@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <punica.h>
+#include <mini.h>
 
 int main(int argc, char *argv[])
 {
 	const char *msg = "M^0001^1^108^彩票打印机脱机";
 
-	punica::PUdpSocket udpSocket;
-	punica::PHostAddress addr("192.168.7.47", 8309);
+	mini::MUdpSocket udpSocket;
+	mini::MHostAddress addr("192.168.7.47", 8309);
 	std::cout << addr << std::endl;
 
 	std::cout << addr.ipv4() << std::endl;

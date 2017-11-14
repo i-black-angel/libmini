@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <punica/puuid.h>
-#include "puuid_p.h"
+#include <mini/muuid.h>
+#include "muuid_p.h"
 
-PUNICA_BEGIN_NAMESPACE
+MINI_BEGIN_NAMESPACE
 
 std::string uuidgen()
 {
-	return punica::uuid::generate();
+	return mini::uuid::generate();
 }
 
 std::string uuid::generate()
@@ -54,4 +54,4 @@ std::string uuid::generate()
 	return std::string(buf);
 }
 
-PUNICA_END_NAMESPACE
+MINI_END_NAMESPACE

@@ -19,53 +19,53 @@ noinst_PROGRAMS = hostaddress welcome assert mutex condition udpsocket
 noinst_PROGRAMS += thread udpclient error uuid fileinfo md5sum datetime
 
 hostaddress_CPPFLAGS = -I$(top_srcdir)/include
-hostaddress_LDADD = ../src/libpunica.la
+hostaddress_LDADD = ../src/libmini.la
 hostaddress_SOURCES = hostaddress.cpp
 
 welcome_CPPFLAGS = -I$(top_srcdir)/include
-welcome_LDADD = ../src/libpunica.la
+welcome_LDADD = ../src/libmini.la
 welcome_SOURCES = welcome.cpp
 
 assert_CPPFLAGS = -I$(top_srcdir)/include
-assert_LDADD = ../src/libpunica.la
+assert_LDADD = ../src/libmini.la
 assert_SOURCES = assert.cpp
 
 mutex_CPPFLAGS = -I$(top_srcdir)/include
-mutex_LDADD = ../src/libpunica.la -lpthread
+mutex_LDADD = ../src/libmini.la -lpthread
 mutex_SOURCES = mutex.cpp
 
 condition_CPPFLAGS = -I$(top_srcdir)/include
-condition_LDADD = ../src/libpunica.la -lpthread
+condition_LDADD = ../src/libmini.la -lpthread
 condition_SOURCES = condition.cpp
 
 udpsocket_CPPFLAGS = -I$(top_srcdir)/include
-udpsocket_LDADD = ../src/libpunica.la -lpthread
+udpsocket_LDADD = ../src/libmini.la -lpthread
 udpsocket_SOURCES = udpsocket.cpp
 
 thread_CPPFLAGS = -I$(top_srcdir)/include
-thread_LDADD = ../src/libpunica.la -lpthread
+thread_LDADD = ../src/libmini.la -lpthread
 thread_SOURCES = thread.cpp
 
 udpclient_CPPFLAGS = -I$(top_srcdir)/include
-udpclient_LDADD = ../src/libpunica.la
+udpclient_LDADD = ../src/libmini.la
 udpclient_SOURCES = udpclient.cpp
 
 error_CPPFLAGS = -I$(top_srcdir)/include
-error_LDADD = ../src/libpunica.la
+error_LDADD = ../src/libmini.la
 error_SOURCES = error.cpp
 
 uuid_CPPFLAGS = -I$(top_srcdir)/include
-uuid_LDADD = ../src/libpunica.la
+uuid_LDADD = ../src/libmini.la
 uuid_SOURCES = uuid.cpp
 
 fileinfo_CPPFLAGS = -I$(top_srcdir)/include
-fileinfo_LDADD = ../src/libpunica.la
+fileinfo_LDADD = ../src/libmini.la
 fileinfo_SOURCES = fileinfo.cpp
 
 md5sum_CPPFLAGS = -I$(top_srcdir)/include
-md5sum_LDADD = ../src/libpunica.la
+md5sum_LDADD = ../src/libmini.la
 md5sum_SOURCES = md5sum.cpp
 
 datetime_CPPFLAGS = -I$(top_srcdir)/include
-datetime_LDADD = ../src/libpunica.la
+datetime_LDADD = ../src/libmini.la
 datetime_SOURCES = datetime.cpp

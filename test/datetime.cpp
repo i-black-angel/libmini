@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <punica.h>
+#include <mini.h>
 
 int main(int argc, char *argv[])
 {
-    std::cout << punica::now() << std::endl;
-	punica::PDateTime datetime = punica::PDateTime::currentDateTime();
+    std::cout << mini::now() << std::endl;
+	mini::MDateTime datetime = mini::MDateTime::currentDateTime();
 	std::cout << datetime.year() << std::endl;
 	std::cout << datetime.dayOfWeek() << std::endl;
 	std::cout << datetime.dayOfYear() << std::endl;

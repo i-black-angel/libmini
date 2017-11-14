@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _PUUID_P_H_
-#define _PUUID_P_H_
+#ifndef _MUUID_P_H_
+#define _MUUID_P_H_
 
 #include <punica/pcoredef.h>
 
-#ifdef P_OS_WIN					/* P_OS_WIN */
+#ifdef M_OS_WIN					/* M_OS_WIN */
 #include <objbase.h>
-#else  /* P_OS_LINUX */
+#else  /* M_OS_LINUX */
 /**
  * Copyright (C) 1996, 1997, 1998, 1999 Theodore Ts'o.
  *
@@ -116,6 +116,6 @@ void uuid_unpack(const uuid_t in, struct uuid *uu);
 #ifdef __cplusplus
 }
 #endif
-#endif /* P_OS_WIN */
+#endif /* M_OS_WIN */
 
-#endif /* _PUUID_P_H_ */
+#endif /* _MUUID_P_H_ */

@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <punica/pstring.h>
+#include <mini/mstring.h>
 
-PUNICA_BEGIN_NAMESPACE
+MINI_BEGIN_NAMESPACE
 
-PString::PString()
+MString::MString()
 {
 }
 
-PString::~PString()
+MString::~MString()
 {
 }
 
-PUNICA_END_NAMESPACE
+MINI_END_NAMESPACE

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <punica.h>
+#include <mini.h>
 
 int main(int argc, char *argv[])
 {
@@ -26,14 +26,14 @@ int main(int argc, char *argv[])
 	}
 #endif
 	
-    std::cout << "PHostAddress test" << std::endl;
-    punica::PHostAddress addr1;
-    punica::PHostAddress addr2(punica::PHostAddress::Null);
-    punica::PHostAddress addr3(punica::PHostAddress::Broadcast);
-    punica::PHostAddress addr4(punica::PHostAddress::LocalHost);
-    punica::PHostAddress addr5 = punica::PHostAddress::Any;
-    punica::PHostAddress addr6(0x0c224433);
-    punica::PHostAddress addr7("192.168.10.70");
+    std::cout << "MHostAddress test" << std::endl;
+    mini::MHostAddress addr1;
+    mini::MHostAddress addr2(mini::MHostAddress::Null);
+    mini::MHostAddress addr3(mini::MHostAddress::Broadcast);
+    mini::MHostAddress addr4(mini::MHostAddress::LocalHost);
+    mini::MHostAddress addr5 = mini::MHostAddress::Any;
+    mini::MHostAddress addr6(0x0c224433);
+    mini::MHostAddress addr7("192.168.10.70");
 
     std::cout << addr1.toString() << std::endl;
     std::cout << addr2.toString() << std::endl;
@@ -43,11 +43,11 @@ int main(int argc, char *argv[])
     std::cout << addr6.toString() << std::endl;    
     std::cout << addr7.toString() << std::endl;    
 
-    if (addr1 == punica::PHostAddress::Broadcast) {
+    if (addr1 == mini::MHostAddress::Broadcast) {
         std::cout << "addr1 is Any" << std::endl;
     }
 
-    punica::PHostAddress addr8("www.sina.com", 8843);
+    mini::MHostAddress addr8("www.sina.com", 8843);
 
     std::cout << addr8.toString() << std::endl;
     std::cout << addr8 << std::endl;

@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <punica.h>
+#include <mini.h>
 
 int main(int argc, char *argv[])
 {
-	std::cout << punica::md5sum("/bin/bash") << "\t" << "/bin/bash" << std::endl;
+	std::cout << mini::md5sum("/bin/bash") << "\t" << "/bin/bash" << std::endl;
     return 0;
 }

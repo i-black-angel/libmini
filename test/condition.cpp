@@ -15,12 +15,12 @@
  */
 #include <mini.h>
 
-mini::PCondition cond_;
-mini::PMutex mutex_;
+mini::MCondition cond_;
+mini::MMutex mutex_;
 
 void *threadCallback(void *pvoid)
 {
-	mini::PMutexLocker locker(mutex_);
+	mini::MMutexLocker locker(mutex_);
 	std::cout << pthread_self() << std::endl; 
 	cond_.wait(mutex_);
 	std::cout << "wakeup " << pthread_self() << std::endl;

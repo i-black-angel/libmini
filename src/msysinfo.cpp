@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <punica/psysinfo.h>
+#include <mini/msysinfo.h>
 
-#ifdef P_OS_LINUX
+#ifdef M_OS_LINUX
 /* GNU's uptime.
    Copyright (C) 1992-2013 Free Software Foundation, Inc.
 
@@ -90,82 +90,82 @@ int uptime(double * uptime_secs, double * idle_secs) {
 }
 #endif
 
-PUNICA_BEGIN_NAMESPACE
+MINI_BEGIN_NAMESPACE
 
-PSysinfo::PSysinfo()
+MSysinfo::MSysinfo()
 {
 }
 
-PSysinfo::~PSysinfo()
+MSysinfo::~MSysinfo()
 {
 }
 
-std::string PSysinfo::hostName()
+std::string MSysinfo::hostName()
 {
 }
 	
-std::string PSysinfo::buildCpuArchitecture()
+std::string MSysinfo::buildCpuArchitecture()
 {
 }
 
-std::string PSysinfo::currentCpuArchitecture()
+std::string MSysinfo::currentCpuArchitecture()
 {
 }
 
-std::string PSysinfo::buildAbi()
+std::string MSysinfo::buildAbi()
 {
 }
 
-std::string PSysinfo::kernelType()
+std::string MSysinfo::kernelType()
 {
 }
 
-std::string PSysinfo::kernelVersion()
+std::string MSysinfo::kernelVersion()
 {
 }
 
-std::string PSysinfo::productType()
+std::string MSysinfo::productType()
 {
 }
 
-std::string PSysinfo::productVersion()
+std::string MSysinfo::productVersion()
 {
 }
 
-std::string PSysinfo::prettyProductName()
+std::string MSysinfo::prettyProductName()
 {
 }
 
-uint64_t PSysinfo::memoryAvailSize()
+uint64_t MSysinfo::memoryAvailSize()
 {
 }
 
-uint64_t PSysinfo::memoryTotalSize()
+uint64_t MSysinfo::memoryTotalSize()
 {
 }
 
-uint64_t PSysinfo::memoryUsedSize()
+uint64_t MSysinfo::memoryUsedSize()
 {
 }
 
-double PSysinfo::memoryPercent()
+double MSysinfo::memoryPercent()
 {
 }
 
-double PSysinfo::cpuPercent()
+double MSysinfo::cpuPercent()
 {
 }
 
-uint32_t PSysinfo::uptimelong()
+uint32_t MSysinfo::uptimelong()
 {
 }
 
-std::string PSysinfo::uptime()
+std::string MSysinfo::uptime()
 {
 }
 
-std::string PSysinfo::since()
+std::string MSysinfo::since()
 {
 }
 
-PUNICA_END_NAMESPACE
+MINI_END_NAMESPACE

@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <punica/pjson.h>
+#include <mini/mjson.h>
 
-PUNICA_BEGIN_NAMESPACE
+MINI_BEGIN_NAMESPACE
 
-PJson::PJson()
+MJson::MJson()
 {
 }
 
-PJson::~PJson()
+MJson::~MJson()
 {
 }
 
-PUNICA_END_NAMESPACE
+MINI_END_NAMESPACE

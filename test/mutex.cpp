@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <punica.h>
+#include <mini.h>
 
 int main(int argc, char *argv[])
 {
-	punica::PMutex mutex;
+	mini::MMutex mutex;
 	mutex.lock();
 	mutex.unlock();
-	punica::PMutexLocker locker(mutex);
+	mini::MMutexLocker locker(mutex);
 	std::cout << mutex.trylock() << std::endl;
     return 0;
 }
