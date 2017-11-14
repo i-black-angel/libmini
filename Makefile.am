@@ -17,7 +17,7 @@
 
 SUBDIRS=src include test
 ACLOCAL_AMFLAGS=-I m4
-DISTCLEANFILES=libpunica.pc
+DISTCLEANFILES=libmini.pc
 
 pkgconfigdir=$(libdir)/pkgconfig
-pkgconfig_DATA=libpunica.pc
+pkgconfig_DATA=libmini.pc
