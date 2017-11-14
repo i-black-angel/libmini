@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <punica.h>
+#include <mini.h>
 
-punica::PCondition cond_;
-punica::PMutex mutex_;
+mini::PCondition cond_;
+mini::PMutex mutex_;
 
 void *threadCallback(void *pvoid)
 {
-	punica::PMutexLocker locker(mutex_);
+	mini::PMutexLocker locker(mutex_);
 	std::cout << pthread_self() << std::endl; 
 	cond_.wait(mutex_);
 	std::cout << "wakeup " << pthread_self() << std::endl;

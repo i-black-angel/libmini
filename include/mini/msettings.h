@@ -13,14 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini.h>
+#ifndef _MSETTINGS_H_
+#define _MSETTINGS_H_
 
-int main(int argc, char *argv[])
+#include <mini/mcoredef.h>
+
+MINI_BEGIN_NAMESPACE
+
+class MSettings
 {
-	/*
-	 * /usr/include/asm-generic/errno-base.h
-	 */
-	int err = EBUSY;
-    posix_assert(err);
-    return 0;
-}
+public:
+    explicit MSettings();
+    virtual ~PSettings();
+};
+
+MINI_END_NAMESPACE
+
+#endif /* _MSETTINGS_H_ */

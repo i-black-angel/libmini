@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini.h>
+#include <mini/mdir.h>
 
-int main(int argc, char *argv[])
+MINI_BEGIN_NAMESPACE
+
+MDir::MDir()
 {
-	/*
-	 * /usr/include/asm-generic/errno-base.h
-	 */
-	int err = EBUSY;
-    posix_assert(err);
-    return 0;
 }
+
+MDir::~MDir()
+{
+}
+
+MINI_END_NAMESPACE

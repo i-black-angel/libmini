@@ -13,14 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini.h>
+#include <mini/mhttp.h>
 
-int main(int argc, char *argv[])
+MINI_BEGIN_NAMESPACE
+
+PHttp::PHttp()
 {
-	/*
-	 * /usr/include/asm-generic/errno-base.h
-	 */
-	int err = EBUSY;
-    posix_assert(err);
-    return 0;
 }
+
+PHttp::~PHttp()
+{
+}
+
+PHttpServer::PHttpServer()
+{
+}
+
+PHttpServer::~PHttpServer()
+{
+}
+
+PHttpClient::PHttpClient()
+{
+}
+
+PHttpClient::~PHttpClient()
+{
+}
+
+MINI_END_NAMESPACE

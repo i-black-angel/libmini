@@ -13,14 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini.h>
+#ifndef _MEVENT_H_
+#define _MEVENT_H_
 
-int main(int argc, char *argv[])
+#include <mini/mcoredef.h>
+#include <mini/mcondition.h>
+#include <mini/mmutex.h>
+
+MINI_BEGIN_NAMESPACE
+
+class MEvent
 {
-	/*
-	 * /usr/include/asm-generic/errno-base.h
-	 */
-	int err = EBUSY;
-    posix_assert(err);
-    return 0;
-}
+public:
+    explicit MEvent();
+    virtual ~MEvent();
+
+	inline void wait(unsigned long timeout = ULONG_MAX)
+		{
+			MMutexLocker lock(_mutex);
+		}
+
+	inline void post()
+		{
+		}
+
+	inline void wakeAll()
+private:
+	M_DISABLE_COPY(MEvent)
+
+	MMutex _mutex;
+	MCondition _condition;
+};
+
+
+MINI_END_NAMESPACE
+
+#endif /* _MEVENT_H_ */

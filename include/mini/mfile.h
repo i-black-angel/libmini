@@ -13,14 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini.h>
+#ifndef _MFILE_H_
+#define _MFILE_H_
 
-int main(int argc, char *argv[])
+#include <mini/mcoredef.h>
+
+MINI_BEGIN_NAMESPACE
+
+class MFile
 {
-	/*
-	 * /usr/include/asm-generic/errno-base.h
-	 */
-	int err = EBUSY;
-    posix_assert(err);
-    return 0;
-}
+public:
+    explicit MFile();
+    explicit MFile(const std::string &);
+    virtual ~MFile();
+};
+
+MINI_END_NAMESPACE
+
+#endif /* _MFILE_H_ */

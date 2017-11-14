@@ -13,14 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini.h>
+#ifndef _MCOMMANDLINE_H_
+#define _MCOMMANDLINE_H_
 
-int main(int argc, char *argv[])
+#include <mini/mcoredef.h>
+
+MINI_BEGIN_NAMESPACE
+
+class MCommandLineOption
 {
-	/*
-	 * /usr/include/asm-generic/errno-base.h
-	 */
-	int err = EBUSY;
-    posix_assert(err);
-    return 0;
-}
+public:
+    explicit MCommandLineOption();
+    virtual ~MCommandLineOption();
+};
+
+class MCommandLineParser
+{
+public:
+    explicit MCommandLineParser();
+    virtual ~MCommandLineParser();
+};
+
+MINI_END_NAMESPACE
+
+#endif /* _MCOMMANDLINE_H_ */

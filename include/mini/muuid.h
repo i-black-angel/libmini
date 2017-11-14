@@ -13,14 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini.h>
+#ifndef _MUUID_H_
+#define _MUUID_H_
 
-int main(int argc, char *argv[])
-{
-	/*
-	 * /usr/include/asm-generic/errno-base.h
-	 */
-	int err = EBUSY;
-    posix_assert(err);
-    return 0;
+#include <mini/mcoredef.h>
+
+MINI_BEGIN_NAMESPACE
+
+std::string uuidgen();
+
+namespace uuid {
+
+	// mini::uuidgen() is a convenience interface by libmini provided
+	std::string generate();
 }
+
+MINI_END_NAMESPACE
+
+#endif /* _MUUID_H_ */

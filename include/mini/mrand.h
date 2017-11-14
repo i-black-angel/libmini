@@ -13,14 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini.h>
+#ifndef _MRAND_H_
+#define _MRAND_H_
 
-int main(int argc, char *argv[])
+#include <mini/mcoredef.h>
+
+MINI_BEGIN_NAMESPACE
+
+class MRand
 {
-	/*
-	 * /usr/include/asm-generic/errno-base.h
-	 */
-	int err = EBUSY;
-    posix_assert(err);
-    return 0;
-}
+public:
+	static int rand();
+	static int rand(int low, int high);
+	static double range();
+	static double range(double low, double high);
+};
+
+MINI_END_NAMESPACE
+
+#endif /* _MRAND_H_ */

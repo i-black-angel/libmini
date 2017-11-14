@@ -13,14 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini.h>
+#include <mini/mcommandline.h>
 
-int main(int argc, char *argv[])
+MINI_BEGIN_NAMESPACE
+
+MCommandLineOption::MCommandLineOption()
 {
-	/*
-	 * /usr/include/asm-generic/errno-base.h
-	 */
-	int err = EBUSY;
-    posix_assert(err);
-    return 0;
 }
+
+MCommandLineOption::~MCommandLineOption()
+{
+}
+
+MCommandLineParser::MCommandLineParser()
+{
+}
+
+MCommandLineParser::~MCommandLineParser()
+{
+}
+
+MINI_END_NAMESPACE

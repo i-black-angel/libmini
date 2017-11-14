@@ -13,14 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini.h>
+#ifndef _MHTTP_H_
+#define _MHTTP_H_
 
-int main(int argc, char *argv[])
+#include <mini/mcoredef.h>
+
+MINI_BEGIN_NAMESPACE
+
+class MHttp
 {
-	/*
-	 * /usr/include/asm-generic/errno-base.h
-	 */
-	int err = EBUSY;
-    posix_assert(err);
-    return 0;
-}
+public:
+    explicit MHttp();
+    virtual ~MHttp();
+};
+
+class MHttpServer : public MHttp
+{
+public:
+    explicit MHttpServer();
+    virtual ~MHttpServer();
+};
+
+class MHttpClient : public MHttp
+{
+public:
+    explicit MHttpClient();
+    virtual ~MHttpClient();
+};
+
+MINI_END_NAMESPACE
+
+#endif /* _MHTTP_H_ */

@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini.h>
+#include <mini/mfile.h>
 
-int main(int argc, char *argv[])
+MINI_BEGIN_NAMESPACE
+
+MFile::MFile()
 {
-	/*
-	 * /usr/include/asm-generic/errno-base.h
-	 */
-	int err = EBUSY;
-    posix_assert(err);
-    return 0;
 }
+
+MFile::~MFile()
+{
+}
+
+MINI_END_NAMESPACE

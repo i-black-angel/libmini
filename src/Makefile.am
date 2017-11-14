@@ -1,40 +1,40 @@
-lib_LTLIBRARIES = libpunica.la
+lib_LTLIBRARIES = libmini.la
 
 # library version
-libpunica_la_LDFLAGS=$(LTLDFLAGS)
+libmini_la_LDFLAGS=$(LTLDFLAGS)
 
-libpunica_la_CPPFLAGS = -I$(top_srcdir)/include $(all_includes)
+libmini_la_CPPFLAGS = -I$(top_srcdir)/include $(all_includes)
 ######################################
 # Cflags and Libs
-# libpunica_la_CXXFLAGS = $(LIBICONV_CFLAGS)
-libpunica_la_LIBADD = -lpthread
+# libmini_la_CXXFLAGS = $(LIBICONV_CFLAGS)
+libmini_la_LIBADD = -lpthread
 
-libpunica_la_SOURCES =				\
-papplication.cpp				\
-pcommandline.cpp				\
-pdatetime.cpp					\
-pdir.cpp					\
-pfile.cpp					\
-pfileinfo.cpp					\
-pglobal.cpp					\
-phostaddress.cpp				\
-phttp.cpp					\
-pjson.cpp					\
-plog.cpp					\
-pmongodb.cpp					\
-pprocess.cpp					\
-prand.cpp					\
-psettings.cpp					\
-psocket.cpp					\
-pstring.cpp					\
-psysinfo.cpp					\
-pthread.cpp					\
-pcondition.cpp					\
-pxml.cpp					\
-perror.cpp					\
-puuid.cpp					\
-puuid_p.h					\
-puuid_unix.cpp					\
-phash.cpp					\
-phash_md5.h					\
-phash_md5.c
+libmini_la_SOURCES =				\
+mapplication.cpp				\
+mcommandline.cpp				\
+mdatetime.cpp					\
+mdir.cpp					\
+mfile.cpp					\
+mfileinfo.cpp					\
+mglobal.cpp					\
+mhostaddress.cpp				\
+mhttp.cpp					\
+mjson.cpp					\
+mlog.cpp					\
+mmongodb.cpp					\
+mprocess.cpp					\
+mrand.cpp					\
+msettings.cpp					\
+msocket.cpp					\
+mstring.cpp					\
+msysinfo.cpp					\
+mthread.cpp					\
+mcondition.cpp					\
+mxml.cpp					\
+merror.cpp					\
+muuid.cpp					\
+muuid_p.h					\
+muuid_unix.cpp					\
+mhash.cpp					\
+mhash_md5.h					\
+mhash_md5.c

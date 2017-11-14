@@ -13,14 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini.h>
+#ifndef _MLOG_H_
+#define _MLOG_H_
 
-int main(int argc, char *argv[])
+#include <mini/mcoredef.h>
+
+MINI_BEGIN_NAMESPACE
+
+class MLog
 {
-	/*
-	 * /usr/include/asm-generic/errno-base.h
-	 */
-	int err = EBUSY;
-    posix_assert(err);
-    return 0;
-}
+public:
+    explicit MLog();
+    virtual ~MLog();
+};
+
+MINI_END_NAMESPACE
+
+#define log_init(level)
+#define log_emerg(format, args...)
+#define log_alert(format, args...)
+#define log_crit(format, args...)
+#define log_error(format, args...)
+#define log_warn(format, args...)
+#define log_notice(format, args...)
+#define log_info(format, args...)
+#define log_debug(format, args...)
+
+#endif /* _MLOG_H_ */

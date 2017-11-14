@@ -13,14 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini.h>
+#ifndef _MHASH_H_
+#define _MHASH_H_
 
-int main(int argc, char *argv[])
-{
-	/*
-	 * /usr/include/asm-generic/errno-base.h
-	 */
-	int err = EBUSY;
-    posix_assert(err);
-    return 0;
-}
+#include <mini/mcoredef.h>
+
+MINI_BEGIN_NAMESPACE
+
+std::string md5sum(const std::string &file);
+std::string sha1sum(const std::string &file);
+std::string sha224sum(const std::string &file);
+std::string sha256sum(const std::string &file);
+std::string sha384sum(const std::string &file);
+std::string sha512sum(const std::string &file);
+
+MINI_END_NAMESPACE
+
+#endif /* _MHASH_H_ */

@@ -16,34 +16,34 @@
 # limitations under the License.
 
 include_HEADERS =				\
-punica.h    
+mini.h    
 
-punicadir = $(includedir)/punica
+minidir = $(includedir)/mini
 
-punica_HEADERS =				\
-punica/phttp.h					\
-punica/pglobal.h				\
-punica/psettings.h				\
-punica/pthread.h				\
-punica/plog.h					\
-punica/pxml.h					\
-punica/pfileinfo.h				\
-punica/pstring.h				\
-punica/pmongodb.h				\
-punica/papplication.h				\
-punica/pfile.h					\
-punica/pcoredef.h				\
-punica/pdir.h					\
-punica/psocket.h				\
-punica/prand.h					\
-punica/pcommandline.h				\
-punica/pcondition.h				\
-punica/pdatetime.h				\
-punica/psysinfo.h				\
-punica/pmutex.h					\
-punica/phostaddress.h				\
-punica/pprocess.h				\
-punica/pjson.h					\
-punica/perror.h					\
-punica/puuid.h					\
-punica/phash.h
+mini_HEADERS =					\
+mini/mhttp.h					\
+mini/mglobal.h					\
+mini/msettings.h				\
+mini/mthread.h					\
+mini/mlog.h					\
+mini/mxml.h					\
+mini/mfileinfo.h				\
+mini/mstring.h					\
+mini/mmongodb.h					\
+mini/mapplication.h				\
+mini/mfile.h					\
+mini/mcoredef.h					\
+mini/mdir.h					\
+mini/msocket.h					\
+mini/mrand.h					\
+mini/mcommandline.h				\
+mini/mcondition.h				\
+mini/mdatetime.h				\
+mini/msysinfo.h					\
+mini/mmutex.h					\
+mini/mhostaddress.h				\
+mini/mprocess.h					\
+mini/mjson.h					\
+mini/merror.h					\
+mini/muuid.h					\
+mini/mhash.h

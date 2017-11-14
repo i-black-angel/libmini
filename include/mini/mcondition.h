@@ -13,14 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini.h>
+#ifndef _MCONDITION_H_
+#define _MCONDITION_H_
 
-int main(int argc, char *argv[])
+#include <mini/mcoredef.h>
+#include <mini/mmutex.h>
+#include <limits.h>
+
+MINI_BEGIN_NAMESPACE
+
+class PMondition
 {
-	/*
-	 * /usr/include/asm-generic/errno-base.h
-	 */
-	int err = EBUSY;
-    posix_assert(err);
-    return 0;
-}
+public:
+    /*explicit */PMondition();
+    virtual ~PMondition();
+
+	bool wait(PMutex &mutex, unsigned long timeout = ULONG_MAX);
+
+	void wake();
+	void wakeAll();
+
+private:
+	M_DISABLE_COPY(PMondition)
+
+#ifdef M_OS_WIN
+	HANDLE _cond;
+#else
+	pthread_cond_t _cond;
+#endif /* M_OS_WIN */
+};
+
+MINI_END_NAMESPACE
+
+#endif /* _MCONDITION_H_ */
