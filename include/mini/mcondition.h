@@ -22,19 +22,19 @@
 
 MINI_BEGIN_NAMESPACE
 
-class PMondition
+class MCondition
 {
 public:
-    /*explicit */PMondition();
-    virtual ~PMondition();
+    /*explicit */MCondition();
+    virtual ~MCondition();
 
-	bool wait(PMutex &mutex, unsigned long timeout = ULONG_MAX);
+	bool wait(MMutex &mutex, unsigned long timeout = ULONG_MAX);
 
 	void wake();
 	void wakeAll();
 
 private:
-	M_DISABLE_COPY(PMondition)
+	M_DISABLE_COPY(MCondition)
 
 #ifdef M_OS_WIN
 	HANDLE _cond;

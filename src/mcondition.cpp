@@ -27,7 +27,7 @@ MCondition::~MCondition()
 	pthread_cond_destroy(&_cond);
 }
 
-bool MCondition::wait(PMutex &mutex, unsigned long timeout)
+bool MCondition::wait(MMutex &mutex, unsigned long timeout)
 {
 	int code = 0;
 	if (timeout != ULONG_MAX) {

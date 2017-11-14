@@ -27,7 +27,7 @@ public:
     MFileInfo();
 	MFileInfo(const std::string &file);
 	// MFileInfo(const MFile &file);
-	// MFileInfo(const PDir &dir, const std::string &file);
+	// MFileInfo(const MDir &dir, const std::string &file);
 	MFileInfo(const MFileInfo &fileinfo);
     virtual ~MFileInfo();
 
@@ -37,7 +37,7 @@ public:
 
 	void setFile(const std::string &file);
 	// void setFile(const MFile &file);
-	// void setFile(const PDir &dir, const std::string &file);
+	// void setFile(const MDir &dir, const std::string &file);
 	bool exists() const;
 	static bool exists(const std::string &file);
 	// void refresh();
@@ -88,9 +88,9 @@ public:
 
 	int64_t size() const;
 
-	PDateTime created() const;
-	PDateTime lastModified() const;
-	PDateTime lastRead() const;
+	MDateTime created() const;
+	MDateTime lastModified() const;
+	MDateTime lastRead() const;
 private:
 	std::string _file;
 };

@@ -50,11 +50,11 @@ MSocket::~MSocket()
 
 bool MSocket::bind(uint16_t port)
 {
-	PHostAddress address(PHostAddress::Any, port);
+	MHostAddress address(MHostAddress::Any, port);
 	return bind(address);
 }
 
-bool MSocket::bind(const PHostAddress &address)
+bool MSocket::bind(const MHostAddress &address)
 {
 	if (_sockfd < 0) return false;
 	
@@ -96,7 +96,7 @@ MUdpSocket::~MUdpSocket()
 // 	return ::sendto(_sockfd, data, len, 0, (const sockaddr *)&addr, sizeof(addr));
 // }
 
-int64_t MUdpSocket::sendto(const uint8_t *data, size_t len, const PHostAddress &host)
+int64_t MUdpSocket::sendto(const uint8_t *data, size_t len, const MHostAddress &host)
 {
 	sockaddr_in addr;
 	addr.sin_family = AF_INET;
@@ -108,10 +108,10 @@ int64_t MUdpSocket::sendto(const uint8_t *data, size_t len, const PHostAddress &
 
 int64_t MUdpSocket::sendto(const uint8_t *data, size_t len, const std::string &address, uint16_t port)
 {
-	return sendto(data, len, PHostAddress(address, port));
+	return sendto(data, len, MHostAddress(address, port));
 }
 
-int64_t MUdpSocket::recvfrom(uint8_t *data, size_t len, PHostAddress &host)
+int64_t MUdpSocket::recvfrom(uint8_t *data, size_t len, MHostAddress &host)
 {
 	sockaddr_in addr;
 	socklen_t slen = sizeof(addr);
@@ -177,7 +177,7 @@ void MUdpServer::run()
 	if (!_init) return;
 	
 	size_t len = 0;
-	PHostAddress address;
+	MHostAddress address;
 	int fd = _socket.sockfd();
 	int retval = 0;
 	
@@ -214,7 +214,7 @@ void MUdpServer::stop()
 	MThread::stop();
 }
 
-void MUdpServer::process(const uint8_t *data, size_t len, const PHostAddress &host)
+void MUdpServer::process(const uint8_t *data, size_t len, const MHostAddress &host)
 {
 }
 

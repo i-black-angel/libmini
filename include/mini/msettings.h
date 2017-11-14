@@ -24,7 +24,7 @@ class MSettings
 {
 public:
     explicit MSettings();
-    virtual ~PSettings();
+    virtual ~MSettings();
 };
 
 MINI_END_NAMESPACE

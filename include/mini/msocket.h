@@ -35,16 +35,16 @@ public:
     explicit MSocket(SocketType socketType);
     virtual ~MSocket();
 
-	bool bind(const PHostAddress &address);
+	bool bind(const MHostAddress &address);
 	bool bind(uint16_t port);
 	bool connect(const std::string &address, uint16_t port, int msecs = 30000);
-	bool connect(const PHostAddress &address, int msec = 30000);
+	bool connect(const MHostAddress &address, int msec = 30000);
 	void close();
 	
 	uint16_t localPort() const;
-	PHostAddress localAddress() const;
+	MHostAddress localAddress() const;
 	uint16_t peerPort() const;
-	PHostAddress peerAddress() const;
+	MHostAddress peerAddress() const;
 	std::string peerName() const;
 	SocketType socketType() const;
 
@@ -76,10 +76,10 @@ public:
     virtual ~MUdpSocket();
 
 	// int64_t sendto(const uint8_t *data, size_t len);
-	int64_t sendto(const uint8_t *data, size_t len, const PHostAddress &host);
+	int64_t sendto(const uint8_t *data, size_t len, const MHostAddress &host);
 	int64_t sendto(const uint8_t *data, size_t len, const std::string &address, uint16_t port);
 
-	int64_t recvfrom(uint8_t *data, size_t len, PHostAddress &address);
+	int64_t recvfrom(uint8_t *data, size_t len, MHostAddress &address);
 };
 
 class MUdpServer : public MThread
@@ -95,7 +95,7 @@ protected:
 	
 	void run();
 	
-	virtual void process(const uint8_t *data, size_t len, const mini::PHostAddress &host);
+	virtual void process(const uint8_t *data, size_t len, const mini::MHostAddress &host);
 
 	MUdpSocket _socket;
 	uint8_t *_buf;

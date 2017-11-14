@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini/pthread.h>
+#include <mini/mthread.h>
 
 #ifdef M_OS_WIN
 
