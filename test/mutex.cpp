@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 	minion::MMutex mutex;
 	mutex.lock();
 	mutex.unlock();
-	minion::MMutexLocker locker(mutex);
+	minion::MScopedLock locker(mutex);
 	std::cout << mutex.trylock() << std::endl;
     return 0;
 }

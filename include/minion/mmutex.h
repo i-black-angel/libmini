@@ -111,22 +111,22 @@ private:
 #endif	/* M_OS_LINUX */
 
 
-class MMutexLocker
+class MScopedLock
 {
 public:
-    explicit MMutexLocker(MMutex &mutex)
+    explicit MScopedLock(MMutex &mutex)
 		: _mutex(mutex)
 		{
 			_mutex.lock();
 		}
 	
-    ~MMutexLocker()
+    ~MScopedLock()
 		{
 			_mutex.unlock();
 		}
 	
 private:
-	M_DISABLE_COPY(MMutexLocker)
+	M_DISABLE_COPY(MScopedLock)
 	
 	MMutex &_mutex;
 };

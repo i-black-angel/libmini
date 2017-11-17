@@ -20,7 +20,7 @@ minion::MMutex mutex_;
 
 void *threadCallback(void *pvoid)
 {
-	minion::MMutexLocker locker(mutex_);
+	minion::MScopedLock locker(mutex_);
 	std::cout << pthread_self() << std::endl; 
 	cond_.wait(mutex_);
 	std::cout << "wakeup " << pthread_self() << std::endl;
