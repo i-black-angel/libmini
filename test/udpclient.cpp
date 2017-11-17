@@ -21,19 +21,11 @@ int main(int argc, char *argv[])
 
 	minion::MUdpSocket udpSocket;
 	minion::MHostAddress addr("192.168.7.47", 8309);
-	std::cout << addr << std::endl;
-
-	std::cout << addr.ipv4() << std::endl;
-	printf("%08x\n", addr.ipv4());
 	
 	ssize_t len = udpSocket.sendto((const uint8_t *)msg, strlen(msg) + 1, addr);
-	sleep(1);
-
-	const char *dealing = "M^0001^2^ssq,2017105,101,1,2,1,XSLPT-20170828103056101729,00200001,2017-08-28 10:30,1";
-	len = udpSocket.sendto((const uint8_t *)dealing, strlen(dealing) + 1, addr);
-	sleep(1);
-	
+	std::cout << "len = " << len << std::endl;
+	std::cout << "sendto " << std::endl;
+	std::cout << addr << std::endl;
+	std::cout << msg << std::endl;
     return 0;
 }
-
-
