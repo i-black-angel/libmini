@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini/mhostaddress.h>
+#include <minion/mhostaddress.h>
 
 #ifdef _MSC_VER
 # pragma warning (push)
 # pragma warning (disable: 4996)
 #endif
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 MHostAddress::MHostAddress()
 {
@@ -200,7 +200,7 @@ std::istream &operator>>(std::istream &in, MHostAddress &address)
 	return in;
 }
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE
 
 #ifdef _MSC_VER
 # pragma warning (pop)

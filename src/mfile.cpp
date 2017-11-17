@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini/mfile.h>
+#include <minion/mfile.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 MFile::MFile()
 {
@@ -25,4 +25,4 @@ MFile::~MFile()
 {
 }
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE

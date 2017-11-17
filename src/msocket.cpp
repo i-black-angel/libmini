@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini/msocket.h>
-#include <mini/merror.h>
+#include <minion/msocket.h>
+#include <minion/merror.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 MSocket::MSocket(SocketType socketType)
 {
@@ -119,7 +119,7 @@ int64_t MUdpSocket::recvfrom(uint8_t *data, size_t len, MHostAddress &host)
 	ssize_t rlen = ::recvfrom(_sockfd, data, len, 0, (sockaddr *)&addr, &slen);
 
 	if (rlen <= 0) {
-		std::cerr << mini::error() << std::endl;
+		std::cerr << minion::error() << std::endl;
 		return rlen;
 	}
 	
@@ -218,4 +218,4 @@ void MUdpServer::process(const uint8_t *data, size_t len, const MHostAddress &ho
 {
 }
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE

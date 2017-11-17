@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini/mprocess.h>
+#include <minion/mprocess.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 MProcess::MProcess()
 {
@@ -25,4 +25,4 @@ MProcess::~MProcess()
 {
 }
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE

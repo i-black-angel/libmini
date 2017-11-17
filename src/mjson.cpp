@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini/mjson.h>
+#include <minion/mjson.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 MJson::MJson()
 {
@@ -25,4 +25,4 @@ MJson::~MJson()
 {
 }
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE

@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini/mcondition.h>
+#include <minion/mcondition.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 MCondition::MCondition()
 {
@@ -56,4 +56,4 @@ void MCondition::wakeAll()
 	pthread_cond_broadcast(&_cond);
 }
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE

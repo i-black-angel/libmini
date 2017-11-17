@@ -16,9 +16,9 @@
 #ifndef _MCOMMANDLINE_H_
 #define _MCOMMANDLINE_H_
 
-#include <mini/mcoredef.h>
+#include <minion/mcoredef.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 class MCommandLineOption
 {
@@ -34,6 +34,6 @@ public:
     virtual ~MCommandLineParser();
 };
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE
 
 #endif /* _MCOMMANDLINE_H_ */

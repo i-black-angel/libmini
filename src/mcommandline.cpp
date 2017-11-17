@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini/mcommandline.h>
+#include <minion/mcommandline.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 MCommandLineOption::MCommandLineOption()
 {
@@ -33,4 +33,4 @@ MCommandLineParser::~MCommandLineParser()
 {
 }
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE

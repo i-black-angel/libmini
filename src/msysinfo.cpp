@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini/msysinfo.h>
+#include <minion/msysinfo.h>
 
 #ifdef M_OS_LINUX
 /* GNU's uptime.
@@ -90,7 +90,7 @@ int uptime(double * uptime_secs, double * idle_secs) {
 }
 #endif
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 MSysinfo::MSysinfo()
 {
@@ -168,4 +168,4 @@ std::string MSysinfo::since()
 {
 }
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE

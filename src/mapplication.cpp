@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini/mapplication.h>
+#include <minion/mapplication.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 MApplication::MApplication(int argc, char *argv[])
 {
@@ -64,4 +64,4 @@ bool MApplication::alreadyRunning(const std::string &lockfile)
 {
 }
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE

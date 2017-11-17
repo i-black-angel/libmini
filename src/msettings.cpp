@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini/msettings.h>
+#include <minion/msettings.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 MSettings::MSettings()
 {
@@ -25,4 +25,4 @@ MSettings::~MSettings()
 {
 }
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE

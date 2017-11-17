@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini.h>
+#include <minion.h>
 
 int main(int argc, char *argv[])
 {
-	mini::MFileInfo fileinfo(argv[0]);
-	mini::MFileInfo cf(fileinfo);
+	minion::MFileInfo fileinfo(argv[0]);
+	minion::MFileInfo cf(fileinfo);
 	std::cout << fileinfo.filePath() << std::endl;
 
 	std::cout << fileinfo.readLink() << std::endl;
@@ -33,28 +33,28 @@ int main(int argc, char *argv[])
 	std::cout << cf.suffix() << std::endl;
 	std::cout << cf.dirname() << std::endl;
 
-	mini::MFileInfo test(cf.dirname());
+	minion::MFileInfo test(cf.dirname());
 	std::cout << test.basename() << std::endl;
 	std::cout << test.filename() << std::endl;
 	std::cout << test.suffix() << std::endl;
 
-	mini::MFileInfo root("/");
+	minion::MFileInfo root("/");
 	std::cout << root.basename() << std::endl;
 	std::cout << root.filename() << std::endl;
 	std::cout << root.suffix() << std::endl;
 	std::cout << root.dirname() << std::endl;
 
-	mini::MFileInfo file("music.mp3");
+	minion::MFileInfo file("music.mp3");
 	std::string ext = file.suffix(); // ext = "mp3"
 	std::cout << file.basename() << std::endl;
 	std::cout << file.filename() << std::endl;
 	std::cout << file.suffix() << std::endl;
 	std::cout << file.dirname() << std::endl;
 
-	mini::MFileInfo rootfile("/etc/ts.conf");
+	minion::MFileInfo rootfile("/etc/ts.conf");
 	std::cout << rootfile.exists() << std::endl;
 	std::cout << rootfile.isWritable() << std::endl;
 
-	std::cout << mini::MFileInfo::exists("/etc/resolv.conf") << std::endl;
+	std::cout << minion::MFileInfo::exists("/etc/resolv.conf") << std::endl;
     return 0;
 }

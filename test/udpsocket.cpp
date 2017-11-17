@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini.h>
+#include <minion.h>
 
-class UdpServer : public mini::MUdpServer
+class UdpServer : public minion::MUdpServer
 {
 public:
     explicit UdpServer() { }
     virtual ~UdpServer() { }
 protected:
-	virtual void process(const uint8_t *data, size_t len, const mini::MHostAddress &host)
+	virtual void process(const uint8_t *data, size_t len, const minion::MHostAddress &host)
 		{
 			for (int m = 0; m < len; ++m) {
 				printf ("%02X ", data[m]);
@@ -36,8 +36,8 @@ int main(int argc, char *argv[])
 {
 	const uint8_t data[] = {0x00, 0x01, 0x02, 0x03};
 
-	// mini::MUdpSocket udpSocket;
-	// mini::MHostAddress addr("localhost", 7753);
+	// minion::MUdpSocket udpSocket;
+	// minion::MHostAddress addr("localhost", 7753);
 
 	// ssize_t len = udpSocket.sendto(data, sizeof(data), addr);
 	// std::cout << "send len: " << len << std::endl;

@@ -16,9 +16,9 @@
 #ifndef _MAPPLICATION_H_
 #define _MAPPLICATION_H_
 
-#include <mini/mcoredef.h>
+#include <minion/mcoredef.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 class MApplication
 {
@@ -42,6 +42,6 @@ private:
 	std::string _applicationVersion;
 };
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE
 
 #endif /* _MAPPLICATION_H_ */

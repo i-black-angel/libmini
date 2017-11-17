@@ -16,11 +16,11 @@
 #ifndef _MCONDITION_H_
 #define _MCONDITION_H_
 
-#include <mini/mcoredef.h>
-#include <mini/mmutex.h>
+#include <minion/mcoredef.h>
+#include <minion/mmutex.h>
 #include <limits.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 class MCondition
 {
@@ -43,6 +43,6 @@ private:
 #endif /* M_OS_WIN */
 };
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE
 
 #endif /* _MCONDITION_H_ */

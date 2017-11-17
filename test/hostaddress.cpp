@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini.h>
+#include <minion.h>
 
 int main(int argc, char *argv[])
 {
@@ -27,13 +27,13 @@ int main(int argc, char *argv[])
 #endif
 	
     std::cout << "MHostAddress test" << std::endl;
-    mini::MHostAddress addr1;
-    mini::MHostAddress addr2(mini::MHostAddress::Null);
-    mini::MHostAddress addr3(mini::MHostAddress::Broadcast);
-    mini::MHostAddress addr4(mini::MHostAddress::LocalHost);
-    mini::MHostAddress addr5 = mini::MHostAddress::Any;
-    mini::MHostAddress addr6(0x0c224433);
-    mini::MHostAddress addr7("192.168.10.70");
+    minion::MHostAddress addr1;
+    minion::MHostAddress addr2(minion::MHostAddress::Null);
+    minion::MHostAddress addr3(minion::MHostAddress::Broadcast);
+    minion::MHostAddress addr4(minion::MHostAddress::LocalHost);
+    minion::MHostAddress addr5 = minion::MHostAddress::Any;
+    minion::MHostAddress addr6(0x0c224433);
+    minion::MHostAddress addr7("192.168.10.70");
 
     std::cout << addr1.toString() << std::endl;
     std::cout << addr2.toString() << std::endl;
@@ -43,11 +43,11 @@ int main(int argc, char *argv[])
     std::cout << addr6.toString() << std::endl;    
     std::cout << addr7.toString() << std::endl;    
 
-    if (addr1 == mini::MHostAddress::Broadcast) {
+    if (addr1 == minion::MHostAddress::Broadcast) {
         std::cout << "addr1 is Any" << std::endl;
     }
 
-    mini::MHostAddress addr8("www.sina.com", 8843);
+    minion::MHostAddress addr8("www.sina.com", 8843);
 
     std::cout << addr8.toString() << std::endl;
     std::cout << addr8 << std::endl;

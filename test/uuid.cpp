@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini.h>
+#include <minion.h>
 #include "../src/muuid_p.h"
 
 int main(int argc, char *argv[])
 {
 	for (size_t i = 0; i < 10; ++i) {
-		std::cout << mini::uuidgen() << std::endl;
+		std::cout << minion::uuidgen() << std::endl;
 		usleep(30000);
 	}
 

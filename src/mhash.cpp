@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini/mhash.h>
-#include <mini/mlog.h>
+#include <minion/mhash.h>
+#include <minion/mlog.h>
 #include "mhash_md5.h"
 
 /* Return PTR, aligned upward to the next multiple of ALIGNMENT.
@@ -29,7 +29,7 @@ ptr_align (void const *ptr, size_t alignment)
 	return (void *) (p1 - (size_t) p1 % alignment);
 }
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 std::string md5sum(const std::string &file)
 {
@@ -97,4 +97,4 @@ std::string sha512sum(const std::string &file)
 {
 }
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE

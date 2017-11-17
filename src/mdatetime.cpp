@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini/mdatetime.h>
+#include <minion/mdatetime.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 std::string now()
 {
@@ -150,4 +150,4 @@ std::ostream &operator<<(std::ostream &out, const MDateTime &datetime)
 	return out;
 }
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE

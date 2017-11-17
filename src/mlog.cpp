@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini/mlog.h>
+#include <minion/mlog.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 MLog::MLog()
 {
@@ -25,4 +25,4 @@ MLog::~MLog()
 {
 }
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE

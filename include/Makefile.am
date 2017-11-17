@@ -16,34 +16,34 @@
 # limitations under the License.
 
 include_HEADERS =				\
-mini.h    
+minion.h    
 
-minidir = $(includedir)/mini
+miniondir = $(includedir)/minion
 
-mini_HEADERS =					\
-mini/mhttp.h					\
-mini/mglobal.h					\
-mini/msettings.h				\
-mini/mthread.h					\
-mini/mlog.h					\
-mini/mxml.h					\
-mini/mfileinfo.h				\
-mini/mstring.h					\
-mini/mmongodb.h					\
-mini/mapplication.h				\
-mini/mfile.h					\
-mini/mcoredef.h					\
-mini/mdir.h					\
-mini/msocket.h					\
-mini/mrand.h					\
-mini/mcommandline.h				\
-mini/mcondition.h				\
-mini/mdatetime.h				\
-mini/msysinfo.h					\
-mini/mmutex.h					\
-mini/mhostaddress.h				\
-mini/mprocess.h					\
-mini/mjson.h					\
-mini/merror.h					\
-mini/muuid.h					\
-mini/mhash.h
+minion_HEADERS =				\
+minion/mhttp.h					\
+minion/mglobal.h				\
+minion/msettings.h				\
+minion/mthread.h				\
+minion/mlog.h					\
+minion/mxml.h					\
+minion/mfileinfo.h				\
+minion/mstring.h				\
+minion/mmongodb.h				\
+minion/mapplication.h				\
+minion/mfile.h					\
+minion/mcoredef.h				\
+minion/mdir.h					\
+minion/msocket.h				\
+minion/mrand.h					\
+minion/mcommandline.h				\
+minion/mcondition.h				\
+minion/mdatetime.h				\
+minion/msysinfo.h				\
+minion/mmutex.h					\
+minion/mhostaddress.h				\
+minion/mprocess.h				\
+minion/mjson.h					\
+minion/merror.h					\
+minion/muuid.h					\
+minion/mhash.h

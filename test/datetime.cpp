@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini.h>
+#include <minion.h>
 
 int main(int argc, char *argv[])
 {
-    std::cout << mini::now() << std::endl;
-	mini::MDateTime datetime = mini::MDateTime::currentDateTime();
+    std::cout << minion::now() << std::endl;
+	minion::MDateTime datetime = minion::MDateTime::currentDateTime();
 	std::cout << datetime.year() << std::endl;
 	std::cout << datetime.dayOfWeek() << std::endl;
 	std::cout << datetime.dayOfYear() << std::endl;

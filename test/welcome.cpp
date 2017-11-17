@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini.h>
+#include <minion.h>
 
 int main(int argc, char *argv[])
 {
-	std::cout << mini::welcome() << std::endl;
+	std::cout << minion::welcome() << std::endl;
     return 0;
 }

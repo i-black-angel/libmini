@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini/mhttp.h>
+#include <minion/mhttp.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 MHttp::MHttp()
 {
@@ -41,4 +41,4 @@ MHttpClient::~MHttpClient()
 {
 }
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE

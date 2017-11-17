@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini/mfileinfo.h>
+#include <minion/mfileinfo.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 static bool __access(const std::string &__name, int __type)
 {
@@ -293,4 +293,4 @@ MDateTime MFileInfo::lastRead() const
 {
 }
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE

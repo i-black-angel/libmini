@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mini/mmongodb.h>
+#include <minion/mmongodb.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 MMongoDB::MMongoDB()
 {
@@ -25,4 +25,4 @@ MMongoDB::~MMongoDB()
 {
 }
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE
