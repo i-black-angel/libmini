@@ -16,9 +16,9 @@
 #ifndef _MXML_H_
 #define _MXML_H_
 
-#include <mini/mcoredef.h>
+#include <minion/mcoredef.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 class MXml
 {
@@ -27,6 +27,6 @@ public:
     virtual ~MXml();
 };
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE
 
 #endif /* _MXML_H_ */

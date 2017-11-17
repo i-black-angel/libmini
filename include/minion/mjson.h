@@ -16,9 +16,9 @@
 #ifndef _MJSON_H_
 #define _MJSON_H_
 
-#include <mini/mcoredef.h>
+#include <minion/mcoredef.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 class MJson
 {
@@ -27,6 +27,6 @@ public:
     virtual ~MJson();
 };
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE
 
 #endif /* _MJSON_H_ */

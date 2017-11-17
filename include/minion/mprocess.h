@@ -16,9 +16,9 @@
 #ifndef _MPROCESS_H_
 #define _MPROCESS_H_
 
-#include <mini/mcoredef.h>
+#include <minion/mcoredef.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 class MProcess
 {
@@ -34,6 +34,6 @@ public:
 	static std::vector<std::string> systemEnvironment();
 };
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE
 
 #endif /* _MPROCESS_H_ */

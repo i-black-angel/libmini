@@ -16,11 +16,11 @@
 #ifndef _MSOCKET_H_
 #define _MSOCKET_H_
 
-#include <mini/mcoredef.h>
-#include <mini/mhostaddress.h>
-#include <mini/mthread.h>
+#include <minion/mcoredef.h>
+#include <minion/mhostaddress.h>
+#include <minion/mthread.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 class MSocket
 {
@@ -95,7 +95,7 @@ protected:
 	
 	void run();
 	
-	virtual void process(const uint8_t *data, size_t len, const mini::MHostAddress &host);
+	virtual void process(const uint8_t *data, size_t len, const minion::MHostAddress &host);
 
 	MUdpSocket _socket;
 	uint8_t *_buf;
@@ -108,6 +108,6 @@ protected:
 	int _maxfds;
 };
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE
 
 #endif /* _MSOCKET_H_ */

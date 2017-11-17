@@ -16,10 +16,10 @@
 #ifndef _MFILEINFO_H_
 #define _MFILEINFO_H_
 
-#include <mini/mcoredef.h>
-#include <mini/mdatetime.h>
+#include <minion/mcoredef.h>
+#include <minion/mdatetime.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 class MFileInfo
 {
@@ -95,6 +95,6 @@ private:
 	std::string _file;
 };
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE
 
 #endif /* _MFILEINFO_H_ */

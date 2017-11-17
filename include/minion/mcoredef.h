@@ -130,13 +130,13 @@ typedef unsigned char byte;
 
 #ifdef __cplusplus
 
-# define MINI_BEGIN_NAMESPACE namespace mini {
-# define MINI_END_NAMESPACE }
+# define MINION_BEGIN_NAMESPACE namespace minion {
+# define MINION_END_NAMESPACE }
 
 #else /* __cplusplus */
 
-# define MINI_BEGIN_NAMESPACE 
-# define MINI_END_NAMESPACE
+# define MINION_BEGIN_NAMESPACE 
+# define MINION_END_NAMESPACE
 
 #endif /* __cplusplus */
 

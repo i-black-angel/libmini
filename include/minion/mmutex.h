@@ -16,10 +16,10 @@
 #ifndef _MMUTEX_H_
 #define _MMUTEX_H_
 
-#include <mini/mcoredef.h>
-#include <mini/mglobal.h>
+#include <minion/mcoredef.h>
+#include <minion/mglobal.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 #ifdef M_OS_WIN /* M_OS_WIN */
 
@@ -131,6 +131,6 @@ private:
 	MMutex &_mutex;
 };
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE
 
 #endif /* _MMUTEX_H_ */

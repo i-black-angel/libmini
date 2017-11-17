@@ -16,9 +16,9 @@
 #ifndef _MSETTINGS_H_
 #define _MSETTINGS_H_
 
-#include <mini/mcoredef.h>
+#include <minion/mcoredef.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 class MSettings
 {
@@ -27,6 +27,6 @@ public:
     virtual ~MSettings();
 };
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE
 
 #endif /* _MSETTINGS_H_ */

@@ -16,9 +16,9 @@
 #ifndef _MDIR_H_
 #define _MDIR_H_
 
-#include <mini/mcoredef.h>
+#include <minion/mcoredef.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 class MDir
 {
@@ -27,6 +27,6 @@ public:
     virtual ~MDir();
 };
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE
 
 #endif /* _MDIR_H_ */

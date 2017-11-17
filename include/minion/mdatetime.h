@@ -16,9 +16,9 @@
 #ifndef _MDATETIME_H_
 #define _MDATETIME_H_
 
-#include <mini/mcoredef.h>
+#include <minion/mcoredef.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 std::string now();
 
@@ -129,6 +129,6 @@ private:
 std::ostream &operator<<(std::ostream &, const MDateTime &);
 // std::istream &operator>>(std::istream &, MHostAddress &);
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE
 
 #endif /* _MDATETIME_H_ */

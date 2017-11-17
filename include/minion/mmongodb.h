@@ -16,9 +16,9 @@
 #ifndef _MMONGODB_H_
 #define _MMONGODB_H_
 
-#include <mini/mcoredef.h>
+#include <minion/mcoredef.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 class MMongoDB
 {
@@ -27,6 +27,6 @@ public:
     virtual ~MMongoDB();
 };
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE
 
 #endif /* _MMONGODB_H_ */

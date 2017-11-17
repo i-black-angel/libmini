@@ -16,9 +16,9 @@
 #ifndef _MHOSTADDRESS_H_
 #define _MHOSTADDRESS_H_
 
-#include <mini/mcoredef.h>
+#include <minion/mcoredef.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 class MHostAddress
 {
@@ -63,6 +63,6 @@ private:
 std::ostream &operator<<(std::ostream &, const MHostAddress &);
 std::istream &operator>>(std::istream &, MHostAddress &);
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE
 
 #endif /* _MHOSTADDRESS_H_ */

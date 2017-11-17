@@ -16,9 +16,9 @@
 #ifndef _MLOG_H_
 #define _MLOG_H_
 
-#include <mini/mcoredef.h>
+#include <minion/mcoredef.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 class MLog
 {
@@ -27,7 +27,7 @@ public:
     virtual ~MLog();
 };
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE
 
 #define log_init(level)
 #define log_emerg(format, args...)

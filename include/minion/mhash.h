@@ -16,9 +16,9 @@
 #ifndef _MHASH_H_
 #define _MHASH_H_
 
-#include <mini/mcoredef.h>
+#include <minion/mcoredef.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 std::string md5sum(const std::string &file);
 std::string sha1sum(const std::string &file);
@@ -27,6 +27,6 @@ std::string sha256sum(const std::string &file);
 std::string sha384sum(const std::string &file);
 std::string sha512sum(const std::string &file);
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE
 
 #endif /* _MHASH_H_ */

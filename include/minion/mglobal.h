@@ -16,14 +16,14 @@
 #ifndef _MGLOBAL_H_
 #define _MGLOBAL_H_
 
-#include <mini/mcoredef.h>
+#include <minion/mcoredef.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 const char *welcome();
 void abort(const char *errmsg);
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE
 
 #ifdef M_OS_WIN
 
@@ -39,7 +39,7 @@ void gettimeofday (struct timeval *tv, void *dummy);
         if (unlikely (x)) {												\
             const char *errstr = strerror (x);							\
             fprintf (stderr, "%s (%s:%d)\n", errstr, __FILE__, __LINE__); \
-            mini::abort (errstr);										\
+            minion::abort (errstr);										\
         }																\
     } while (false)
 

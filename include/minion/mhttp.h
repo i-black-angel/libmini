@@ -16,9 +16,9 @@
 #ifndef _MHTTP_H_
 #define _MHTTP_H_
 
-#include <mini/mcoredef.h>
+#include <minion/mcoredef.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 class MHttp
 {
@@ -41,6 +41,6 @@ public:
     virtual ~MHttpClient();
 };
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE
 
 #endif /* _MHTTP_H_ */

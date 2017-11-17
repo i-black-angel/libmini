@@ -16,18 +16,18 @@
 #ifndef _MUUID_H_
 #define _MUUID_H_
 
-#include <mini/mcoredef.h>
+#include <minion/mcoredef.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 std::string uuidgen();
 
 namespace uuid {
 
-	// mini::uuidgen() is a convenience interface by libmini provided
+	// minion::uuidgen() is a convenience interface by libminion provided
 	std::string generate();
 }
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE
 
 #endif /* _MUUID_H_ */

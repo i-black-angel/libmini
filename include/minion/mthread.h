@@ -16,9 +16,9 @@
 #ifndef _MTHREAD_H_
 #define _MTHREAD_H_
 
-#include <mini/mcoredef.h>
+#include <minion/mcoredef.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 class MThread
 {
@@ -75,6 +75,6 @@ private:
 	M_DISABLE_COPY(MThread)
 };
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE
 
 #endif /* _MTHREAD_H_ */

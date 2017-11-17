@@ -16,9 +16,9 @@
 #ifndef _MSYSINFO_H_
 #define _MSYSINFO_H_
 
-#include <mini/mcoredef.h>
+#include <minion/mcoredef.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 class MSysinfo
 {
@@ -50,6 +50,6 @@ public:
 	static std::string since();	// System up since, yyyy-mm-dd HH:MM:SS
 };
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE
 
 #endif /* _MSYSINFO_H_ */

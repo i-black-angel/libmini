@@ -16,9 +16,9 @@
 #ifndef _MFILE_H_
 #define _MFILE_H_
 
-#include <mini/mcoredef.h>
+#include <minion/mcoredef.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 class MFile
 {
@@ -28,6 +28,6 @@ public:
     virtual ~MFile();
 };
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE
 
 #endif /* _MFILE_H_ */

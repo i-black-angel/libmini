@@ -16,9 +16,9 @@
 #ifndef _MSTRING_H_
 #define _MSTRING_H_
 
-#include <mini/mcoredef.h>
+#include <minion/mcoredef.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 class MString : public std::string
 {
@@ -27,6 +27,6 @@ public:
     virtual ~MString();
 };
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE
 
 #endif /* _MSTRING_H_ */

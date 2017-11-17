@@ -16,11 +16,11 @@
 #ifndef _MEVENT_H_
 #define _MEVENT_H_
 
-#include <mini/mcoredef.h>
-#include <mini/mcondition.h>
-#include <mini/mmutex.h>
+#include <minion/mcoredef.h>
+#include <minion/mcondition.h>
+#include <minion/mmutex.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 class MEvent
 {
@@ -46,6 +46,6 @@ private:
 };
 
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE
 
 #endif /* _MEVENT_H_ */

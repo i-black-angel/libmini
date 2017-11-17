@@ -16,9 +16,9 @@
 #ifndef _MRAND_H_
 #define _MRAND_H_
 
-#include <mini/mcoredef.h>
+#include <minion/mcoredef.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 class MRand
 {
@@ -29,6 +29,6 @@ public:
 	static double range(double low, double high);
 };
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE
 
 #endif /* _MRAND_H_ */

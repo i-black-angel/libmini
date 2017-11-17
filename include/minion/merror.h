@@ -16,13 +16,13 @@
 #ifndef _MERROR_H_
 #define _MERROR_H_
 
-#include <mini/mcoredef.h>
+#include <minion/mcoredef.h>
 
-MINI_BEGIN_NAMESPACE
+MINION_BEGIN_NAMESPACE
 
 int errnum();
-std::string error(int num = mini::errnum());
+std::string error(int num = minion::errnum());
 
-MINI_END_NAMESPACE
+MINION_END_NAMESPACE
 
 #endif /* _MERROR_H_ */
