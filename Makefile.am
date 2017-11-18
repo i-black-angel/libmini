@@ -17,7 +17,7 @@
 
 SUBDIRS=src include test
 ACLOCAL_AMFLAGS=-I m4
-DISTCLEANFILES=libmini.pc
+DISTCLEANFILES=libminion.pc
 
 pkgconfigdir=$(libdir)/pkgconfig
-pkgconfig_DATA=libmini.pc
+pkgconfig_DATA=libminion.pc

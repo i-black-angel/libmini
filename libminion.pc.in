@@ -3,8 +3,8 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 
-Name: libmini
-Description: C API for libmini
+Name: libminion
+Description: C API for libminion
 Version: @VERSION@
-Libs: -L${libdir} -lmini
+Libs: -L${libdir} -lminion
 Cflags: -I${includedir}
