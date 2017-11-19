@@ -22,21 +22,42 @@ MINION_BEGIN_NAMESPACE
 
 class MLog
 {
+	M_SINGLETON_DEFINED(MLog)
 public:
-    explicit MLog();
-    virtual ~MLog();
+	enum Category {
+		kEmerg = 0,
+		kAlert,
+		kCrit,
+		kError,
+		kWarn,
+		kNotice,
+		kInfo,
+		kDebug
+	};
+
+	void log(const std::string &file, const std::string &func,
+			  uint32_t line, int level,
+			  const char *format, ...);
 };
 
 MINION_END_NAMESPACE
 
 #define log_init(level)
-#define log_emerg(format, args...)
-#define log_alert(format, args...)
-#define log_crit(format, args...)
-#define log_error(format, args...)
-#define log_warn(format, args...)
-#define log_notice(format, args...)
-#define log_info(format, args...)
-#define log_debug(format, args...)
+#define log_emerg(format, args...) minion::MLog::instance()->log(__FILE__, __func__, __LINE__, \
+																 minion::MLog::kEmerg, format, ##args)
+#define log_alert(format, args...) minion::MLog::instance()->log(__FILE__, __func__, __LINE__, \
+																 minion::MLog::kAlert, format, ##args)
+#define log_crit(format, args...) minion::MLog::instance()->log(__FILE__, __func__, __LINE__, \
+																 minion::MLog::kCrit, format, ##args)
+#define log_error(format, args...) minion::MLog::instance()->log(__FILE__, __func__, __LINE__, \
+																 minion::MLog::kError, format, ##args)
+#define log_warn(format, args...) minion::MLog::instance()->log(__FILE__, __func__, __LINE__, \
+																 minion::MLog::kWarn, format, ##args)
+#define log_notice(format, args...) minion::MLog::instance()->log(__FILE__, __func__, __LINE__, \
+																 minion::MLog::kNotice, format, ##args)
+#define log_info(format, args...) minion::MLog::instance()->log(__FILE__, __func__, __LINE__, \
+																 minion::MLog::kInfo, format, ##args)
+#define log_debug(format, args...) minion::MLog::instance()->log(__FILE__, __func__, __LINE__, \
+																 minion::MLog::kDebug, format, ##args)
 
 #endif /* _MLOG_H_ */

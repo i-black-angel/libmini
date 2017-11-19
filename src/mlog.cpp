@@ -17,12 +17,33 @@
 
 MINION_BEGIN_NAMESPACE
 
-MLog::MLog()
-{
-}
+M_SINGLETON_IMPLEMENT(MLog)
 
-MLog::~MLog()
+void MLog::log(const std::string &file, const std::string &func,
+			   uint32_t line, int level,
+			   const char *format, ...)
 {
+	int len;
+	std::string buffer;
+
+	// combine log head
+	std::string head;
+	
+	va_list vargs;
+	va_start(vargs, format);
+	len = vsnprintf(NULL, 0, format, vargs);
+	std::cout << len << std::endl;
+	buffer.resize(len + 2);
+	vsnprintf(&buffer[0], len + 1, format, vargs);
+	va_end(vargs);
+
+	std::cout << file << "[" << line << "]" << ": " << buffer << std::endl;
+
+	va_list vargs;
+	char buffer[1024] = {0};
+	va_start(vargs, format);
+	vsnprintf(buffer, sizeof(buffer) - 1, format, vargs);
+	va_end(vargs);
 }
 
 MINION_END_NAMESPACE

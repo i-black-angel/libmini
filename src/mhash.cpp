@@ -15,6 +15,7 @@
  */
 #include <minion/mhash.h>
 #include <minion/mlog.h>
+#include <minion/merror.h>
 #include "mhash_md5.h"
 
 /* Return PTR, aligned upward to the next multiple of ALIGNMENT.

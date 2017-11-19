@@ -20,6 +20,8 @@
 
 MINION_BEGIN_NAMESPACE
 
+std::string applicationName();
+
 class MApplication
 {
 public:
@@ -30,7 +32,7 @@ public:
 	static std::string applicationFilePath();
 	static std::string applicationName();
 	static std::string applicationVersion();
-	static int64_t applicationPid();
+	static int64_t pid();
 	static uint32_t uptime();
 
 	void setApplicationName(const std::string &application);

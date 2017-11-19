@@ -41,7 +41,7 @@ std::string MApplication::applicationVersion()
 {
 }
 
-int64_t MApplication::applicationPid()
+int64_t MApplication::pid()
 {
     return getpid();
 }

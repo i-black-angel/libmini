@@ -155,4 +155,29 @@ typedef unsigned char byte;
     Class(const Class &) ;						\
     Class &operator=(const Class &) ;
 
+#define M_SINGLETON_DEFINED(Class)				\
+public:										    \
+	static Class *instance()					\
+	{											\
+		if (NULL == _ins) {						\
+			_ins = new Class();					\
+			atexit(desposed);					\
+		}										\
+		return _ins;							\
+	}											\
+protected:										\
+    Class() { }									\
+	static void desposed() {					\
+		if (NULL != _ins) {						\
+			delete _ins; _ins = NULL;			\
+		}										\
+	}											\
+private:										\
+    static Class *_ins;							\
+public:											\
+    virtual ~Class() { }
+
+#define M_SINGLETON_IMPLEMENT(Class) \
+	Class *Class::_ins = NULL;
+
 #endif /* _MCOREDEF_H_ */

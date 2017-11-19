@@ -20,12 +20,16 @@ int main(int argc, char *argv[])
 	const char *msg = "M^0001^1^108^彩票打印机脱机";
 
 	minion::MUdpSocket udpSocket;
-	minion::MHostAddress addr("192.168.7.47", 8309);
+	minion::MHostAddress addr("localhost", 8309);
 	
 	ssize_t len = udpSocket.sendto((const uint8_t *)msg, strlen(msg) + 1, addr);
-	std::cout << "len = " << len << std::endl;
-	std::cout << "sendto " << std::endl;
-	std::cout << addr << std::endl;
-	std::cout << msg << std::endl;
+	log_debug("len = %d", len);
+	log_debug("sendto");
+	log_debug("%s", addr.toString().c_str());
+	log_debug("%s", msg);
+	// std::cout << "len = " << len << std::endl;
+	// std::cout << "sendto " << std::endl;
+	// std::cout << addr << std::endl;
+	// std::cout << msg << std::endl;
     return 0;
 }
