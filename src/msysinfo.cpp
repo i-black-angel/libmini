@@ -92,6 +92,11 @@ int uptime(double * uptime_secs, double * idle_secs) {
 
 MINION_BEGIN_NAMESPACE
 
+std::string hostname()
+{
+	return MSysinfo::hostname();
+}
+
 MSysinfo::MSysinfo()
 {
 }
@@ -100,8 +105,14 @@ MSysinfo::~MSysinfo()
 {
 }
 
-std::string MSysinfo::hostName()
+std::string MSysinfo::hostname()
 {
+	char buf[1024] = {0x00};
+	if (gethostname(buf, sizeof(buf)) == -1) {
+		perror("gethostname");
+		return "";
+	}
+	return buf;
 }
 	
 std::string MSysinfo::buildCpuArchitecture()

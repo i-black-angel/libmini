@@ -37,27 +37,28 @@ public:
 
 	void log(const std::string &file, const std::string &func,
 			  uint32_t line, int level,
-			  const char *format, ...);
+			  const char *__format, ...) const;
+	std::string strlog(int level) const;
 };
 
 MINION_END_NAMESPACE
 
 #define log_init(level)
-#define log_emerg(format, args...) minion::MLog::instance()->log(__FILE__, __func__, __LINE__, \
-																 minion::MLog::kEmerg, format, ##args)
-#define log_alert(format, args...) minion::MLog::instance()->log(__FILE__, __func__, __LINE__, \
-																 minion::MLog::kAlert, format, ##args)
-#define log_crit(format, args...) minion::MLog::instance()->log(__FILE__, __func__, __LINE__, \
-																 minion::MLog::kCrit, format, ##args)
-#define log_error(format, args...) minion::MLog::instance()->log(__FILE__, __func__, __LINE__, \
-																 minion::MLog::kError, format, ##args)
-#define log_warn(format, args...) minion::MLog::instance()->log(__FILE__, __func__, __LINE__, \
-																 minion::MLog::kWarn, format, ##args)
-#define log_notice(format, args...) minion::MLog::instance()->log(__FILE__, __func__, __LINE__, \
-																 minion::MLog::kNotice, format, ##args)
-#define log_info(format, args...) minion::MLog::instance()->log(__FILE__, __func__, __LINE__, \
-																 minion::MLog::kInfo, format, ##args)
-#define log_debug(format, args...) minion::MLog::instance()->log(__FILE__, __func__, __LINE__, \
-																 minion::MLog::kDebug, format, ##args)
+#define log_emerg(__format, args...) minion::MLog::instance()->log(__FILE__, __func__, __LINE__, \
+																 minion::MLog::kEmerg, __format, ##args)
+#define log_alert(__format, args...) minion::MLog::instance()->log(__FILE__, __func__, __LINE__, \
+																 minion::MLog::kAlert, __format, ##args)
+#define log_crit(__format, args...) minion::MLog::instance()->log(__FILE__, __func__, __LINE__, \
+																 minion::MLog::kCrit, __format, ##args)
+#define log_error(__format, args...) minion::MLog::instance()->log(__FILE__, __func__, __LINE__, \
+																 minion::MLog::kError, __format, ##args)
+#define log_warn(__format, args...) minion::MLog::instance()->log(__FILE__, __func__, __LINE__, \
+																 minion::MLog::kWarn, __format, ##args)
+#define log_notice(__format, args...) minion::MLog::instance()->log(__FILE__, __func__, __LINE__, \
+																 minion::MLog::kNotice, __format, ##args)
+#define log_info(__format, args...) minion::MLog::instance()->log(__FILE__, __func__, __LINE__, \
+																 minion::MLog::kInfo, __format, ##args)
+#define log_debug(__format, args...) minion::MLog::instance()->log(__FILE__, __func__, __LINE__, \
+																 minion::MLog::kDebug, __format, ##args)
 
 #endif /* _MLOG_H_ */

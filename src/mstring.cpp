@@ -25,4 +25,19 @@ MString::~MString()
 {
 }
 
+std::string MString::format(const char *__format, ...)
+{
+	int len;
+	std::string buffer;
+	va_list vargs;
+	va_start(vargs, __format);
+	len = vsnprintf(NULL, 0, __format, vargs);
+	buffer.resize(len + 2);
+	va_start(vargs, __format);
+	vsnprintf(&buffer[0], len + 1, __format, vargs);
+	va_end(vargs);
+
+	return buffer;
+}
+
 MINION_END_NAMESPACE

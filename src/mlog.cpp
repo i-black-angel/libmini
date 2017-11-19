@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 #include <minion/mlog.h>
+#include <minion/msysinfo.h>
+#include <minion/mdatetime.h>
+#include <minion/mapplication.h>
+#include <minion/mstring.h>
 
 MINION_BEGIN_NAMESPACE
 
@@ -21,29 +25,54 @@ M_SINGLETON_IMPLEMENT(MLog)
 
 void MLog::log(const std::string &file, const std::string &func,
 			   uint32_t line, int level,
-			   const char *format, ...)
+			   const char *__format, ...) const
 {
-	int len;
-	std::string buffer;
-
 	// combine log head
 	std::string head;
-	
+
+	int len;
+	std::string buffer;
 	va_list vargs;
-	va_start(vargs, format);
-	len = vsnprintf(NULL, 0, format, vargs);
-	std::cout << len << std::endl;
+	va_start(vargs, __format);
+	len = vsnprintf(NULL, 0, __format, vargs);
 	buffer.resize(len + 2);
-	vsnprintf(&buffer[0], len + 1, format, vargs);
+	va_start(vargs, __format);
+	vsnprintf(&buffer[0], len + 1, __format, vargs);
 	va_end(vargs);
 
-	std::cout << file << "[" << line << "]" << ": " << buffer << std::endl;
+	// DATETIME HOSTNAME APPLICATIONNAME[PID] FILE FUNC[LINE] 
+	std::string logstr = MString::format("%s %s %s[%lld] %s %s[%u]: <%s> %s",
+								now().c_str(), hostname().c_str(),
+								applicationName().c_str(), pid(),
+								file.c_str(), func.c_str(), line,
+								strlog(level).c_str(),
+								buffer.c_str());
 
-	va_list vargs;
-	char buffer[1024] = {0};
-	va_start(vargs, format);
-	vsnprintf(buffer, sizeof(buffer) - 1, format, vargs);
-	va_end(vargs);
+	std::cout << logstr << std::endl;
+}
+
+std::string MLog::strlog(int level) const
+{
+	std::string ret = "debug";
+	switch (level) {
+	case kEmerg:
+		ret = "emerg"; break;
+	case kAlert:
+		ret = "alert"; break;
+	case kCrit:
+		ret = "crit"; break;
+	case kError:
+		ret = "error"; break;
+	case kWarn:
+		ret = "warn"; break;
+	case kNotice:
+		ret = "notice"; break;
+	case kInfo:
+		ret = "info"; break;
+	default:
+		break;
+	}
+	return ret;
 }
 
 MINION_END_NAMESPACE

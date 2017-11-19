@@ -21,6 +21,7 @@
 MINION_BEGIN_NAMESPACE
 
 std::string applicationName();
+int64_t pid();
 
 class MApplication
 {

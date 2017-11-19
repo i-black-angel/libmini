@@ -14,8 +14,19 @@
  * limitations under the License.
  */
 #include <minion/mapplication.h>
+#include <minion/merror.h>
 
 MINION_BEGIN_NAMESPACE
+
+std::string applicationName()
+{
+	return MApplication::applicationName();
+}
+
+int64_t pid()
+{
+	return MApplication::pid();
+}
 
 MApplication::MApplication(int argc, char *argv[])
 {
@@ -35,6 +46,20 @@ std::string MApplication::applicationFilePath()
 
 std::string MApplication::applicationName()
 {
+	std::string ret;
+
+	char path[PATH_MAX] = {0x00};
+	if (readlink("/proc/self/exe", path, sizeof(path)) == -1) {
+		std::cerr << error() << std::endl;
+		return ret;
+	}
+
+	std::string file = path;
+	size_t idx = file.find_last_of("/");
+	if (idx == std::string::npos) ret = file;
+	ret = file.substr(idx + 1);
+
+	return ret;
 }
 
 std::string MApplication::applicationVersion()

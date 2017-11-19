@@ -20,13 +20,15 @@
 
 MINION_BEGIN_NAMESPACE
 
+std::string hostname();
+
 class MSysinfo
 {
 public:
     explicit MSysinfo();
     virtual ~MSysinfo();
 
-	static std::string hostName();
+	static std::string hostname();
 	
     static std::string buildCpuArchitecture();
     static std::string currentCpuArchitecture();

@@ -25,6 +25,8 @@ class MString : public std::string
 public:
     explicit MString();
     virtual ~MString();
+
+	static std::string format(const char *__format, ...);
 };
 
 MINION_END_NAMESPACE
