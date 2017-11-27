@@ -86,6 +86,7 @@ bool MHostAddress::setAddress(const std::string &address)
 	for (aip = ailist; aip != NULL; aip = aip->ai_next) {
 		struct sockaddr_in *addr = (sockaddr_in *)aip->ai_addr;
 		_ip4addr = htonl(addr->sin_addr.s_addr);
+		if (_ip4addr == 0x00000000) continue;
 		freeaddrinfo(ailist);
 		return true;
 	}
