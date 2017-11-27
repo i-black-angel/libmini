@@ -26,7 +26,7 @@ std::string uuidgen()
 std::string uuid::generate()
 {
     char buf[64] = {0};
-#ifdef P_OS_WIN
+#ifdef M_OS_WIN
     /**
      * should be included <objbase.h>
      */
