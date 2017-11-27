@@ -18,6 +18,30 @@
 
 MINION_BEGIN_NAMESPACE
 
+int minion_sendto(int fd, const void *buf, size_t n,
+				  int flags,
+				  const struct sockaddr *addr,
+				  socklen_t addr_len)
+{
+#ifdef M_OS_WIN
+	return ::sendto(fd, (const char *)buf, n, flags, addr, addr_len);
+#else
+	return ::sendto(fd, buf, n, flags, addr, addr_len);
+#endif
+}
+
+int minion_recvfrom(int fd, void *buf, size_t n,
+					int flags,
+					struct sockaddr *addr,
+					socklen_t *addr_len)
+{
+#ifdef M_OS_WIN
+	return ::recvfrom(fd, (char *)buf, n, flags, addr, addr_len);
+#else
+	return ::recvfrom(fd, buf, n, flags, addr, addr_len);
+#endif
+}
+
 MSocket::MSocket(SocketType socketType)
 {
 	int type = SOCK_STREAM;
