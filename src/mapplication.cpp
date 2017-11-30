@@ -23,6 +23,16 @@ std::string applicationName()
 	return MApplication::applicationName();
 }
 
+std::string applicationDirPath()
+{
+	return MApplication::applicationDirPath();
+}
+
+std::string applicationFilePath()
+{
+	return MApplication::applicationFilePath();
+}
+
 int64_t pid()
 {
 	return MApplication::pid();
@@ -38,17 +48,40 @@ MApplication::~MApplication()
 
 std::string MApplication::applicationDirPath()
 {
+	std::string ret;
+
+	char path[PATH_MAX] = { 0x00 };
+	if (readlink("/proc/self/exe", path, sizeof(path)) == -1) {
+		std::cerr << error() << std::endl;
+		return ret;
+	}
+
+	std::string file = path;
+	size_t idx = file.find_last_of("/");
+	if (idx == std::string::npos) { return std::string("."); }
+	if (idx == 0) idx = 1;
+
+    return file.substr(0, idx);
 }
 
 std::string MApplication::applicationFilePath()
 {
+	std::string ret;
+
+	char path[PATH_MAX] = { 0x00 };
+	if (readlink("/proc/self/exe", path, sizeof(path)) == -1) {
+		std::cerr << error() << std::endl;
+		return ret;
+	}
+
+	return path;
 }
 
 std::string MApplication::applicationName()
 {
 	std::string ret;
 
-	char path[PATH_MAX] = {0x00};
+	char path[PATH_MAX] = { 0x00 };
 	if (readlink("/proc/self/exe", path, sizeof(path)) == -1) {
 		std::cerr << error() << std::endl;
 		return ret;

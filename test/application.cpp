@@ -13,23 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _MFILE_H_
-#define _MFILE_H_
+#include <minion.h>
 
-#include <minion/mcoredef.h>
-
-MINION_BEGIN_NAMESPACE
-
-class MFile
+int main(int argc, char *argv[])
 {
-public:
-    explicit MFile();
-    explicit MFile(const std::string &);
-    virtual ~MFile();
-
-	bool open();
-};
-
-MINION_END_NAMESPACE
-
-#endif /* _MFILE_H_ */
+    std::cout << minion::applicationDirPath() << std::endl;
+    std::cout << minion::applicationName() << std::endl;
+    std::cout << minion::applicationFilePath() << std::endl;
+    return 0;
+}
