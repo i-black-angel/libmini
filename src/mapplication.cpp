@@ -118,8 +118,42 @@ void MApplication::setApplicationVersion(const std::string &version)
 	_applicationVersion = version;
 }
 
+int __lockfile(int fd)
+{
+	struct flock lock;
+	lock.l_type = F_WRLCK;
+    lock.l_start = 0;  
+    lock.l_whence = SEEK_SET;  
+    lock.l_len = 0;  
+    return (fcntl(fd, F_SETLK, &lock));
+}
+
 bool MApplication::alreadyRunning(const std::string &lockfile)
 {
+	static const int lockmode = (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	static const int openflag = (O_CREAT | O_RDWR);
+
+	int fd = -1;
+	char buf[16] = { 0x00 };
+
+	fd = open(lockfile.c_str(), openflag, lockmode);
+	if (fd == -1) {
+		log_error("open %s failed: %s", lockfile.c_str(), error().c_str());
+		exit(EXIT_FAILURE);
+	}
+
+	if (__lockfile(fd) == -1) {
+		if (EACCES == errno || EAGAIN == errno) {
+			close(fd);
+			return true;
+		}
+		log_error("can't lock %s: %s", lockfile.c_str(), error().c_str());
+		exit(EXIT_FAILURE);
+	}
+	ftruncate(fd, 0);
+	sprintf(buf, "%lld", pid());
+	write(fd, buf, strlen(buf) + 1);
+	return false;
 }
 
 MINION_END_NAMESPACE

@@ -25,8 +25,8 @@ int MRand::rand()
 
 int MRand::rand(int low, int high)
 {
-	int rlow = std::min(low, high);
-	int rhigh = std::max(low, high);
+	int rlow = (std::min)(low, high);
+	int rhigh = (std::max)(low, high);
 	return (rand() % (1 + rhigh - rlow)) + rlow;
 }
 
@@ -37,8 +37,8 @@ double MRand::range()
 
 double MRand::range(double low, double high)
 {
-	double rlow = std::min(low, high);
-	double rhigh = std::max(low, high);
+	double rlow = (std::min)(low, high);
+	double rhigh = (std::max)(low, high);
 	return ((rand() % (int)(1 + rhigh * 100.0 - rlow * 100.0)) / 100.0) + rlow;
 }
 
