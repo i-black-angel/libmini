@@ -42,5 +42,6 @@
 #include <minion/merror.h>
 #include <minion/muuid.h>
 #include <minion/mhash.h>
+#include <minion/murl.h>
 
 #endif /* _MINION_H_ */

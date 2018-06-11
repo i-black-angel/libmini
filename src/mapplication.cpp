@@ -138,7 +138,7 @@ bool MApplication::alreadyRunning(const std::string &lockfile)
 
 	fd = open(lockfile.c_str(), openflag, lockmode);
 	if (fd == -1) {
-		log_error("open %s failed: %s", lockfile.c_str(), error().c_str());
+		// log_error("open %s failed: %s", lockfile.c_str(), error().c_str());
 		exit(EXIT_FAILURE);
 	}
 
@@ -147,7 +147,7 @@ bool MApplication::alreadyRunning(const std::string &lockfile)
 			close(fd);
 			return true;
 		}
-		log_error("can't lock %s: %s", lockfile.c_str(), error().c_str());
+		// log_error("can't lock %s: %s", lockfile.c_str(), error().c_str());
 		exit(EXIT_FAILURE);
 	}
 	ftruncate(fd, 0);

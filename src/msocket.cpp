@@ -68,8 +68,24 @@ MSocket::MSocket(SocketType socketType)
 
 MSocket::~MSocket()
 {
-	if (_sockfd != -1)
-		::close(_sockfd);
+	close();
+}
+
+int MSocket::accept(MHostAddress &hostAddr)
+{
+	if (_sockfd < 0) return -1;
+
+	struct sockaddr_in addr;
+	socklen_t len = sizeof(addr);
+	int clientfd = ::accept(_sockfd, (struct sockaddr *)&addr, &len);
+	if (clientfd < 0) {
+		perror("accept error");
+		return clientfd;
+	}
+
+	MHostAddress address(&addr);
+	hostAddr = address;
+	return clientfd;
 }
 
 bool MSocket::bind(uint16_t port)
@@ -94,6 +110,63 @@ bool MSocket::bind(const MHostAddress &address)
 	printf ("bind %s success\n", address.toString().c_str());
 	return true;
 }
+
+bool MSocket::connect(const std::string &address, uint16_t port)
+{
+	MHostAddress haddr(address, port);
+	return connect(haddr);
+}
+
+bool MSocket::connect(const MHostAddress &address)
+{
+	if (_sockfd < 0) return false;
+	
+	struct sockaddr_in addr;
+	addr.sin_family = AF_INET;
+	addr.sin_addr.s_addr = htonl(address.ipv4());
+	addr.sin_port = htons(address.port());	
+	int res = ::connect(_sockfd, (const struct sockaddr *)&addr, sizeof(addr));
+	if (res < 0) {
+		perror("connect error");
+		return false;
+	}
+	printf ("connect %s success\n", address.toString().c_str());
+	return true;
+}
+
+bool MSocket::listen(int backlog)
+{
+	if (_sockfd < 0) return false;
+
+	int res = ::listen(_sockfd, backlog);
+	if (res < 0) {
+		perror("listen error");
+		return false;
+	}
+	return true;
+}
+
+void MSocket::close()
+{
+	if (_sockfd != -1) {
+		::close(_sockfd);
+		_sockfd = -1;
+	}
+}
+
+// MHostAddress MSocket::localAddress() const
+// {
+	
+// }
+
+// MHostAddress MSocket::peerAddress(int fd) const
+// {
+// 	if (fd < 0) return MHostAddress();
+
+// 	struct sockaddr_in addr;
+// 	socklen_t len = sizeof(addr);
+// 	int res = getpeername(fd, (struct sockaddr *)&addr, &len);
+// }
 
 MTcpSocket::MTcpSocket()
 	: MSocket(TcpSocket)

@@ -33,6 +33,7 @@ public:
 	MHostAddress(SpecialAddress address, uint16_t port = 0);
 	explicit MHostAddress(uint32_t ip4Addr, uint16_t port = 0);
 	explicit MHostAddress(const std::string &address, uint16_t port = 0);
+	explicit MHostAddress(const struct sockaddr_in *address);
 	MHostAddress(const MHostAddress &copy);
 	virtual ~MHostAddress();
 

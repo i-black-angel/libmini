@@ -45,5 +45,6 @@ minion/mhostaddress.h				\
 minion/mprocess.h				\
 minion/mjson.h					\
 minion/merror.h					\
+minion/murl.h					\
 minion/muuid.h					\
 minion/mhash.h

@@ -35,17 +35,19 @@ public:
     explicit MSocket(SocketType socketType);
     virtual ~MSocket();
 
+	int accept(MHostAddress &);
 	bool bind(const MHostAddress &address);
 	bool bind(uint16_t port);
-	bool connect(const std::string &address, uint16_t port, int msecs = 30000);
-	bool connect(const MHostAddress &address, int msec = 30000);
+	bool connect(const std::string &address, uint16_t port);
+	bool connect(const MHostAddress &address);
 	void close();
+	bool listen(int backlog = 1024);
 	
-	uint16_t localPort() const;
 	MHostAddress localAddress() const;
-	uint16_t peerPort() const;
+	// uint16_t localPort() const;
 	MHostAddress peerAddress() const;
-	std::string peerName() const;
+	// std::string peerName() const;
+	// uint16_t peerPort() const;
 	SocketType socketType() const;
 
 	int sockfd() const { return _sockfd; }

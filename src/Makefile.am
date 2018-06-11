@@ -33,6 +33,7 @@ mcondition.cpp					\
 mxml.cpp					\
 merror.cpp					\
 muuid.cpp					\
+murl.cpp					\
 muuid_p.h					\
 muuid_unix.cpp					\
 mhash.cpp					\
