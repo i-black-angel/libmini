@@ -35,11 +35,20 @@
    along with this program; if not, see <http://www.gnu.org/licenses/>.  */
 
 /* Written by Ulrich Drepper <drepper@gnu.ai.mit.edu>, 1995.  */
-#include <stdalign.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
+/* #include <stdalign.h> */
+#ifndef __cplusplus
+
+#define alignas _Alignas
+#define alignof _Alignof
+
+#define __alignas_is_defined 1
+#define __alignof_is_defined 1
+
+#endif
 
 #ifdef _LIBC
 # include <endian.h>
