@@ -103,6 +103,7 @@ int64_t MThread::id()
 	
 void MThread::setPriority(Priority priority)
 {
+	MScopedLock locker(_mutex);
 	_priority = priority;
 }
 
@@ -111,8 +112,21 @@ MThread::Priority MThread::priority() const
 	return _priority;
 }
 
+void MThread::interrupt()
+{
+	MScopedLock locker(_mutex);
+	_interrupt = true;
+}
+
+bool MThread::isInterrupted() const
+{
+	return _interrupt;
+}
+
 void MThread::exec()
 {
+	_interrupt = false;
+	
 	run();
 }
 

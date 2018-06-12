@@ -52,10 +52,10 @@ MHostAddress::MHostAddress(const std::string &address, uint16_t port)
 	setPort(port);
 }
 
-MHostAddress::MHostAddress(const struct sockaddr_in *addr)
+MHostAddress::MHostAddress(const struct sockaddr_in &addr)
 {
-	setAddress(ntohl(addr->sin_addr.s_addr));
-	setPort(ntohs(addr->sin_port));
+	setAddress(ntohl(addr.sin_addr.s_addr));
+	setPort(ntohs(addr.sin_port));
 }
 
 MHostAddress::~MHostAddress()

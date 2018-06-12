@@ -17,6 +17,7 @@
 #define _MTHREAD_H_
 
 #include <minion/mcoredef.h>
+#include <minion/mmutex.h>
 
 MINION_BEGIN_NAMESPACE
 
@@ -54,6 +55,9 @@ public:
     void setPriority(Priority priority);
     Priority priority() const;	
 
+	void interrupt();
+	bool isInterrupted() const;
+	
 	//  This is internal function. It should be private, however then
 	//  it would not be accessible from the main C routine of the thread.
 	void exec();
@@ -71,6 +75,9 @@ private:
 #endif /* M_OS_WIN */
 
 	Priority _priority;
+
+	MMutex _mutex;
+	bool _interrupt;
 	
 	M_DISABLE_COPY(MThread)
 };

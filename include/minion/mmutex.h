@@ -114,7 +114,7 @@ private:
 class MScopedLock
 {
 public:
-    explicit MScopedLock(MMutex &mutex)
+    MScopedLock(MMutex &mutex)
 		: _mutex(mutex)
 		{
 			_mutex.lock();
@@ -126,9 +126,9 @@ public:
 		}
 	
 private:
-	M_DISABLE_COPY(MScopedLock)
-	
 	MMutex &_mutex;
+
+	M_DISABLE_COPY(MScopedLock)	
 };
 
 MINION_END_NAMESPACE

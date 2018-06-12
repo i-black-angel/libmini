@@ -15,6 +15,7 @@
  */
 #include <minion/msocket.h>
 #include <minion/merror.h>
+#include <minion/mlog.h>
 
 MINION_BEGIN_NAMESPACE
 
@@ -62,8 +63,13 @@ MSocket::MSocket(SocketType socketType)
 	}
 	_sockfd = socket(AF_INET, type, 0);
 	if (_sockfd < 0) {
-		perror("socket error");
+		log_error("socket error: %s", error().c_str());
 	}
+}
+
+MSocket::MSocket(int sockfd)
+{
+	_sockfd = sockfd;
 }
 
 MSocket::~MSocket()
@@ -79,11 +85,11 @@ int MSocket::accept(MHostAddress &hostAddr)
 	socklen_t len = sizeof(addr);
 	int clientfd = ::accept(_sockfd, (struct sockaddr *)&addr, &len);
 	if (clientfd < 0) {
-		perror("accept error");
+		log_error("accept error: %s", error().c_str());
 		return clientfd;
 	}
 
-	MHostAddress address(&addr);
+	MHostAddress address(addr);
 	hostAddr = address;
 	return clientfd;
 }
@@ -97,6 +103,9 @@ bool MSocket::bind(uint16_t port)
 bool MSocket::bind(const MHostAddress &address)
 {
 	if (_sockfd < 0) return false;
+
+	int opt = 1;
+	setsockopt(_sockfd, SOL_SOCKET, SO_REUSEADDR, (char *)&opt, sizeof(opt));
 	
 	sockaddr_in addr;
 	addr.sin_family = AF_INET;
@@ -104,10 +113,10 @@ bool MSocket::bind(const MHostAddress &address)
 	addr.sin_port = htons(address.port());
 	int res = ::bind(_sockfd, (const sockaddr *)&addr, sizeof(addr));
 	if (res < 0) {
-		perror("bind error");
+		log_error("bind error: %s", error().c_str());
 		return false;
 	}
-	printf ("bind %s success\n", address.toString().c_str());
+	log_debug ("bind %s success", address.toString().c_str());
 	return true;
 }
 
@@ -120,6 +129,9 @@ bool MSocket::connect(const std::string &address, uint16_t port)
 bool MSocket::connect(const MHostAddress &address)
 {
 	if (_sockfd < 0) return false;
+
+	// set _sockfd to be non-block
+	fcntl(_sockfd, F_SETFL, fcntl(_sockfd, F_GETFL)| O_NONBLOCK);
 	
 	struct sockaddr_in addr;
 	addr.sin_family = AF_INET;
@@ -127,10 +139,10 @@ bool MSocket::connect(const MHostAddress &address)
 	addr.sin_port = htons(address.port());	
 	int res = ::connect(_sockfd, (const struct sockaddr *)&addr, sizeof(addr));
 	if (res < 0) {
-		perror("connect error");
+		log_error("connect error: %s", error().c_str());
 		return false;
 	}
-	printf ("connect %s success\n", address.toString().c_str());
+	log_debug ("connect %s success", address.toString().c_str());
 	return true;
 }
 
@@ -140,7 +152,7 @@ bool MSocket::listen(int backlog)
 
 	int res = ::listen(_sockfd, backlog);
 	if (res < 0) {
-		perror("listen error");
+		log_error("listen error: %s", error().c_str());
 		return false;
 	}
 	return true;
@@ -154,19 +166,42 @@ void MSocket::close()
 	}
 }
 
-// MHostAddress MSocket::localAddress() const
-// {
+MHostAddress MSocket::sockname() const
+{
+	if (_sockfd < 0) return MHostAddress();
+
+	struct sockaddr_in addr;
+	socklen_t len = sizeof(addr);
+	int res = getsockname(_sockfd, (struct sockaddr *)&addr, &len);
+	if (res < 0) {
+		log_error("getsockname failed: %s", error().c_str());
+		return MHostAddress();
+	}
+	return MHostAddress(addr);
+}
+
+MHostAddress MSocket::peername(int fd) const
+{
+	if (fd < 0) return MHostAddress();
+
+	struct sockaddr_in addr;
+	socklen_t len = sizeof(addr);
+	int res = getpeername(fd, (struct sockaddr *)&addr, &len);
+	if (res < 0) {
+		log_error("getpeername failed: %s", error().c_str());
+		return MHostAddress();
+	}
+	return MHostAddress(addr);
+}
+
+bool MSocket::setSocketOption(int optname, const void *optval, socklen_t optlen)
+{
+	if (_sockfd < 0) return false;
 	
-// }
+	int res = setsockopt(_sockfd, SOL_SOCKET, optname, optval, optlen);
 
-// MHostAddress MSocket::peerAddress(int fd) const
-// {
-// 	if (fd < 0) return MHostAddress();
-
-// 	struct sockaddr_in addr;
-// 	socklen_t len = sizeof(addr);
-// 	int res = getpeername(fd, (struct sockaddr *)&addr, &len);
-// }
+	return (res < 0) ? false : true;
+}
 
 MTcpSocket::MTcpSocket()
 	: MSocket(TcpSocket)
@@ -177,6 +212,86 @@ MTcpSocket::~MTcpSocket()
 {
 }
 
+MTcpServer::MTcpServer()
+{
+	_init = false;
+}
+
+MTcpServer::~MTcpServer()
+{
+}
+
+bool MTcpServer::bind(uint16_t port)
+{
+	try {
+		_init = _socket.bind(port);
+		if (!_init) {
+			log_error("bind: %s", error().c_str());
+			return false;
+		}
+		_init = _socket.listen();
+		if (!_init) {
+			log_error("listen: %s", error().c_str());
+			return false;
+		}
+		if (pipe(_pipefd) < 0) {
+			log_error("pipe: %s", error().c_str());
+			_init = false;
+			return false;
+		}
+		return _init;
+	} catch (std::exception e) {
+		log_error("%s", e.what());
+	}
+	return false;
+}
+
+void MTcpServer::stop()
+{
+	static const uint8_t xdata[4] = {0x01, 0x02, 0x03, 0x04};
+	write(_pipefd[1], xdata, sizeof(xdata));
+	MThread::stop();
+}
+
+void MTcpServer::run()
+{
+	if (!_init) return;
+
+	int fd = _socket.sockfd();
+	int retval = 0;
+
+	for (; ;) {
+		FD_ZERO(&_rfds);
+		FD_SET(fd, &_rfds);
+		FD_SET(_pipefd[0], &_rfds);
+
+		_maxfds = std::max(fd, _pipefd[0]);
+
+		retval = select(_maxfds + 1, &_rfds, NULL, NULL, NULL);
+		if (retval < 0) {
+			log_error("select: %s", error().c_str());
+			break;
+		}
+
+		if (FD_ISSET(fd, &_rfds)) {
+			MHostAddress address;
+			int clientfd = _socket.accept(address);
+			process(clientfd, address);
+		}
+		if (FD_ISSET(_pipefd[0], &_rfds)) {
+			break;
+		}
+	}
+
+	close(_pipefd[0]);
+	close(_pipefd[1]);
+}
+
+void MTcpServer::process(int clientfd, const MHostAddress &addr)
+{
+}
+
+
 MUdpSocket::MUdpSocket()
 	: MSocket(UdpSocket)
 {
@@ -185,13 +300,6 @@ MUdpSocket::MUdpSocket()
 MUdpSocket::~MUdpSocket()
 {
 }
-
-// int64_t MUdpSocket::sendto(const uint8_t *data, size_t len)
-// {
-// 	sockaddr_in addr;
-// 	memset((uint8_t *)&addr, 0x00, sizeof(addr));
-// 	return ::sendto(_sockfd, data, len, 0, (const sockaddr *)&addr, sizeof(addr));
-// }
 
 int64_t MUdpSocket::sendto(const uint8_t *data, size_t len, const MHostAddress &host)
 {
@@ -219,9 +327,9 @@ int64_t MUdpSocket::recvfrom(uint8_t *data, size_t len, MHostAddress &host)
 		std::cerr << minion::error() << std::endl;
 		return rlen;
 	}
-	
-	host.setAddress(ntohl(addr.sin_addr.s_addr));
-	host.setPort(ntohs(addr.sin_port));
+
+	MHostAddress address(addr);
+	host = address;
 
 	return rlen;
 }
@@ -251,18 +359,18 @@ bool MUdpServer::bind(uint16_t port)
 		_buf = new uint8_t[_bufsize];
 		_init = _socket.bind(port);
 		if (!_init) {
-			perror("bind()");
+			log_error("bind: %s", error().c_str());
 			return false;
 		}
 		if (pipe(_pipefd) < 0) {
-			perror("pipe()");
+			log_error("pipe: %s", error().c_str());
 			return false;
 		}
 		return _init;
 
 	} catch (std::exception e) {
 
-		std::cerr << e.what() << std::endl;
+		log_error("%s", e.what());
 
 	}
 
@@ -287,7 +395,7 @@ void MUdpServer::run()
 
 		retval = select(_maxfds + 1, &_rfds, NULL, NULL, NULL);
 		if (retval < 0) {
-			perror("select()");
+			log_error("select: %s", error().c_str());
 			break;
 		} 
 

@@ -22,8 +22,8 @@ int main(int argc, char *argv[])
 	minion::MHostAddress address("localhost", 12700);
 
 	sock.connect(address);
-
-	sock.close();
+	std::cout << sock.sockname().toString() << std::endl;
+	// sock.close();
 	// sock.bind(12700);
 	// sock.listen();
 

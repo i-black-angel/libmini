@@ -32,7 +32,8 @@ public:
         UnknownSocketType = -1
     };
 	
-    explicit MSocket(SocketType socketType);
+    explicit MSocket(SocketType socketType = minion::MSocket::TcpSocket);
+	explicit MSocket(int sockfd);
     virtual ~MSocket();
 
 	int accept(MHostAddress &);
@@ -43,13 +44,12 @@ public:
 	void close();
 	bool listen(int backlog = 1024);
 	
-	MHostAddress localAddress() const;
-	// uint16_t localPort() const;
-	MHostAddress peerAddress() const;
-	// std::string peerName() const;
-	// uint16_t peerPort() const;
+	MHostAddress sockname() const;
+	MHostAddress peername(int fd) const;
 	SocketType socketType() const;
 
+	bool setSocketOption(int optname, const void *optval, socklen_t optlen);
+	
 	int sockfd() const { return _sockfd; }
 	
 protected:
@@ -64,11 +64,24 @@ public:
     virtual ~MTcpSocket();
 };
 
-class MTcpServer
+class MTcpServer : public MThread
 {
 public:
     explicit MTcpServer();
     virtual ~MTcpServer();
+	bool bind(uint16_t port);
+	void stop();
+protected:
+	void run();
+	virtual void process(int clientfd, const MHostAddress &addr);
+
+	MTcpSocket _socket;
+	bool _init;
+	
+	// select module
+	int _pipefd[2];
+	fd_set _rfds;
+	int _maxfds;
 };
 
 class MUdpSocket : public MSocket
