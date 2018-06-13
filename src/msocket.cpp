@@ -291,7 +291,6 @@ void MTcpServer::process(int clientfd, const MHostAddress &addr)
 {
 }
 
-
 MUdpSocket::MUdpSocket()
 	: MSocket(UdpSocket)
 {
