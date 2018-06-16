@@ -43,7 +43,33 @@ int minion_recvfrom(int fd, void *buf, size_t n,
 #endif
 }
 
-MSocket::MSocket(SocketType socketType)
+MSocket::MSocket()
+{
+}
+
+MSocket::MSocket(int sockfd)
+{
+	_sockfd = sockfd;
+}
+
+MSocket::MSocket(const MSocket &copy)
+{
+	_sockfd = copy._sockfd;
+	_socketType = copy._socketType;
+}
+
+MSocket::~MSocket()
+{
+}
+
+MSocket &MSocket::operator=(const MSocket &other)
+{
+	_socketType = other._socketType;
+	_sockfd = other._sockfd;
+	return *this;
+}
+
+int MSocket::socket(SocketType socketType)
 {
 	int type = SOCK_STREAM;
 	
@@ -61,20 +87,11 @@ MSocket::MSocket(SocketType socketType)
 		type = SOCK_RAW;
 		break;
 	}
-	_sockfd = socket(AF_INET, type, 0);
+	_sockfd = ::socket(AF_INET, type, 0);
 	if (_sockfd < 0) {
 		log_error("socket error: %s", error().c_str());
 	}
-}
-
-MSocket::MSocket(int sockfd)
-{
-	_sockfd = sockfd;
-}
-
-MSocket::~MSocket()
-{
-	close();
+	return _sockfd;
 }
 
 int MSocket::accept(MHostAddress &hostAddr)
@@ -131,7 +148,7 @@ bool MSocket::connect(const MHostAddress &address)
 	if (_sockfd < 0) return false;
 
 	// set _sockfd to be non-block
-	fcntl(_sockfd, F_SETFL, fcntl(_sockfd, F_GETFL)| O_NONBLOCK);
+	//fcntl(_sockfd, F_SETFL, fcntl(_sockfd, F_GETFL)| O_NONBLOCK);
 	
 	struct sockaddr_in addr;
 	addr.sin_family = AF_INET;
@@ -194,6 +211,18 @@ MHostAddress MSocket::peername(int fd) const
 	return MHostAddress(addr);
 }
 
+bool MSocket::sendtimeout(int sec, long usec)
+{
+	struct timeval timeout = {sec, usec};
+	return setSocketOption(SO_SNDTIMEO, &timeout, sizeof(struct timeval));
+}
+
+bool MSocket::recvtimeout(int sec, long usec)
+{
+	struct timeval timeout = {sec, usec};
+	return setSocketOption(SO_RCVTIMEO, &timeout, sizeof(struct timeval));
+}
+
 bool MSocket::setSocketOption(int optname, const void *optval, socklen_t optlen)
 {
 	if (_sockfd < 0) return false;
@@ -203,8 +232,23 @@ bool MSocket::setSocketOption(int optname, const void *optval, socklen_t optlen)
 	return (res < 0) ? false : true;
 }
 
+bool MSocket::isEqual(const MSocket &sock) const
+{
+	return (_sockfd == sock._sockfd);
+}
+
+bool MSocket::operator==(const MSocket &sock) const
+{
+	return isEqual(sock);
+}
+
 MTcpSocket::MTcpSocket()
-	: MSocket(TcpSocket)
+	: MSocket()
+{
+}
+
+MTcpSocket::MTcpSocket(int fd)
+	: MSocket(fd)
 {
 }
 
@@ -212,18 +256,42 @@ MTcpSocket::~MTcpSocket()
 {
 }
 
-MTcpServer::MTcpServer()
+ssize_t MTcpSocket::send(const void *buf, size_t n)
+{
+	if (_sockfd < 0) return -1;
+
+	return ::send(_sockfd, buf, n, 0);
+}
+
+ssize_t MTcpSocket::recv(void *buf, size_t n)
+{
+	if (_sockfd < 0) return -1;
+
+	return ::recv(_sockfd, buf, n, 0);
+}
+
+MTcpServer::MTcpServer(size_t bufsize)
 {
 	_init = false;
+	_buf = NULL;
+	_bufsize = bufsize;
 }
 
 MTcpServer::~MTcpServer()
 {
+	if (_buf != NULL) {
+		delete[] _buf;
+		_buf = NULL;
+	}
+	_socket.close();
 }
 
 bool MTcpServer::bind(uint16_t port)
 {
 	try {
+		if (_socket.socket() == -1) {
+			return false;
+		}
 		_init = _socket.bind(port);
 		if (!_init) {
 			log_error("bind: %s", error().c_str());
@@ -253,51 +321,170 @@ void MTcpServer::stop()
 	MThread::stop();
 }
 
+int MTcpServer::registerEvent(int fd, uint32_t events)
+{
+	_ev.data.fd = fd;
+	_ev.events = events;
+	return epoll_ctl(_epollfd, EPOLL_CTL_ADD, fd, &_ev);
+}
+
+int MTcpServer::unregisterEvent(int fd)
+{
+	return epoll_ctl(_epollfd, EPOLL_CTL_DEL, fd, NULL);
+}
+
 void MTcpServer::run()
 {
+	// if it's not init, just return
 	if (!_init) return;
 
-	int fd = _socket.sockfd();
-	int retval = 0;
+	if (_buf != NULL) {
+		delete[] _buf;
+		_buf = NULL;
+	}
+	_buf = new uint8_t[_bufsize];
+	
+	int nfds = 0;				// epoll events' count
+	int fd = _socket.sockfd();	// tcpserver socket fd, accept clients
 
-	for (; ;) {
-		FD_ZERO(&_rfds);
-		FD_SET(fd, &_rfds);
-		FD_SET(_pipefd[0], &_rfds);
+	// epoll_create
+	if ((_epollfd = epoll_create(EVENTS_MAX_SIZE)) == -1) {
+		log_error("epoll_create error: %s", error().c_str());
+		return;
+	}
 
-		_maxfds = std::max(fd, _pipefd[0]);
+	// add fd
+	if (registerEvent(fd) == -1) {
+		log_error("register event failed: %s", error().c_str());
+		return;
+	}
 
-		retval = select(_maxfds + 1, &_rfds, NULL, NULL, NULL);
-		if (retval < 0) {
-			log_error("select: %s", error().c_str());
+	// add read pipe
+	if (registerEvent(_pipefd[0]) == -1) {
+		log_error("register event failed: %s", error().c_str());
+		return;
+	}
+
+	while (!isInterrupted()) {
+		// epoll_wait
+		nfds = epoll_wait(_epollfd, _events, EVENTS_MAX_SIZE, -1);
+		if (nfds == -1) {
+			log_error("epoll_wait: %s", error().c_str());
 			break;
 		}
 
-		if (FD_ISSET(fd, &_rfds)) {
-			MHostAddress address;
-			int clientfd = _socket.accept(address);
-			process(clientfd, address);
-		}
-		if (FD_ISSET(_pipefd[0], &_rfds)) {
-			break;
+		for (int i = nfds - 1; i > -1; --i) {
+			if (_events[i].data.fd == _socket.sockfd()) {
+				// accept client
+				MHostAddress address;
+				int clientfd = _socket.accept(address);
+				if (clientfd < 0) break;
+				if (registerEvent(clientfd) == -1) {
+					log_error("register event failed: %s", error().c_str());
+					break;
+				}
+				_clients.push_back(clientfd);
+				log_debug("client %s connected, clientfd: %d", address.toString().c_str(), clientfd);
+				connection(clientfd, address);
+			} else if (_events[i].data.fd == _pipefd[0]) {
+				ssize_t len = read(_pipefd[0], _buf, _bufsize);
+				close(_pipefd[0]);
+				interrupt();
+				break;
+			} else if (!handleEvent(&_events[i])) {
+				interrupt();
+				break;
+			}
+		} // for nfds
+	} // while (!isInterrupted())
+	close(_epollfd);
+
+	// int retval = 0;
+
+	// for (; ;) {
+	// 	FD_ZERO(&_rfds);
+	// 	FD_SET(fd, &_rfds);
+	// 	FD_SET(_pipefd[0], &_rfds);
+
+	// 	_maxfds = std::max(fd, _pipefd[0]);
+
+	// 	retval = select(_maxfds + 1, &_rfds, NULL, NULL, NULL);
+	// 	if (retval < 0) {
+	// 		log_error("select: %s", error().c_str());
+	// 		break;
+	// 	}
+
+	// 	if (FD_ISSET(fd, &_rfds)) {
+	// 		MHostAddress address;
+	// 		int clientfd = _socket.accept(address);
+	// 		process(clientfd, address);
+	// 	}
+	// 	if (FD_ISSET(_pipefd[0], &_rfds)) {
+	// 		break;
+	// 	}
+	// }
+
+	// close(_pipefd[0]);
+	// close(_pipefd[1]);
+}
+
+void MTcpServer::connection(int clientfd, const minion::MHostAddress &addr)
+{
+}
+
+bool MTcpServer::handleEvent(struct epoll_event *event)
+{
+	for (int i = _clients.size() - 1; i > -1; --i) {
+		if (event->data.fd == _clients[i]) {
+			ssize_t len = recv(_clients[i], _buf, _bufsize, 0);
+			if (0 == len) {
+				// client is close
+				log_debug("client close, clientfd: %d", _clients[i]);
+				ssize_t slen = send(_clients[i], _buf, _bufsize, 0);
+				close(_clients[i]);
+				unregisterEvent(_clients[i]);
+				_clients.erase(_clients.begin() + i);
+				hasClosed(_clients[i]);
+				continue;
+			} else if (len > 0) {
+				process(_clients[i], _buf, len);
+			}
 		}
 	}
 
-	close(_pipefd[0]);
-	close(_pipefd[1]);
+	return true;
 }
 
-void MTcpServer::process(int clientfd, const MHostAddress &addr)
+void MTcpServer::closeClient(int fd)
+{
+	for (int i = _clients.size() - 1; i > -1; --i) {
+		if (fd == _clients[i]) {
+			log_debug("close clientfd: %d", fd);
+			close(fd);
+			unregisterEvent(fd);
+			_clients.erase(_clients.begin() + i);
+			break;
+		}
+	}
+}
+
+void MTcpServer::process(int clientfd, const uint8_t *data, size_t len)
+{
+}
+
+void MTcpServer::hasClosed(int clientfd)
 {
 }
 
 MUdpSocket::MUdpSocket()
-	: MSocket(UdpSocket)
+	: MSocket()
 {
+	socket();
 }
 
 MUdpSocket::~MUdpSocket()
 {
+	close();
 }
 
 int64_t MUdpSocket::sendto(const uint8_t *data, size_t len, const MHostAddress &host)
@@ -349,7 +536,7 @@ bool MUdpServer::bind(uint16_t port)
 	if (_bufsize <= 0) return false;
 	
 	if (_buf != NULL) {
-		delete _buf;
+		delete[] _buf;
 		_buf = NULL;
 	}
 

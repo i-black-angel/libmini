@@ -32,10 +32,14 @@ public:
         UnknownSocketType = -1
     };
 	
-    explicit MSocket(SocketType socketType = minion::MSocket::TcpSocket);
+    explicit MSocket();
 	explicit MSocket(int sockfd);
+	MSocket(const MSocket &copy);
     virtual ~MSocket();
 
+	MSocket &operator=(const MSocket &other);
+	
+	int socket(SocketType socketType = minion::MSocket::TcpSocket);
 	int accept(MHostAddress &);
 	bool bind(const MHostAddress &address);
 	bool bind(uint16_t port);
@@ -48,10 +52,16 @@ public:
 	MHostAddress peername(int fd) const;
 	SocketType socketType() const;
 
+	bool sendtimeout(int sec, long usec);
+	bool recvtimeout(int sec, long usec);
 	bool setSocketOption(int optname, const void *optval, socklen_t optlen);
 	
 	int sockfd() const { return _sockfd; }
-	
+
+	bool isEqual(const MSocket &sock) const;
+	bool operator==(const MSocket &sock) const;
+	inline bool operator!=(const MSocket &sock) const
+		{ return !operator==(sock); }
 protected:
 	SocketType _socketType;
 	int _sockfd;
@@ -61,27 +71,47 @@ class MTcpSocket : public MSocket
 {
 public:
     explicit MTcpSocket();
+	explicit MTcpSocket(int fd);
     virtual ~MTcpSocket();
+
+	ssize_t send(const void *buf, size_t n);
+	ssize_t recv(void *buf, size_t n);
 };
 
+// TODO::How to write it in Class
+#define EVENTS_MAX_SIZE 512
 class MTcpServer : public MThread
 {
 public:
-    explicit MTcpServer();
+    explicit MTcpServer(size_t bufsize = 1024);
     virtual ~MTcpServer();
 	bool bind(uint16_t port);
 	void stop();
 protected:
 	void run();
-	virtual void process(int clientfd, const MHostAddress &addr);
+	int registerEvent(int fd, uint32_t events = EPOLLIN);
+	int unregisterEvent(int fd);
+	void closeClient(int fd);
+	virtual bool handleEvent(struct epoll_event *event);
+	virtual void connection(int clientfd, const minion::MHostAddress &addr);
+	virtual void process(int clientfd, const uint8_t *data, size_t len);
+	virtual void hasClosed(int clientfd);
 
 	MTcpSocket _socket;
 	bool _init;
 	
-	// select module
+	// epoll module
 	int _pipefd[2];
-	fd_set _rfds;
-	int _maxfds;
+
+	int _epollfd;
+	struct epoll_event _ev;
+	struct epoll_event _events[EVENTS_MAX_SIZE];
+	// fd_set _rfds;
+	// int _maxfds;
+
+	std::vector<int> _clients;
+	uint8_t *_buf;
+	size_t _bufsize;
 };
 
 class MUdpSocket : public MSocket

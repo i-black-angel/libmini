@@ -66,6 +66,7 @@
 # include <sys/file.h>
 # include <fcntl.h>
 # include <limits.h>
+# include <sys/epoll.h>
 #endif
 
 #ifdef max
@@ -180,5 +181,12 @@ public:											\
 
 #define M_SINGLETON_IMPLEMENT(Class) \
 	Class *Class::_ins = NULL;
+
+#define SAFE_DELETE(x) do { if ((x) != NULL) { delete (x); (x) = NULL; } } while(0);
+#define ELEMENT(x) (sizeof(x) / sizeof((x)[0])
+
+// from util-linux-2.20.1/hwclock/cmos.c
+#define BCD_TO_BIN(val) ((val)=((val)&15) + ((val)>>4)*10)
+#define BIN_TO_BCD(val) ((val)=(((val)/10)<<4) + (val)%10)
 
 #endif /* _MCOREDEF_H_ */

@@ -6,5 +6,5 @@ includedir=@includedir@
 Name: libminion
 Description: C API for libminion
 Version: @VERSION@
-Libs: -L${libdir} -lminion
+Libs: -L${libdir} -lminion -lpthread
 Cflags: -I${includedir}
