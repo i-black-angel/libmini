@@ -45,7 +45,7 @@ std::string MString::hex2str(const uint8_t *data, size_t len)
 	std::string buffer;
 	char buf[3] = {0x00};
 	for (size_t m = 0; m < len; ++m) {
-		snprintf (buf, sizeof(buf) - 1, "%02X", data[m]);
+		snprintf (buf, sizeof(buf), "%02X", data[m]);
 		buf[2] = '\0';
 		buffer += buf;
 		buffer += " ";
