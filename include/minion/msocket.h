@@ -85,6 +85,10 @@ class MTcpServer : public MThread
 public:
     explicit MTcpServer(size_t bufsize = 1024);
     virtual ~MTcpServer();
+
+	void setbufsize(size_t bufsize) { _bufsize = bufsize; }
+	size_t bufsize() const { return _bufsize; }
+	
 	bool bind(uint16_t port);
 	void stop();
 protected:

@@ -338,67 +338,71 @@ void MTcpServer::run()
 	// if it's not init, just return
 	if (!_init) return;
 
-	if (_buf != NULL) {
-		delete[] _buf;
-		_buf = NULL;
-	}
-	_buf = new uint8_t[_bufsize];
-	
-	int nfds = 0;				// epoll events' count
-	int fd = _socket.sockfd();	// tcpserver socket fd, accept clients
-
-	// epoll_create
-	if ((_epollfd = epoll_create(EVENTS_MAX_SIZE)) == -1) {
-		log_error("epoll_create error: %s", error().c_str());
-		return;
-	}
-
-	// add fd
-	if (registerEvent(fd) == -1) {
-		log_error("register event failed: %s", error().c_str());
-		return;
-	}
-
-	// add read pipe
-	if (registerEvent(_pipefd[0]) == -1) {
-		log_error("register event failed: %s", error().c_str());
-		return;
-	}
-
-	while (!isInterrupted()) {
-		// epoll_wait
-		nfds = epoll_wait(_epollfd, _events, EVENTS_MAX_SIZE, -1);
-		if (nfds == -1) {
-			log_error("epoll_wait: %s", error().c_str());
-			break;
+	try {
+		if (_buf != NULL) {
+			delete[] _buf;
+			_buf = NULL;
 		}
 
-		for (int i = nfds - 1; i > -1; --i) {
-			if (_events[i].data.fd == _socket.sockfd()) {
-				// accept client
-				MHostAddress address;
-				int clientfd = _socket.accept(address);
-				if (clientfd < 0) break;
-				if (registerEvent(clientfd) == -1) {
-					log_error("register event failed: %s", error().c_str());
-					break;
-				}
-				_clients.push_back(clientfd);
-				log_debug("client %s connected, clientfd: %d", address.toString().c_str(), clientfd);
-				connection(clientfd, address);
-			} else if (_events[i].data.fd == _pipefd[0]) {
-				ssize_t len = read(_pipefd[0], _buf, _bufsize);
-				close(_pipefd[0]);
-				interrupt();
-				break;
-			} else if (!handleEvent(&_events[i])) {
-				interrupt();
+		_buf = new uint8_t[_bufsize];
+	
+		int nfds = 0;				// epoll events' count
+		int fd = _socket.sockfd();	// tcpserver socket fd, accept clients
+
+		// epoll_create
+		if ((_epollfd = epoll_create(EVENTS_MAX_SIZE)) == -1) {
+			log_error("epoll_create error: %s", error().c_str());
+			return;
+		}
+
+		// add fd
+		if (registerEvent(fd) == -1) {
+			log_error("register event failed: %s", error().c_str());
+			return;
+		}
+
+		// add read pipe
+		if (registerEvent(_pipefd[0]) == -1) {
+			log_error("register event failed: %s", error().c_str());
+			return;
+		}
+
+		while (!isInterrupted()) {
+			// epoll_wait
+			nfds = epoll_wait(_epollfd, _events, EVENTS_MAX_SIZE, -1);
+			if (nfds == -1) {
+				log_error("epoll_wait: %s", error().c_str());
 				break;
 			}
-		} // for nfds
-	} // while (!isInterrupted())
-	close(_epollfd);
 
+			for (int i = nfds - 1; i > -1; --i) {
+				if (_events[i].data.fd == _socket.sockfd()) {
+					// accept client
+					MHostAddress address;
+					int clientfd = _socket.accept(address);
+					if (clientfd < 0) break;
+					if (registerEvent(clientfd) == -1) {
+						log_error("register event failed: %s", error().c_str());
+						break;
+					}
+					_clients.push_back(clientfd);
+					log_debug("client %s connected, clientfd: %d", address.toString().c_str(), clientfd);
+					connection(clientfd, address);
+				} else if (_events[i].data.fd == _pipefd[0]) {
+					ssize_t len = read(_pipefd[0], _buf, _bufsize);
+					close(_pipefd[0]);
+					interrupt();
+					break;
+				} else if (!handleEvent(&_events[i])) {
+					interrupt();
+					break;
+				}
+			} // for nfds
+		} // while (!isInterrupted())
+		close(_epollfd);
+	} catch (std::exception e) {
+		log_error("%s", e.what());
+	}
 	// int retval = 0;
 
 	// for (; ;) {
