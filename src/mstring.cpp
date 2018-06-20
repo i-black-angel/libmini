@@ -40,4 +40,21 @@ std::string MString::format(const char *__format, ...)
 	return buffer;
 }
 
+std::string MString::hex2str(const uint8_t *data, size_t len)
+{
+	std::string buffer;
+	char buf[3] = {0x00};
+	for (size_t m = 0; m < len; ++m) {
+		snprintf (buf, sizeof(buf) - 1, "%02X", data[m]);
+		buf[2] = '\0';
+		buffer += buf;
+		buffer += " ";
+	}
+
+	if (buffer.size() > 0) {
+		buffer.erase(buffer.begin() + (buffer.size() - 1));
+	}
+	return buffer;
+}
+
 MINION_END_NAMESPACE

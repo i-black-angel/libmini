@@ -27,6 +27,7 @@ public:
     virtual ~MString();
 
 	static std::string format(const char *__format, ...);
+	static std::string hex2str(const uint8_t *data, size_t len);
 };
 
 MINION_END_NAMESPACE
