@@ -316,7 +316,7 @@ bool MTcpServer::bind(uint16_t port)
 
 void MTcpServer::stop()
 {
-	static const uint8_t xdata[4] = {0x01, 0x02, 0x03, 0x04};
+	static const uint8_t xdata[4] = {'S', 'T', 'O', 'P'};
 	write(_pipefd[1], xdata, sizeof(xdata));
 	MThread::stop();
 }
@@ -390,7 +390,6 @@ void MTcpServer::run()
 					connection(clientfd, address);
 				} else if (_events[i].data.fd == _pipefd[0]) {
 					ssize_t len = read(_pipefd[0], _buf, _bufsize);
-					close(_pipefd[0]);
 					interrupt();
 					break;
 				} else if (!handleEvent(&_events[i])) {
@@ -399,6 +398,10 @@ void MTcpServer::run()
 				}
 			} // for nfds
 		} // while (!isInterrupted())
+
+		closeClients();
+		close(_pipefd[0]);
+		close(_pipefd[1]);
 		close(_epollfd);
 	} catch (std::exception e) {
 		log_error("%s", e.what());
@@ -470,6 +473,15 @@ void MTcpServer::closeClient(int fd)
 			break;
 		}
 	}
+}
+
+void MTcpServer::closeClients()
+{
+	for (int i = _clients.size() - 1; i > -1; --i) {
+		log_debug("close clients' fd: %d", _clients[i]);
+		close(_clients[i]);
+	}
+	_clients.clear();
 }
 
 void MTcpServer::process(int clientfd, const uint8_t *data, size_t len)

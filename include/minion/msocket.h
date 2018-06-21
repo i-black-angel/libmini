@@ -96,6 +96,7 @@ protected:
 	int registerEvent(int fd, uint32_t events = EPOLLIN);
 	int unregisterEvent(int fd);
 	void closeClient(int fd);
+	void closeClients();
 	virtual bool handleEvent(struct epoll_event *event);
 	virtual void connection(int clientfd, const minion::MHostAddress &addr);
 	virtual void process(int clientfd, const uint8_t *data, size_t len);
