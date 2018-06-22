@@ -18,15 +18,56 @@
 #include <minion/mdatetime.h>
 #include <minion/mapplication.h>
 #include <minion/mstring.h>
+#include <minion/merror.h>
 
 MINION_BEGIN_NAMESPACE
 
-M_SINGLETON_IMPLEMENT(MLog)
+MLog *MLog::_ins = NULL;
+
+MLog *MLog::instance()
+{
+	if (NULL == _ins) {
+		_ins = new MLog();
+		atexit(desposed);
+	}
+	return _ins;
+}
+
+void MLog::desposed()
+{
+	if (NULL != _ins) {
+		delete _ins; _ins = NULL;
+	}
+}
+
+MLog::MLog()
+{
+	_priority = kDebug;
+	_performance = kNormal;
+}
+
+MLog::~MLog()
+{
+}
+
+void MLog::init(int pri, const char *logfile, int performance)
+{
+	_priority = pri;
+	if (logfile != NULL) {
+		_logfile = logfile;
+	}
+	_performance = performance;
+}
 
 void MLog::log(const std::string &file, const std::string &func,
-			   uint32_t line, int level,
-			   const char *__format, ...) const
+			   uint32_t line, int pri,
+			   const char *__format, ...)
 {
+	MScopedLock locker(_mutex);
+	
+	// according to pri
+	if (pri > _priority) return;
+	
 	// combine log head
 	std::string head;
 
@@ -45,16 +86,32 @@ void MLog::log(const std::string &file, const std::string &func,
 								now().c_str(), hostname().c_str(),
 								applicationName().c_str(), pid(),
 								file.c_str(), func.c_str(), line,
-								strlog(level).c_str(),
+								strpriority(pri).c_str(),
 								buffer.c_str());
 
 	std::cout << logstr << std::endl;
+
+	if (_logfile.empty()) {
+		syslog(LOG_DEBUG, "%s", logstr.c_str());
+	} else {
+		FILE *fp = fopen(_logfile.c_str(), "a");
+		if (fp == NULL) {
+			std::string errstr = MString::format("open %s failed: %s",
+												 _logfile.c_str(), error().c_str());
+			fprintf(stderr, "%s\n", errstr.c_str());
+			syslog(LOG_ERR, "%s", errstr.c_str());
+			return;
+		}
+		fprintf(fp, "%s\n", logstr.c_str());
+		fflush(fp);
+		fclose(fp);
+	}
 }
 
-std::string MLog::strlog(int level) const
+std::string MLog::strpriority(int pri) const
 {
 	std::string ret = "debug";
-	switch (level) {
+	switch (pri) {
 	case kEmerg:
 		ret = "emerg"; break;
 	case kAlert:
