@@ -52,6 +52,8 @@ public:
 	MHostAddress peername(int fd) const;
 	SocketType socketType() const;
 
+	bool sendbuf(int bufsize);
+	bool recvbuf(int bufsize);
 	bool sendtimeout(int sec, long usec);
 	bool recvtimeout(int sec, long usec);
 	bool setSocketOption(int optname, const void *optval, socklen_t optlen);

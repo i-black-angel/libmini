@@ -211,6 +211,16 @@ MHostAddress MSocket::peername(int fd) const
 	return MHostAddress(addr);
 }
 
+bool MSocket::sendbuf(int bufsize)
+{
+	return setSocketOption(SO_SNDBUF, (const char *)&bufsize, sizeof(int));
+}
+
+bool MSocket::recvbuf(int bufsize)
+{
+	return setSocketOption(SO_RCVBUF, (const char *)&bufsize, sizeof(int));
+}
+
 bool MSocket::sendtimeout(int sec, long usec)
 {
 	struct timeval timeout = {sec, usec};
@@ -349,6 +359,10 @@ void MTcpServer::run()
 		int nfds = 0;				// epoll events' count
 		int fd = _socket.sockfd();	// tcpserver socket fd, accept clients
 
+		// set SO_SNDBUF, SO_RCVBUF
+		_socket.sendbuf(_bufsize);
+		_socket.recvbuf(_bufsize);
+		
 		// epoll_create
 		if ((_epollfd = epoll_create(EVENTS_MAX_SIZE)) == -1) {
 			log_error("epoll_create error: %s", error().c_str());
@@ -444,6 +458,7 @@ bool MTcpServer::handleEvent(struct epoll_event *event)
 	for (int i = _clients.size() - 1; i > -1; --i) {
 		if (event->data.fd == _clients[i]) {
 			ssize_t len = recv(_clients[i], _buf, _bufsize, 0);
+			log_debug("client len: %d", len);
 			if (0 == len) {
 				// client is close
 				log_debug("client close, clientfd: %d", _clients[i]);

@@ -28,16 +28,22 @@ public:
     explicit MEvent();
     virtual ~MEvent();
 
+	// timeout millseconds
 	inline void wait(unsigned long timeout = ULONG_MAX)
 		{
 			MMutexLocker lock(_mutex);
+			_condition.wait(_mutex, timeout);
 		}
 
-	inline void post()
+	inline void signal()
 		{
+			_condition.wake();
 		}
 
 	inline void wakeAll()
+		{
+			_condition.wakeAll();
+		}
 private:
 	M_DISABLE_COPY(MEvent)
 
