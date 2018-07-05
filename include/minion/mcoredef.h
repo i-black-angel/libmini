@@ -33,6 +33,8 @@
 #include <sstream>
 #include <fstream>
 #include <locale>
+#include <deque>
+#include <map>
 
 #ifdef _MSC_VER
 # ifndef M_OS_WIN

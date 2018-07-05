@@ -43,5 +43,7 @@
 #include <minion/muuid.h>
 #include <minion/mhash.h>
 #include <minion/murl.h>
+#include <minion/mqueue.h>
+#include <minion/mdatahandler.h>
 
 #endif /* _MINION_H_ */

@@ -25,19 +25,19 @@ class MThread
 {
 public:
 
-	enum Priority {
-        IdlePriority,
+	// enum Priority {
+    //     IdlePriority,
 
-        LowestPriority,
-        LowPriority,
-        NormalPriority,
-        HighPriority,
-        HighestPriority,
+    //     LowestPriority,
+    //     LowPriority,
+    //     NormalPriority,
+    //     HighPriority,
+    //     HighestPriority,
 
-        TimeCriticalPriority,
+    //     TimeCriticalPriority,
 
-        InheritPriority
-    };
+    //     InheritPriority
+    // };
 
     explicit MThread();
     virtual ~MThread();
@@ -52,19 +52,18 @@ public:
 	static int64_t currentId();
 	int64_t id();
 	
-    void setPriority(Priority priority);
-    Priority priority() const;	
-
+    // void setPriority(Priority priority);
+    // Priority priority() const;
+	
 	void interrupt();
 	bool isInterrupted() const;
-	
+
 	//  This is internal function. It should be private, however then
 	//  it would not be accessible from the main C routine of the thread.
 	void exec();
 
 protected:
-
-	virtual void run();
+	virtual void run() = 0;
 
 private:
 
@@ -74,7 +73,7 @@ private:
 	pthread_t _self;
 #endif /* M_OS_WIN */
 
-	Priority _priority;
+	// Priority _priority;
 
 	MMutex _mutex;
 	bool _interrupt;

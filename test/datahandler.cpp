@@ -13,45 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _MEVENT_H_
-#define _MEVENT_H_
+#include <minion.h>
 
-#include <minion/mcoredef.h>
-#include <minion/mcondition.h>
-#include <minion/mmutex.h>
-
-MINION_BEGIN_NAMESPACE
-
-class MEvent
+class DataHandler : public minion::MDataHandler<std::string>
 {
-public:
-    explicit MEvent() { }
-    virtual ~MEvent() { }
-
-	// timeout millseconds
-	inline void wait(unsigned long timeout = ULONG_MAX)
-		{
-			MScopedLock lock(_mutex);
-			_condition.wait(_mutex, timeout);
-		}
-
-	inline void signal()
-		{
-			_condition.wake();
-		}
-
-	inline void wakeAll()
-		{
-			_condition.wakeAll();
-		}
-private:
-	M_DISABLE_COPY(MEvent)
-
-	MMutex _mutex;
-	MCondition _condition;
+protected:
+	virtual void handle(std::string &t) {
+		// std::cout << t << std::endl;
+		printf ("threadID: %ld, string: %s\n", id(), t.c_str());
+	}
 };
 
+int main(int argc, char *argv[])
+{
+    DataHandler d;
+	d.start();
 
-MINION_END_NAMESPACE
+	sleep(1);
+	for (int i = 0; i < 10; ++i) {
+		std::string index = minion::MString::format("index-%d", i);
+		d.push(index);
+		usleep(100);
+	}
 
-#endif /* _MEVENT_H_ */
+	// d.stop();
+	getchar();
+	// while (1) {
+	// 	sleep(1);
+	// }
+    return 0;
+}

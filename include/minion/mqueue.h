@@ -13,45 +13,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _MEVENT_H_
-#define _MEVENT_H_
+#ifndef _MQUEUE_H_
+#define _MQUEUE_H_
 
 #include <minion/mcoredef.h>
-#include <minion/mcondition.h>
 #include <minion/mmutex.h>
 
 MINION_BEGIN_NAMESPACE
 
-class MEvent
+template <typename T>
+class MQueue : public std::deque<T>
 {
 public:
-    explicit MEvent() { }
-    virtual ~MEvent() { }
+    MQueue() { }
+    virtual ~MQueue() { }
+public:
+	void push(T &t) {
+		MScopedLock locker(_mutex);
+		std::deque<T>::push_back(t);
+	}
 
-	// timeout millseconds
-	inline void wait(unsigned long timeout = ULONG_MAX)
-		{
-			MScopedLock lock(_mutex);
-			_condition.wait(_mutex, timeout);
+	bool get(T &t) {
+		MScopedLock locker(_mutex);
+		if (!std::deque<T>::empty()) {
+			t = std::deque<T>::front();
+			std::deque<T>::pop_front();
+			return true;
 		}
+		return false;
+	}
 
-	inline void signal()
-		{
-			_condition.wake();
-		}
-
-	inline void wakeAll()
-		{
-			_condition.wakeAll();
-		}
+	void clear() {
+		MScopedLock locker(_mutex);
+		std::deque<T>::clear();
+	}
 private:
-	M_DISABLE_COPY(MEvent)
-
 	MMutex _mutex;
-	MCondition _condition;
 };
-
 
 MINION_END_NAMESPACE
 
-#endif /* _MEVENT_H_ */
+#endif /* _MQUEUE_H_ */

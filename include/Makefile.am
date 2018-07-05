@@ -47,4 +47,5 @@ minion/mjson.h					\
 minion/merror.h					\
 minion/murl.h					\
 minion/muuid.h					\
-minion/mhash.h
+minion/mhash.h					\
+minion/mqueue.h

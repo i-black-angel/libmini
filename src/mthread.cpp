@@ -77,18 +77,23 @@ bool MThread::start()
 
 void MThread::stop()
 {
+	interrupt();
+	join();
 }
 
 int MThread::join()
 {
+	return pthread_join(_self, NULL);
 }
 
 int MThread::detach()
 {
+	return pthread_detach(_self);
 }
 
 int MThread::cancel()
 {
+	return pthread_cancel(_self);
 }
 	
 int64_t MThread::currentId()
@@ -101,16 +106,16 @@ int64_t MThread::id()
 	return _self;
 }
 	
-void MThread::setPriority(Priority priority)
-{
-	MScopedLock locker(_mutex);
-	_priority = priority;
-}
+// void MThread::setPriority(Priority priority)
+// {
+// 	MScopedLock locker(_mutex);
+// 	_priority = priority;
+// }
 
-MThread::Priority MThread::priority() const
-{
-	return _priority;
-}
+// MThread::Priority MThread::priority() const
+// {
+// 	return _priority;
+// }
 
 void MThread::interrupt()
 {
@@ -128,10 +133,6 @@ void MThread::exec()
 	_interrupt = false;
 	
 	run();
-}
-
-void MThread::run()
-{
 }
 
 MINION_END_NAMESPACE
