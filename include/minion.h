@@ -45,5 +45,6 @@
 #include <minion/murl.h>
 #include <minion/mqueue.h>
 #include <minion/mdatahandler.h>
+#include <minion/mthreadpool.h>
 
 #endif /* _MINION_H_ */

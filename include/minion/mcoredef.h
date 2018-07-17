@@ -184,7 +184,7 @@ public:											\
 #define M_SINGLETON_IMPLEMENT(Class) \
 	Class *Class::_ins = NULL;
 
-#define SAFE_DELETE(x) do { if ((x) != NULL) { delete (x); (x) = NULL; } } while(0);
+#define SAFE_DELETE(x) do { if (x != NULL) { delete x; x = NULL; } } while(0);
 #define ELEMENT(x) (sizeof(x) / sizeof((x)[0])
 
 // from util-linux-2.20.1/hwclock/cmos.c

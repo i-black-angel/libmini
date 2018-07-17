@@ -17,7 +17,8 @@
 
 noinst_PROGRAMS = hostaddress welcome assert mutex condition udpsocket
 noinst_PROGRAMS += thread udpclient error uuid fileinfo md5sum datetime
-noinst_PROGRAMS += application tcpclient tcpserver datahandler
+noinst_PROGRAMS += application tcpclient tcpserver datahandler threadpool
+noinst_PROGRAMS += settings
 
 hostaddress_CPPFLAGS = -I$(top_srcdir)/include
 hostaddress_LDADD = ../src/libminion.la
@@ -86,3 +87,11 @@ tcpserver_SOURCES = tcpserver.cpp
 datahandler_CPPFLAGS = -I$(top_srcdir)/include
 datahandler_LDADD = ../src/libminion.la
 datahandler_SOURCES = datahandler.cpp
+
+threadpool_CPPFLAGS = -I$(top_srcdir)/include
+threadpool_LDADD = ../src/libminion.la
+threadpool_SOURCES = threadpool.cpp
+
+settings_CPPFLAGS = -I$(top_srcdir)/include
+settings_LDADD = ../src/libminion.la
+settings_SOURCES = settings.cpp

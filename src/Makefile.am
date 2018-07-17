@@ -38,4 +38,5 @@ muuid_p.h					\
 muuid_unix.cpp					\
 mhash.cpp					\
 mhash_md5.h					\
-mhash_md5.c
+mhash_md5.c					\
+msettings_utf.c				

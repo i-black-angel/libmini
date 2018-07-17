@@ -20,7 +20,7 @@ MINION_BEGIN_NAMESPACE
 
 const char *welcome()
 {
-	return "Hello, welcome to libminion.";
+	return "Hi, welcome to libminion.";
 }
 
 void abort(const char *errmsg)

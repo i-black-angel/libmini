@@ -24,6 +24,8 @@ minion_HEADERS =				\
 minion/mhttp.h					\
 minion/mglobal.h				\
 minion/msettings.h				\
+minion/msettings_p.h				\
+minion/msettings_utf.h				\
 minion/mthread.h				\
 minion/mlog.h					\
 minion/mxml.h					\
@@ -48,4 +50,7 @@ minion/merror.h					\
 minion/murl.h					\
 minion/muuid.h					\
 minion/mhash.h					\
-minion/mqueue.h
+minion/mqueue.h					\
+minion/mthreadpool.h 
+
+

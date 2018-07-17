@@ -17,14 +17,36 @@
 #define _MSETTINGS_H_
 
 #include <minion/mcoredef.h>
+#include <minion/msettings_p.h>
 
 MINION_BEGIN_NAMESPACE
 
 class MSettings
 {
 public:
-    explicit MSettings();
+	MSettings(bool isUtf8 = false);
+    explicit MSettings(const char *path, bool isUtf8 = false);
     virtual ~MSettings();
+
+	void load(const char *path);
+	std::string path() const { return _path; }
+	bool save();
+	bool save(const char *path);
+	
+	int value(const char *section, const char *key, int def) const;
+	double value(const char *section, const char *key, double def) const;
+	std::string value(const char *section, const char *key, const char *def) const;
+	bool value(const char *section, const char *key, bool def) const;
+
+	bool setValue(const char *section, const char *key, const char *value);
+	bool setValue(const char *section, const char *key, int value);
+	bool setValue(const char *section, const char *key, double value);
+	bool setValue(const char *section, const char *key, bool value); 
+protected:
+	std::string sierror(int err) const;
+private:
+	std::string _path;
+	CSimpleIni *_simpleini;
 };
 
 MINION_END_NAMESPACE

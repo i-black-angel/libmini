@@ -151,7 +151,7 @@ bool MApplication::alreadyRunning(const std::string &lockfile)
 		exit(EXIT_FAILURE);
 	}
 	ftruncate(fd, 0);
-	sprintf(buf, "%lld", pid());
+	sprintf(buf, "%ld", pid());
 	write(fd, buf, strlen(buf) + 1);
 	return false;
 }
