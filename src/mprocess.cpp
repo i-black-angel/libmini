@@ -17,11 +17,49 @@
 
 MINION_BEGIN_NAMESPACE
 
+std::string workingDirectory()
+{
+	MProcess proc;
+	return proc.workingDirectory();
+}
+
 MProcess::MProcess()
 {
 }
 
 MProcess::~MProcess()
+{
+}
+
+int64_t MProcess::pid() const
+{
+	return getpid();
+}
+
+std::string MProcess::program() const
+{
+}
+
+std::string MProcess::workingDirectory() const
+{
+	char buf[1024] = {0x00};
+#ifdef M_OS_WIN
+	DWORD res = ::GetCurrentDirectory(sizeof(buf) - 1, buf);
+#else
+	char *cwd = getcwd(buf, sizeof(buf) - 1);
+#endif
+	return buf;
+}
+
+int MProcess::execute(const std::string &program, const std::vector<std::string> &arguments)
+{
+}
+
+int MProcess::execute(const std::string &command)
+{
+}
+
+std::vector<std::string> MProcess::systemEnvironment()
 {
 }
 

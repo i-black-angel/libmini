@@ -20,5 +20,7 @@ int main(int argc, char *argv[])
     std::cout << minion::applicationDirPath() << std::endl;
     std::cout << minion::applicationName() << std::endl;
     std::cout << minion::applicationFilePath() << std::endl;
+	std::cout << minion::pid() << std::endl;
+	std::cout << minion::workingDirectory() << std::endl;
     return 0;
 }

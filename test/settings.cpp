@@ -17,7 +17,8 @@
 
 int main(int argc, char *argv[])
 {
-	std::string path = minion::applicationDirPath();
+	// std::string path = minion::applicationDirPath();
+	std::string path = minion::workingDirectory();
 	path += "/settings.ini";
 	std::cout << path << std::endl;
 	minion::MSettings settings(path.c_str());

@@ -20,6 +20,8 @@
 
 MINION_BEGIN_NAMESPACE
 
+std::string workingDirectory();
+
 class MProcess
 {
 public:
