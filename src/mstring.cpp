@@ -17,30 +17,21 @@
 
 MINION_BEGIN_NAMESPACE
 
-MString::MString()
+std::string toXString(const char *fmt, ...)
 {
-}
-
-MString::~MString()
-{
-}
-
-std::string MString::format(const char *__format, ...)
-{
-	int len;
 	std::string buffer;
 	va_list vargs;
-	va_start(vargs, __format);
-	len = vsnprintf(NULL, 0, __format, vargs);
+	va_start(vargs, fmt);
+	int len = vsnprintf(NULL, 0, fmt, vargs);
 	buffer.resize(len + 2);
-	va_start(vargs, __format);
-	vsnprintf(&buffer[0], len + 1, __format, vargs);
+	va_start(vargs, fmt);
+	vsnprintf(&buffer[0], len + 1, fmt, vargs);
 	va_end(vargs);
 
 	return buffer;
 }
 
-std::string MString::hex2str(const uint8_t *data, size_t len)
+std::string hexToString(const uint8_t *data, size_t len)
 {
 	std::string buffer;
 	char buf[3] = {0x00};
@@ -55,6 +46,59 @@ std::string MString::hex2str(const uint8_t *data, size_t len)
 		buffer.erase(buffer.begin() + (buffer.size() - 1));
 	}
 	return buffer;
+}
+
+std::string toString(int val)
+{
+	return toXString("%d", val);
+}
+
+std::string toString(unsigned val)
+{
+	return toXString("%u", val);
+}
+
+std::string toString(long val)
+{
+	return toXString("%ld", val);
+}
+
+std::string toString(unsigned long val)
+{
+	return toXString("%lu", val);
+}
+
+std::string toString(long long val)
+{
+	return toXString("%lld", val);
+}
+
+std::string toString(unsigned long long val)
+{
+	return toXString("%llu", val);
+}
+
+std::string toString(float val)
+{
+	return toXString("%f", val);
+}
+	
+std::string toString(double val)
+{
+	return toXString("%f", val);
+}
+
+std::string toString(long double val)
+{
+	return toXString("%Lf", val);
+}
+
+MString::MString()
+{
+}
+
+MString::~MString()
+{
 }
 
 MINION_END_NAMESPACE

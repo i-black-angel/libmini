@@ -15,38 +15,29 @@
  */
 #include <minion.h>
 
-class logitem : public minion::MTaskInterface
-{
-public:
-    explicit logitem(int a) : _arg1(a) { }
-    virtual ~logitem() { }
-
-	// void insert(int a) {
-	// 	arg1 = a;
-	// 	run();
-	// }
-
-	virtual void run() {
-		int msec = minion::MRand::rand(1000, 5000);
-		usleep(msec);
-		std::cout << minion::MThread::currentId() << " recv: " << _arg1 << std::endl;
-		usleep(msec);
-	}
-private:
-	int _arg1;
-};
-
 int main(int argc, char *argv[])
 {
-	minion::MThreadPool p(4);
-	p.start();
-	sleep(1);
+	// std::cout << minion::welcome() << std::endl;
+	minion::MOptions opt("1.0.0", "");
+	opt.insert('x', "xman", "Wonderful count");
+	opt.insert('n', "name", "This application's name'");
+	opt.parse(argc, argv);
 
-	for (int i = 0; i < 100; ++i) {
-		logitem *item = new logitem(i);
-		p.push_back(item);
+	if (opt.find('n')) {
+		std::string name = opt.getstring('n');
+		std::cout << name << std::endl;
+	}
+	if (opt.find('x')) {
+		int count = opt.getint('x');
+		std::cout << count << std::endl;
 	}
 
-	getchar();
+	if (opt.find('c')) {
+		std::string conf = opt.value('c');
+		std::cout << conf << std::endl;
+	}
+
+	bool verbose = opt.find('v');
+	std::cout << (verbose ? "true" : "false") << std::endl;
     return 0;
 }

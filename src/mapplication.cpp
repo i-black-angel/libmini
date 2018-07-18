@@ -15,6 +15,7 @@
  */
 #include <minion/mapplication.h>
 #include <minion/merror.h>
+#include <minion/mlog.h>
 
 MINION_BEGIN_NAMESPACE
 
@@ -52,7 +53,7 @@ std::string MApplication::applicationDirPath()
 
 	char path[PATH_MAX] = { 0x00 };
 	if (readlink("/proc/self/exe", path, sizeof(path)) == -1) {
-		std::cerr << error() << std::endl;
+		log_error("%s", error().c_str());
 		return ret;
 	}
 
@@ -70,7 +71,7 @@ std::string MApplication::applicationFilePath()
 
 	char path[PATH_MAX] = { 0x00 };
 	if (readlink("/proc/self/exe", path, sizeof(path)) == -1) {
-		std::cerr << error() << std::endl;
+		log_error("%s", error().c_str());
 		return ret;
 	}
 
@@ -83,7 +84,7 @@ std::string MApplication::applicationName()
 
 	char path[PATH_MAX] = { 0x00 };
 	if (readlink("/proc/self/exe", path, sizeof(path)) == -1) {
-		std::cerr << error() << std::endl;
+		log_error("%s", error().c_str());
 		return ret;
 	}
 
@@ -138,7 +139,7 @@ bool MApplication::alreadyRunning(const std::string &lockfile)
 
 	fd = open(lockfile.c_str(), openflag, lockmode);
 	if (fd == -1) {
-		// log_error("open %s failed: %s", lockfile.c_str(), error().c_str());
+		log_error("open %s failed: %s", lockfile.c_str(), error().c_str());
 		exit(EXIT_FAILURE);
 	}
 
@@ -147,7 +148,7 @@ bool MApplication::alreadyRunning(const std::string &lockfile)
 			close(fd);
 			return true;
 		}
-		// log_error("can't lock %s: %s", lockfile.c_str(), error().c_str());
+		log_error("can't lock %s: %s", lockfile.c_str(), error().c_str());
 		exit(EXIT_FAILURE);
 	}
 	ftruncate(fd, 0);

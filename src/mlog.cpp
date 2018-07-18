@@ -82,7 +82,7 @@ void MLog::log(const std::string &file, const std::string &func,
 	va_end(vargs);
 
 	// DATETIME HOSTNAME APPLICATIONNAME[PID] FILE FUNC[LINE] 
-	std::string logstr = MString::format("%s %s %s[%lld] %s %s[%u]: <%s> %s",
+	std::string logstr = minion::format("%s %s %s[%lld] %s %s[%u]: <%s> %s",
 								now().c_str(), hostname().c_str(),
 								applicationName().c_str(), pid(),
 								file.c_str(), func.c_str(), line,
@@ -96,7 +96,7 @@ void MLog::log(const std::string &file, const std::string &func,
 	} else {
 		FILE *fp = fopen(_logfile.c_str(), "a");
 		if (fp == NULL) {
-			std::string errstr = MString::format("open %s failed: %s",
+			std::string errstr = minion::format("open %s failed: %s",
 												 _logfile.c_str(), error().c_str());
 			fprintf(stderr, "%s\n", errstr.c_str());
 			syslog(LOG_ERR, "%s", errstr.c_str());

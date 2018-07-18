@@ -20,14 +20,24 @@
 
 MINION_BEGIN_NAMESPACE
 
+std::string toString(int val);
+std::string toString(unsigned val);
+std::string toString(long val);
+std::string toString(unsigned long val);
+std::string toString(long long val);
+std::string toString(unsigned long long val);
+std::string toString(float val);
+std::string toString(double val);
+std::string toString(long double val);
+std::string toXString(const char *fmt, ...);
+std::string hexToString(const uint8_t *data, size_t len);
+#define format toXString
+
 class MString : public std::string
 {
 public:
     explicit MString();
     virtual ~MString();
-
-	static std::string format(const char *__format, ...);
-	static std::string hex2str(const uint8_t *data, size_t len);
 };
 
 MINION_END_NAMESPACE

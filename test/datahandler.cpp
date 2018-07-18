@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 
 	sleep(1);
 	for (int i = 0; i < 10; ++i) {
-		std::string index = minion::MString::format("index-%d", i);
+		std::string index = minion::format("index-%d", i);
 		d.push(index);
 		usleep(100);
 	}

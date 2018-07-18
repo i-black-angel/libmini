@@ -11,7 +11,7 @@ libminion_la_LIBADD = -lpthread
 
 libminion_la_SOURCES =				\
 mapplication.cpp				\
-mcommandline.cpp				\
+moptions.cpp					\
 mdatetime.cpp					\
 mdir.cpp					\
 mfile.cpp					\

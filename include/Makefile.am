@@ -38,7 +38,7 @@ minion/mcoredef.h				\
 minion/mdir.h					\
 minion/msocket.h				\
 minion/mrand.h					\
-minion/mcommandline.h				\
+minion/moptions.h				\
 minion/mcondition.h				\
 minion/mdatetime.h				\
 minion/msysinfo.h				\

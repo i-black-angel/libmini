@@ -31,7 +31,7 @@
 #include <minion/mdir.h>
 #include <minion/msocket.h>
 #include <minion/mrand.h>
-#include <minion/mcommandline.h>
+#include <minion/moptions.h>
 #include <minion/mcondition.h>
 #include <minion/mdatetime.h>
 #include <minion/msysinfo.h>
