@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <minion.h>
+#include <mpl.h>
 
 int main(int argc, char *argv[])
 {
 	int fd = open("/abc", O_RDONLY);
-	std::cout << minion::error() << std::endl;
+	std::cout << mpl::error() << std::endl;
     return 0;
 }

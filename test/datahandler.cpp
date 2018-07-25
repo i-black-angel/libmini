@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <minion.h>
+#include <mpl.h>
 
-class DataHandler : public minion::MDataHandler<std::string>
+class DataHandler : public mpl::MDataHandler<std::string>
 {
 protected:
 	virtual void handle(std::string &t) {
@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 
 	sleep(1);
 	for (int i = 0; i < 10; ++i) {
-		std::string index = minion::format("index-%d", i);
+		std::string index = mpl::format("index-%d", i);
 		d.push(index);
 		usleep(100);
 	}

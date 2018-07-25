@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <minion/mprocess.h>
+#include <mpl/mprocess.h>
 
-MINION_BEGIN_NAMESPACE
+MPL_BEGIN_NAMESPACE
 
 std::string workingDirectory()
 {
@@ -63,4 +63,4 @@ std::vector<std::string> MProcess::systemEnvironment()
 {
 }
 
-MINION_END_NAMESPACE
+MPL_END_NAMESPACE

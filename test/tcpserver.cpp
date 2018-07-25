@@ -12,18 +12,18 @@
 #include <cmath>
 #include <locale>
 #include <cerrno>
-#include <minion.h>
+#include <mpl.h>
 #include <sys/epoll.h>
 
 using namespace std;
 
-class MouseServer : public minion::MTcpServer
+class MouseServer : public mpl::MTcpServer
 {
 public:
     explicit MouseServer() { }
     virtual ~MouseServer() { }
 protected:
-	virtual void connection(int clientfd, const minion::MHostAddress &addr) {
+	virtual void connection(int clientfd, const mpl::MHostAddress &addr) {
 	}
 	virtual void process(int clientfd, const uint8_t *data, size_t len) {
 		char buf[1024] = {0x00};
@@ -45,12 +45,12 @@ int main(int argc, char *argv[])
 	while (true) {
 		sleep(1);
 	}
-	// minion::MSocket sock(minion::MSocket::TcpSocket);
+	// mpl::MSocket sock(mpl::MSocket::TcpSocket);
 	// sock.bind(12700);
 	// sock.listen();
 
 	// while (true) {
-	// 	minion::MHostAddress addr;
+	// 	mpl::MHostAddress addr;
 	// 	int fd = sock.accept(addr);
 	// 	std::cout << "accept " << addr.toString() << " fd:" << fd << std::endl;
 	// 	std::cout << "getsockname " << sock.sockname().toString() << std::endl;

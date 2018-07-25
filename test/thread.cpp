@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <minion.h>
+#include <mpl.h>
 
-class WorkThread : public minion::MThread
+class WorkThread : public mpl::MThread
 {
 public:
     explicit WorkThread() { }

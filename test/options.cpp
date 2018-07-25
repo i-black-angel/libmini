@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <minion.h>
+#include <mpl.h>
 
 int main(int argc, char *argv[])
 {
-	// std::cout << minion::welcome() << std::endl;
-	minion::MOptions opt("1.0.0", "");
+	// std::cout << mpl::welcome() << std::endl;
+	mpl::MOptions opt("1.0.0", "");
 	opt.insert('x', "xman", "Wonderful count");
 	opt.insert('n', "name", "This application's name'");
 	opt.parse(argc, argv);

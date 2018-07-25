@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <minion.h>
+#include <mpl.h>
 
-class logitem : public minion::MTaskInterface
+class logitem : public mpl::MTaskInterface
 {
 public:
     explicit logitem(int a) : _arg1(a) { }
@@ -27,9 +27,9 @@ public:
 	// }
 
 	virtual void run() {
-		int msec = minion::MRand::rand(1000, 5000);
+		int msec = mpl::MRand::rand(1000, 5000);
 		usleep(msec);
-		std::cout << minion::MThread::currentId() << " recv: " << _arg1 << std::endl;
+		std::cout << mpl::MThread::currentId() << " recv: " << _arg1 << std::endl;
 		usleep(msec);
 	}
 private:
@@ -38,7 +38,7 @@ private:
 
 int main(int argc, char *argv[])
 {
-	minion::MThreadPool p(4);
+	mpl::MThreadPool p(4);
 	p.start();
 	sleep(1);
 

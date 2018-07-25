@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <minion.h>
+#include <mpl.h>
 
 int main(int argc, char *argv[])
 {
-	minion::MMutex mutex;
+	mpl::MMutex mutex;
 	mutex.lock();
 	mutex.unlock();
-	minion::MScopedLock locker(mutex);
+	mpl::MScopedLock locker(mutex);
 	std::cout << mutex.trylock() << std::endl;
     return 0;
 }

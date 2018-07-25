@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <minion/mrand.h>
+#include <mpl/mrand.h>
 
-MINION_BEGIN_NAMESPACE
+MPL_BEGIN_NAMESPACE
 
 int MRand::rand()
 {
@@ -42,4 +42,4 @@ double MRand::range(double low, double high)
 	return ((rand() % (int)(1 + rhigh * 100.0 - rlow * 100.0)) / 100.0) + rlow;
 }
 
-MINION_END_NAMESPACE
+MPL_END_NAMESPACE

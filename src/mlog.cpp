@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <minion/mlog.h>
-#include <minion/msysinfo.h>
-#include <minion/mdatetime.h>
-#include <minion/mapplication.h>
-#include <minion/mstring.h>
-#include <minion/merror.h>
+#include <mpl/mlog.h>
+#include <mpl/msysinfo.h>
+#include <mpl/mdatetime.h>
+#include <mpl/mapplication.h>
+#include <mpl/mstring.h>
+#include <mpl/merror.h>
 
-MINION_BEGIN_NAMESPACE
+MPL_BEGIN_NAMESPACE
 
 MLog *MLog::_ins = NULL;
 
@@ -82,7 +82,7 @@ void MLog::log(const std::string &file, const std::string &func,
 	va_end(vargs);
 
 	// DATETIME HOSTNAME APPLICATIONNAME[PID] FILE FUNC[LINE] 
-	std::string logstr = minion::format("%s %s %s[%lld] %s %s[%u]: <%s> %s",
+	std::string logstr = mpl::format("%s %s %s[%lld] %s %s[%u]: <%s> %s",
 								now().c_str(), hostname().c_str(),
 								applicationName().c_str(), pid(),
 								file.c_str(), func.c_str(), line,
@@ -96,7 +96,7 @@ void MLog::log(const std::string &file, const std::string &func,
 	} else {
 		FILE *fp = fopen(_logfile.c_str(), "a");
 		if (fp == NULL) {
-			std::string errstr = minion::format("open %s failed: %s",
+			std::string errstr = mpl::format("open %s failed: %s",
 												 _logfile.c_str(), error().c_str());
 			fprintf(stderr, "%s\n", errstr.c_str());
 			syslog(LOG_ERR, "%s", errstr.c_str());
@@ -132,4 +132,4 @@ std::string MLog::strpriority(int pri) const
 	return ret;
 }
 
-MINION_END_NAMESPACE
+MPL_END_NAMESPACE

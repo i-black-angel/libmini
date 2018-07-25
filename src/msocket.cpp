@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <minion/msocket.h>
-#include <minion/merror.h>
-#include <minion/mlog.h>
+#include <mpl/msocket.h>
+#include <mpl/merror.h>
+#include <mpl/mlog.h>
 
-MINION_BEGIN_NAMESPACE
+MPL_BEGIN_NAMESPACE
 
-int minion_sendto(int fd, const void *buf, size_t n,
+int mpl_sendto(int fd, const void *buf, size_t n,
 				  int flags,
 				  const struct sockaddr *addr,
 				  socklen_t addr_len)
@@ -31,7 +31,7 @@ int minion_sendto(int fd, const void *buf, size_t n,
 #endif
 }
 
-int minion_recvfrom(int fd, void *buf, size_t n,
+int mpl_recvfrom(int fd, void *buf, size_t n,
 					int flags,
 					struct sockaddr *addr,
 					socklen_t *addr_len)
@@ -449,7 +449,7 @@ void MTcpServer::run()
 	// close(_pipefd[1]);
 }
 
-void MTcpServer::connection(int clientfd, const minion::MHostAddress &addr)
+void MTcpServer::connection(int clientfd, const mpl::MHostAddress &addr)
 {
 }
 
@@ -541,7 +541,7 @@ int64_t MUdpSocket::recvfrom(uint8_t *data, size_t len, MHostAddress &host)
 	ssize_t rlen = ::recvfrom(_sockfd, data, len, 0, (sockaddr *)&addr, &slen);
 
 	if (rlen <= 0) {
-		std::cerr << minion::error() << std::endl;
+		std::cerr << mpl::error() << std::endl;
 		return rlen;
 	}
 
@@ -640,4 +640,4 @@ void MUdpServer::process(const uint8_t *data, size_t len, const MHostAddress &ho
 {
 }
 
-MINION_END_NAMESPACE
+MPL_END_NAMESPACE

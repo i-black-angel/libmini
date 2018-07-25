@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <minion/mstring.h>
+#include <mpl/mstring.h>
 
-MINION_BEGIN_NAMESPACE
+MPL_BEGIN_NAMESPACE
 
 std::string toXString(const char *fmt, ...)
 {
@@ -101,4 +101,4 @@ MString::~MString()
 {
 }
 
-MINION_END_NAMESPACE
+MPL_END_NAMESPACE

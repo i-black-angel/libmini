@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <minion/mdir.h>
+#include <mpl/mdir.h>
 
-MINION_BEGIN_NAMESPACE
+MPL_BEGIN_NAMESPACE
 
 MDir::MDir()
 {
@@ -25,4 +25,4 @@ MDir::~MDir()
 {
 }
 
-MINION_END_NAMESPACE
+MPL_END_NAMESPACE

@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <minion/msettings.h>
-#include <minion/mlog.h>
-#include <minion/msettings_p.h>
-#include <minion/merror.h>
+#include <mpl/msettings.h>
+#include <mpl/mlog.h>
+#include <mpl/msettings_p.h>
+#include <mpl/merror.h>
 
-MINION_BEGIN_NAMESPACE
+MPL_BEGIN_NAMESPACE
 
 #define SI_ERROR_STR_OK          "No error"
 #define SI_ERROR_STR_UPDATED     "An existing value was updated"
@@ -152,4 +152,4 @@ bool MSettings::setValue(const char *section, const char *key, bool value)
 	return true;
 }
 
-MINION_END_NAMESPACE
+MPL_END_NAMESPACE

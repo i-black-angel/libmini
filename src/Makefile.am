@@ -1,15 +1,15 @@
-lib_LTLIBRARIES = libminion.la
+lib_LTLIBRARIES = libmpl.la
 
 # library version
-libminion_la_LDFLAGS=$(LTLDFLAGS)
+libmpl_la_LDFLAGS=$(LTLDFLAGS)
 
-libminion_la_CPPFLAGS = -I$(top_srcdir)/include $(all_includes)
+libmpl_la_CPPFLAGS = -I$(top_srcdir)/include $(all_includes)
 ######################################
 # Cflags and Libs
-# libminion_la_CXXFLAGS = $(LIBICONV_CFLAGS)
-libminion_la_LIBADD = -lpthread
+# libmpl_la_CXXFLAGS = $(LIBICONV_CFLAGS)
+libmpl_la_LIBADD = -lpthread
 
-libminion_la_SOURCES =				\
+libmpl_la_SOURCES =				\
 mapplication.cpp				\
 moptions.cpp					\
 mdatetime.cpp					\

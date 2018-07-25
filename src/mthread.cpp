@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <minion/mthread.h>
+#include <mpl/mthread.h>
 
 #ifdef M_OS_WIN
 
@@ -23,7 +23,7 @@ extern "C" {
 
 	static unsigned int __stdcall thread_routine(void *arg)
 	{
-		minion::MThread *self = (minion::MThread *) arg;
+		mpl::MThread *self = (mpl::MThread *) arg;
 		if (NULL != self) {
 			self->exec();
 		}
@@ -42,7 +42,7 @@ extern "C" {
 
 	static void *thread_routine(void *arg)
 	{
-		minion::MThread *self = (minion::MThread *) arg;
+		mpl::MThread *self = (mpl::MThread *) arg;
 		if (NULL != self) {
 			self->exec();
 		}
@@ -55,7 +55,7 @@ extern "C" {
 
 #endif /* M_OS_WIN */
 
-MINION_BEGIN_NAMESPACE
+MPL_BEGIN_NAMESPACE
 
 MThread::MThread()
 {
@@ -135,4 +135,4 @@ void MThread::exec()
 	run();
 }
 
-MINION_END_NAMESPACE
+MPL_END_NAMESPACE

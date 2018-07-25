@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <minion/muuid.h>
+#include <mpl/muuid.h>
 #include "muuid_p.h"
 
-MINION_BEGIN_NAMESPACE
+MPL_BEGIN_NAMESPACE
 
 std::string uuidgen()
 {
-	return minion::uuid::generate();
+	return mpl::uuid::generate();
 }
 
 std::string uuid::generate()
@@ -54,4 +54,4 @@ std::string uuid::generate()
 	return std::string(buf);
 }
 
-MINION_END_NAMESPACE
+MPL_END_NAMESPACE

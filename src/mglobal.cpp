@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <minion/mglobal.h>
-#include <minion/muuid.h>
+#include <mpl/mglobal.h>
+#include <mpl/muuid.h>
 
-MINION_BEGIN_NAMESPACE
+MPL_BEGIN_NAMESPACE
 
 const char *welcome()
 {
-	return "Hi, welcome to libminion.";
+	return "Hi, welcome to Mini Public Library.";
 }
 
 void abort(const char *errmsg)
@@ -36,7 +36,7 @@ void abort(const char *errmsg)
 #endif
 }
 
-MINION_END_NAMESPACE
+MPL_END_NAMESPACE
 
 #ifdef M_OS_WIN
 

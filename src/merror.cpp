@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <minion/merror.h>
+#include <mpl/merror.h>
 
-MINION_BEGIN_NAMESPACE
+MPL_BEGIN_NAMESPACE
 
 int errnum()
 {
@@ -48,4 +48,4 @@ std::string error(int code)
 #endif /* M_OS_WIN */
 }
 
-MINION_END_NAMESPACE
+MPL_END_NAMESPACE

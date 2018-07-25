@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <minion/mapplication.h>
-#include <minion/merror.h>
-#include <minion/mlog.h>
+#include <mpl/mapplication.h>
+#include <mpl/merror.h>
+#include <mpl/mlog.h>
 
-MINION_BEGIN_NAMESPACE
+MPL_BEGIN_NAMESPACE
 
 std::string applicationName()
 {
@@ -157,4 +157,4 @@ bool MApplication::alreadyRunning(const std::string &lockfile)
 	return false;
 }
 
-MINION_END_NAMESPACE
+MPL_END_NAMESPACE

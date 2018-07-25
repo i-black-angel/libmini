@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <minion.h>
+#include <mpl.h>
 
-minion::MCondition cond_;
-minion::MMutex mutex_;
+mpl::MCondition cond_;
+mpl::MMutex mutex_;
 
 void *threadCallback(void *pvoid)
 {
-	minion::MScopedLock locker(mutex_);
+	mpl::MScopedLock locker(mutex_);
 	std::cout << pthread_self() << std::endl; 
 	cond_.wait(mutex_);
 	std::cout << "wakeup " << pthread_self() << std::endl;

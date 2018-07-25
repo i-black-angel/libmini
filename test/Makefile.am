@@ -21,81 +21,81 @@ noinst_PROGRAMS += application tcpclient tcpserver datahandler threadpool
 noinst_PROGRAMS += settings options
 
 hostaddress_CPPFLAGS = -I$(top_srcdir)/include
-hostaddress_LDADD = ../src/libminion.la
+hostaddress_LDADD = ../src/libmpl.la
 hostaddress_SOURCES = hostaddress.cpp
 
 welcome_CPPFLAGS = -I$(top_srcdir)/include
-welcome_LDADD = ../src/libminion.la
+welcome_LDADD = ../src/libmpl.la
 welcome_SOURCES = welcome.cpp
 
 assert_CPPFLAGS = -I$(top_srcdir)/include
-assert_LDADD = ../src/libminion.la
+assert_LDADD = ../src/libmpl.la
 assert_SOURCES = assert.cpp
 
 mutex_CPPFLAGS = -I$(top_srcdir)/include
-mutex_LDADD = ../src/libminion.la -lpthread
+mutex_LDADD = ../src/libmpl.la -lpthread
 mutex_SOURCES = mutex.cpp
 
 condition_CPPFLAGS = -I$(top_srcdir)/include
-condition_LDADD = ../src/libminion.la -lpthread
+condition_LDADD = ../src/libmpl.la -lpthread
 condition_SOURCES = condition.cpp
 
 udpsocket_CPPFLAGS = -I$(top_srcdir)/include
-udpsocket_LDADD = ../src/libminion.la -lpthread
+udpsocket_LDADD = ../src/libmpl.la -lpthread
 udpsocket_SOURCES = udpsocket.cpp
 
 thread_CPPFLAGS = -I$(top_srcdir)/include
-thread_LDADD = ../src/libminion.la -lpthread
+thread_LDADD = ../src/libmpl.la -lpthread
 thread_SOURCES = thread.cpp
 
 udpclient_CPPFLAGS = -I$(top_srcdir)/include
-udpclient_LDADD = ../src/libminion.la
+udpclient_LDADD = ../src/libmpl.la
 udpclient_SOURCES = udpclient.cpp
 
 error_CPPFLAGS = -I$(top_srcdir)/include
-error_LDADD = ../src/libminion.la
+error_LDADD = ../src/libmpl.la
 error_SOURCES = error.cpp
 
 uuid_CPPFLAGS = -I$(top_srcdir)/include
-uuid_LDADD = ../src/libminion.la
+uuid_LDADD = ../src/libmpl.la
 uuid_SOURCES = uuid.cpp
 
 fileinfo_CPPFLAGS = -I$(top_srcdir)/include
-fileinfo_LDADD = ../src/libminion.la
+fileinfo_LDADD = ../src/libmpl.la
 fileinfo_SOURCES = fileinfo.cpp
 
 md5sum_CPPFLAGS = -I$(top_srcdir)/include
-md5sum_LDADD = ../src/libminion.la
+md5sum_LDADD = ../src/libmpl.la
 md5sum_SOURCES = md5sum.cpp
 
 datetime_CPPFLAGS = -I$(top_srcdir)/include
-datetime_LDADD = ../src/libminion.la
+datetime_LDADD = ../src/libmpl.la
 datetime_SOURCES = datetime.cpp
 
 application_CPPFLAGS = -I$(top_srcdir)/include
-application_LDADD = ../src/libminion.la
+application_LDADD = ../src/libmpl.la
 application_SOURCES = application.cpp
 
 tcpclient_CPPFLAGS = -I$(top_srcdir)/include
-tcpclient_LDADD = ../src/libminion.la
+tcpclient_LDADD = ../src/libmpl.la
 tcpclient_SOURCES = tcpclient.cpp
 
 tcpserver_CPPFLAGS = -I$(top_srcdir)/include
-tcpserver_LDADD = ../src/libminion.la
+tcpserver_LDADD = ../src/libmpl.la
 tcpserver_SOURCES = tcpserver.cpp
 
 datahandler_CPPFLAGS = -I$(top_srcdir)/include
-datahandler_LDADD = ../src/libminion.la
+datahandler_LDADD = ../src/libmpl.la
 datahandler_SOURCES = datahandler.cpp
 
 threadpool_CPPFLAGS = -I$(top_srcdir)/include
-threadpool_LDADD = ../src/libminion.la
+threadpool_LDADD = ../src/libmpl.la
 threadpool_SOURCES = threadpool.cpp
 
 settings_CPPFLAGS = -I$(top_srcdir)/include
-settings_LDADD = ../src/libminion.la
+settings_LDADD = ../src/libmpl.la
 settings_SOURCES = settings.cpp
 
 options_CPPFLAGS = -I$(top_srcdir)/include
-options_LDADD = ../src/libminion.la
+options_LDADD = ../src/libmpl.la
 options_SOURCES = options.cpp

@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <minion.h>
+#include <mpl.h>
 
 int main(int argc, char *argv[])
 {
-    std::cout << minion::applicationDirPath() << std::endl;
-    std::cout << minion::applicationName() << std::endl;
-    std::cout << minion::applicationFilePath() << std::endl;
-	std::cout << minion::pid() << std::endl;
-	std::cout << minion::workingDirectory() << std::endl;
+    std::cout << mpl::applicationDirPath() << std::endl;
+    std::cout << mpl::applicationName() << std::endl;
+    std::cout << mpl::applicationFilePath() << std::endl;
+	std::cout << mpl::pid() << std::endl;
+	std::cout << mpl::workingDirectory() << std::endl;
     return 0;
 }

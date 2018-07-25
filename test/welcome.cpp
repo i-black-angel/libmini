@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <minion.h>
+#include <mpl.h>
 
 int main(int argc, char *argv[])
 {
-	std::cout << minion::welcome() << std::endl;
+	std::cout << mpl::welcome() << std::endl;
     return 0;
 }

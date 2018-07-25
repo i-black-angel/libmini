@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <minion.h>
+#include <mpl.h>
 
 int main(int argc, char *argv[])
 {
 	const char *msg = "M^0001^1^108^彩票打印机脱机";
 
-	minion::MUdpSocket udpSocket;
-	minion::MHostAddress addr("localhost", 8309);
+	mpl::MUdpSocket udpSocket;
+	mpl::MHostAddress addr("localhost", 8309);
 	
 	ssize_t len = udpSocket.sendto((const uint8_t *)msg, strlen(msg) + 1, addr);
 	log_debug("len = %d", len);

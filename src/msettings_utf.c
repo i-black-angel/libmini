@@ -53,7 +53,7 @@
     See the header file "ConvertUTF.h" for complete documentation.
 
 ------------------------------------------------------------------------ */
-#include <minion/msettings_utf.h>
+#include <mpl/msettings_utf.h>
 #ifdef CVTUTF_DEBUG
 #include <stdio.h>
 #endif

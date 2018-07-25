@@ -16,41 +16,41 @@
 # limitations under the License.
 
 include_HEADERS =				\
-minion.h    
+mpl.h    
 
-miniondir = $(includedir)/minion
+mpldir = $(includedir)/mpl
 
-minion_HEADERS =				\
-minion/mhttp.h					\
-minion/mglobal.h				\
-minion/msettings.h				\
-minion/msettings_p.h				\
-minion/msettings_utf.h				\
-minion/mthread.h				\
-minion/mlog.h					\
-minion/mxml.h					\
-minion/mfileinfo.h				\
-minion/mstring.h				\
-minion/mmongodb.h				\
-minion/mapplication.h				\
-minion/mfile.h					\
-minion/mcoredef.h				\
-minion/mdir.h					\
-minion/msocket.h				\
-minion/mrand.h					\
-minion/moptions.h				\
-minion/mcondition.h				\
-minion/mdatetime.h				\
-minion/mdatahandler.h				\
-minion/msysinfo.h				\
-minion/mmutex.h					\
-minion/mhostaddress.h				\
-minion/mprocess.h				\
-minion/mjson.h					\
-minion/merror.h					\
-minion/murl.h					\
-minion/muuid.h					\
-minion/mhash.h					\
-minion/mqueue.h					\
-minion/mthreadpool.h				\
-minion/mevent.h
+mpl_HEADERS =					\
+mpl/mhttp.h					\
+mpl/mglobal.h					\
+mpl/msettings.h					\
+mpl/msettings_p.h				\
+mpl/msettings_utf.h				\
+mpl/mthread.h					\
+mpl/mlog.h					\
+mpl/mxml.h					\
+mpl/mfileinfo.h					\
+mpl/mstring.h					\
+mpl/mmongodb.h					\
+mpl/mapplication.h				\
+mpl/mfile.h					\
+mpl/mcoredef.h					\
+mpl/mdir.h					\
+mpl/msocket.h					\
+mpl/mrand.h					\
+mpl/moptions.h					\
+mpl/mcondition.h				\
+mpl/mdatetime.h					\
+mpl/mdatahandler.h				\
+mpl/msysinfo.h					\
+mpl/mmutex.h					\
+mpl/mhostaddress.h				\
+mpl/mprocess.h					\
+mpl/mjson.h					\
+mpl/merror.h					\
+mpl/murl.h					\
+mpl/muuid.h					\
+mpl/mhash.h					\
+mpl/mqueue.h					\
+mpl/mthreadpool.h				\
+mpl/mevent.h

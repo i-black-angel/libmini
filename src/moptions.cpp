@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <minion/moptions.h>
-#include <minion/mapplication.h>
-#include <minion/mstring.h>
+#include <mpl/moptions.h>
+#include <mpl/mapplication.h>
+#include <mpl/mstring.h>
 #include <assert.h>
 
-MINION_BEGIN_NAMESPACE
+MPL_BEGIN_NAMESPACE
 
 static void fatal(const char *format, ...)
 {
@@ -116,8 +116,8 @@ void MOptions::parse(int argc, char *argv[])
 		longopts.push_back(item);
 
 		shortopts += it->req_arg ?
-			minion::format("%c:", it->key) :
-			minion::format("%c", it->key);
+			mpl::format("%c:", it->key) :
+			mpl::format("%c", it->key);
 	}
 
 	int opt = -1;
@@ -157,4 +157,4 @@ void MOptions::parse(int argc, char *argv[])
 	}
 }
 
-MINION_END_NAMESPACE
+MPL_END_NAMESPACE

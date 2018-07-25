@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <minion/mxml.h>
+#include <mpl/mxml.h>
 
-MINION_BEGIN_NAMESPACE
+MPL_BEGIN_NAMESPACE
 
 MXml::MXml()
 {
@@ -25,4 +25,4 @@ MXml::~MXml()
 {
 }
 
-MINION_END_NAMESPACE
+MPL_END_NAMESPACE

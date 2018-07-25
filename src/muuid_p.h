@@ -16,7 +16,7 @@
 #ifndef _MUUID_P_H_
 #define _MUUID_P_H_
 
-#include <minion/mcoredef.h>
+#include <mpl/mcoredef.h>
 
 #ifdef M_OS_WIN					/* M_OS_WIN */
 #include <objbase.h>
