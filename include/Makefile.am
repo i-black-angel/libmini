@@ -41,6 +41,7 @@ minion/mrand.h					\
 minion/moptions.h				\
 minion/mcondition.h				\
 minion/mdatetime.h				\
+minion/mdatahandler.h				\
 minion/msysinfo.h				\
 minion/mmutex.h					\
 minion/mhostaddress.h				\
@@ -51,6 +52,5 @@ minion/murl.h					\
 minion/muuid.h					\
 minion/mhash.h					\
 minion/mqueue.h					\
-minion/mthreadpool.h 
-
-
+minion/mthreadpool.h				\
+minion/mevent.h

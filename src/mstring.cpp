@@ -31,7 +31,7 @@ std::string toXString(const char *fmt, ...)
 	return buffer;
 }
 
-std::string hexToString(const uint8_t *data, size_t len)
+std::string hex2str(const uint8_t *data, size_t len)
 {
 	std::string buffer;
 	char buf[3] = {0x00};

@@ -30,7 +30,7 @@ std::string toString(float val);
 std::string toString(double val);
 std::string toString(long double val);
 std::string toXString(const char *fmt, ...);
-std::string hexToString(const uint8_t *data, size_t len);
+std::string hex2str(const uint8_t *data, size_t len);
 #define format toXString
 
 class MString : public std::string
