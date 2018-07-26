@@ -24,23 +24,22 @@ MPL_BEGIN_NAMESPACE
 class MFileInfo
 {
 public:
+	enum FileType {
+		unknown,
+		fifo,
+		chardev,
+		directory,
+		blockdev,
+		normal,
+		symbolic_link,
+		sock,
+	};
     MFileInfo();
-	MFileInfo(const std::string &file);
-	// MFileInfo(const MFile &file);
-	// MFileInfo(const MDir &dir, const std::string &file);
+	explicit MFileInfo(const std::string &file);
 	MFileInfo(const MFileInfo &fileinfo);
     virtual ~MFileInfo();
 
-	MFileInfo& operator=(const MFileInfo &fileinfo);
-	bool operator==(const MFileInfo &fileinfo) const;
-	inline bool operator!=(const MFileInfo &fileinfo) const { return !operator==(fileinfo); }
-
 	void setFile(const std::string &file);
-	// void setFile(const MFile &file);
-	// void setFile(const MDir &dir, const std::string &file);
-	bool exists() const;
-	static bool exists(const std::string &file);
-	// void refresh();
 
 	std::string filePath() const;
 	std::string absoluteFilePath() const;
@@ -56,12 +55,13 @@ public:
 	std::string path() const;
 	std::string absolutePath() const;
 	std::string canonicalPath() const;
-	// Dir dir() const;
-	// Dir absoluteDir() const;
 
-	bool isReadable() const;
-	bool isWritable() const;
-	bool isExecutable() const;
+	static bool exists(const std::string &file);
+
+	bool exists() const;		// F_OK
+	bool isReadable() const;	// R_OK
+	bool isWritable() const;	// W_OK
+	bool isExecutable() const;	// X_OK
 	bool isHidden() const;
 	bool isNativePath() const;
 
@@ -69,9 +69,17 @@ public:
 	inline bool isAbsolute() const { return !isRelative(); }
 	bool makeAbsolute();
 
+	FileType filetypeEnum() const;
+	std::string filetype() const;
+	
 	bool isFile() const;
 	bool isDir() const;
 	bool isSymLink() const;
+	bool isBlock() const;
+	bool isCharDev() const;
+	bool isFIFO() const;
+	bool isSock() const;
+	
 	bool isRoot() const;
 	bool isBundle() const;
 
@@ -83,16 +91,29 @@ public:
 	std::string group() const;
 	uint32_t groupId() const;
 
-	// bool permission(MFile::Permissions permissions) const;
-	// MFile::Permissions permissions() const;
+	size_t size() const;
+	void refresh();
 
-	int64_t size() const;
-
-	MDateTime created() const;
+	MDateTime lastStatusChanged() const;
 	MDateTime lastModified() const;
 	MDateTime lastRead() const;
+
+	MFileInfo& operator=(const MFileInfo &fileinfo);
+	bool operator==(const MFileInfo &fileinfo) const;
+	inline bool operator!=(const MFileInfo &fileinfo) const { return !operator==(fileinfo); }
+	
 private:
+	inline void inner_copy(const MFileInfo &other) {
+		_file = other._file;
+		_stat = other._stat;
+		_stat_ok = other._stat_ok;
+		_filetype = other._filetype;
+	}
+	
 	std::string _file;
+	struct stat _stat;
+	bool _stat_ok;
+	enum FileType _filetype;
 };
 
 MPL_END_NAMESPACE

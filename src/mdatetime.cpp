@@ -26,6 +26,11 @@ MDateTime::MDateTime()
 {
 }
 
+MDateTime::MDateTime(time_t d)
+{
+	_d = d;
+}
+
 MDateTime::MDateTime(int y, int m, int d, int H, int M, int S)
 {
 	struct tm stm;

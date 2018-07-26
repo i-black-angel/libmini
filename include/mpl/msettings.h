@@ -24,7 +24,7 @@ MPL_BEGIN_NAMESPACE
 class MSettings
 {
 public:
-	MSettings(bool isUtf8 = false);
+	explicit MSettings(bool isUtf8 = false);
     explicit MSettings(const char *path, bool isUtf8 = false);
     virtual ~MSettings();
 

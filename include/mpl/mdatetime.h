@@ -90,6 +90,7 @@ class MDateTime
 {
 public:
     MDateTime();
+	explicit MDateTime(time_t val);
 	MDateTime(int y, int m, int d, int H = 0, int M = 0, int S = 0);
     MDateTime(const MDateTime &other);
     virtual ~MDateTime();

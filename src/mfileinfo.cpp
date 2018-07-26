@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 #include <mpl/mfileinfo.h>
+#include <mpl/mdatetime.h>
+#include <mpl/merror.h>
+#include <mpl/mlog.h>
+#include <pwd.h>
+#include <grp.h>
 
 MPL_BEGIN_NAMESPACE
 
@@ -25,8 +30,7 @@ static bool __access(const std::string &__name, int __type)
 		return false;
 	}
 	if ((err = access(__name.c_str(), __type)) != 0) {
-		// errno
-		// log_error(strerror(errno));
+		// log_error("access %s failed: %s", __name.c_str(), error().c_str());
 		return false;
 	}
 	return true;
@@ -41,11 +45,11 @@ static std::string slash()
 #endif /* M_OS_WIN */
 }
 
-MFileInfo::MFileInfo()
+MFileInfo::MFileInfo() : _stat_ok(false)
 {
 }
 
-MFileInfo::MFileInfo(const std::string &file)
+MFileInfo::MFileInfo(const std::string &file) : _stat_ok(false)
 {
 	setFile(file);
 }
@@ -55,7 +59,7 @@ MFileInfo::MFileInfo(const std::string &file)
 
 MFileInfo::MFileInfo(const MFileInfo &fileinfo)
 {
-	_file = fileinfo._file;
+	inner_copy(fileinfo);
 }
 
 MFileInfo::~MFileInfo()
@@ -64,7 +68,7 @@ MFileInfo::~MFileInfo()
 
 MFileInfo& MFileInfo::operator=(const MFileInfo &fileinfo)
 {
-	_file = fileinfo._file;
+	inner_copy(fileinfo);
 	return *this;
 }
 
@@ -76,6 +80,13 @@ bool MFileInfo::operator==(const MFileInfo &fileinfo) const
 void MFileInfo::setFile(const std::string &file)
 {
 	_file = file;
+
+	if (lstat(_file.c_str(), &_stat) < 0) {
+		_stat_ok = false;
+		log_error("lstat %s failed: %s", _file.c_str(), error().c_str());
+	} else {
+		_stat_ok = true;
+	}
 }
 
 // void setFile(const MFile &file);
@@ -203,23 +214,52 @@ bool MFileInfo::makeAbsolute()
 
 bool MFileInfo::isFile() const
 {
+	if (!_stat_ok) return false;
+	return S_ISREG(_stat.st_mode);
 }
 
 bool MFileInfo::isDir() const
 {
+	if (!_stat_ok) return false;
+	return S_ISDIR(_stat.st_mode);
 }
 
 bool MFileInfo::isSymLink() const
 {
+	if (!_stat_ok) return false;
+	return S_ISLNK(_stat.st_mode);
 }
 
-bool MFileInfo::isRoot() const
+bool MFileInfo::isBlock() const
 {
+	if (!_stat_ok) return false;
+	return S_ISBLK(_stat.st_mode);
 }
 
-bool MFileInfo::isBundle() const
+bool MFileInfo::isCharDev() const
 {
+	if (!_stat_ok) return false;
+	return S_ISCHR(_stat.st_mode);
 }
+
+bool MFileInfo::isFIFO() const
+{
+	if (!_stat_ok) return false;
+	return S_ISFIFO(_stat.st_mode);
+}
+
+bool MFileInfo::isSock() const
+{
+	if (!_stat_ok) return false;
+	return S_ISSOCK(_stat.st_mode);
+}
+// bool MFileInfo::isRoot() const
+// {
+// }
+
+// bool MFileInfo::isBundle() const
+// {
+// }
 
 std::string MFileInfo::readLink() const
 {
@@ -228,25 +268,27 @@ std::string MFileInfo::readLink() const
 	char *linkname = NULL;
 
 	if (lstat(_file.c_str(), &sb) == -1) {
-		perror("lstat");
+		log_error("lstat %s failed: %s", _file.c_str(), error().c_str());
 		return std::string();
 	}
 	linkname = (char *) ::malloc(sb.st_size + 1);
 	if (linkname == NULL) {
-		fprintf(stderr, "insufficient memory\n");
+		log_error("insufficient memory");
 		return std::string();
 	}
 
 	r = ::readlink(_file.c_str(), linkname, sb.st_size + 1);
 
 	if (r == -1) {
-		perror("lstat");
+		log_error("readlink %s failed: %s", _file.c_str(), error().c_str());
+		::free(linkname);
 		return std::string();
 	}
 
 	if (r > sb.st_size) {
-		fprintf(stderr, "symlink increased in size "
-			"between lstat() and readlink()\n");
+		log_error("symlink increased in size "
+				  "between lstat() and readlink()");
+		::free(linkname);
 		return std::string();
 	}
 
@@ -260,37 +302,61 @@ std::string MFileInfo::readLink() const
 
 std::string MFileInfo::owner() const
 {
+	if (!_stat_ok) return std::string();
+	struct passwd *pwd = getpwuid(_stat.st_uid);
+	// log_debug("passwd: %s", pwd->pw_passwd);
+	return std::string(pwd->pw_name);
 }
 
 uint32_t MFileInfo::ownerId() const
 {
+	if (!_stat_ok) return -1;
+	return _stat.st_uid;
 }
 
 std::string MFileInfo::group() const
 {
+	if (!_stat_ok) return std::string();
+	struct group *grp = getgrgid(_stat.st_gid);
+	return std::string(grp->gr_name);
 }
 
 uint32_t MFileInfo::groupId() const
 {
+	if (!_stat_ok) return -1;
+	return _stat.st_gid;
 }
 
 // bool permission(MFile::Permissions permissions) const
 // MFile::Permissions permissions() const
 
-int64_t MFileInfo::size() const
+size_t MFileInfo::size() const
 {
+	if (!_stat_ok) return 0;
+	return _stat.st_size;
 }
 
-MDateTime MFileInfo::created() const
+void MFileInfo::refresh()
 {
+	setFile(_file);
+}
+
+MDateTime MFileInfo::lastStatusChanged() const
+{
+	if (!_stat_ok) return MDateTime(0);
+	return MDateTime(_stat.st_ctime);
 }
 
 MDateTime MFileInfo::lastModified() const
 {
+	if (!_stat_ok) return MDateTime(0);
+	return MDateTime(_stat.st_mtime);
 }
 
 MDateTime MFileInfo::lastRead() const
 {
+	if (!_stat_ok) return MDateTime(0);
+	return MDateTime(_stat.st_atime);
 }
 
 MPL_END_NAMESPACE
