@@ -54,9 +54,6 @@ MFileInfo::MFileInfo(const std::string &file) : _stat_ok(false)
 	setFile(file);
 }
 
-// MFileInfo(const MFile &file);
-// MFileInfo(const MDir &dir, const std::string &file);
-
 MFileInfo::MFileInfo(const MFileInfo &fileinfo)
 {
 	inner_copy(fileinfo);
@@ -89,9 +86,6 @@ void MFileInfo::setFile(const std::string &file)
 	}
 }
 
-// void setFile(const MFile &file);
-// void setFile(const MDir &dir, const std::string &file);
-
 bool MFileInfo::exists() const
 {
 	return exists(_file);
@@ -101,10 +95,6 @@ bool MFileInfo::exists(const std::string &file)
 {
 	return __access(file, F_OK);
 }
-
-// void MFileInfo::refresh()
-// {
-// }
 
 std::string MFileInfo::filePath() const
 {
@@ -177,9 +167,6 @@ std::string MFileInfo::absolutePath() const
 std::string MFileInfo::canonicalPath() const
 {
 }
-
-// Dir dir() const
-// Dir absoluteDir() const
 
 bool MFileInfo::isReadable() const
 {
@@ -357,6 +344,49 @@ MDateTime MFileInfo::lastRead() const
 {
 	if (!_stat_ok) return MDateTime(0);
 	return MDateTime(_stat.st_atime);
+}
+
+MFileInfo::FileType MFileInfo::filetype() const
+{
+	if (!_stat_ok) return unknown;
+	FileType ft = unknown;
+	if (S_ISREG(_stat.st_mode)) {
+		ft = normal;
+	} else if (S_ISDIR(_stat.st_mode)) {
+		ft = directory;
+	} else if (S_ISFIFO(_stat.st_mode)) {
+		ft = fifo;
+	} else if (S_ISCHR(_stat.st_mode)) {
+		ft = chardev;
+	} else if (S_ISBLK(_stat.st_mode)) {
+		ft = blockdev;
+	} else if (S_ISLNK(_stat.st_mode)) {
+		ft = symbolic_link;
+	} else if (S_ISSOCK(_stat.st_mode)) {
+		ft = sock;
+	}
+	return ft;
+}
+
+std::string MFileInfo::filetypeString() const
+{
+	switch(filetype()) {
+	case MFileInfo::fifo:
+		return "fifo";
+	case MFileInfo::chardev:
+		return "chardev (character special)";
+	case MFileInfo::directory:
+		return "directory";
+	case MFileInfo::blockdev:
+		return "blockdev (block special)";
+	case MFileInfo::normal:
+		return "normal";
+	case MFileInfo::symbolic_link:
+		return "symbolic link";
+	case MFileInfo::sock:
+		return "socket";
+	}
+	return "unknown";
 }
 
 MPL_END_NAMESPACE

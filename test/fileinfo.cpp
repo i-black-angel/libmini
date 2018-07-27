@@ -61,6 +61,8 @@ int main(int argc, char *argv[])
 	std::cout << rootfile.size() << std::endl;
 	std::cout << rootfile.owner() << std::endl;
 	std::cout << rootfile.group() << std::endl;
+	std::cout << rootfile.filetype() << std::endl;
+	std::cout << rootfile.filetypeString() << std::endl;
 	
 	std::cout << mpl::MFileInfo::exists("/etc/resolv.conf") << std::endl;
     return 0;

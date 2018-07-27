@@ -69,8 +69,8 @@ public:
 	inline bool isAbsolute() const { return !isRelative(); }
 	bool makeAbsolute();
 
-	FileType filetypeEnum() const;
-	std::string filetype() const;
+	FileType filetype() const;
+	std::string filetypeString() const;
 	
 	bool isFile() const;
 	bool isDir() const;
@@ -107,13 +107,13 @@ private:
 		_file = other._file;
 		_stat = other._stat;
 		_stat_ok = other._stat_ok;
-		_filetype = other._filetype;
+		// _filetype = other._filetype;
 	}
 	
 	std::string _file;
 	struct stat _stat;
 	bool _stat_ok;
-	enum FileType _filetype;
+	// enum FileType _filetype;
 };
 
 MPL_END_NAMESPACE
