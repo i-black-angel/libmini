@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 #include <mpl/mdir.h>
+#include <mpl/mfileinfo.h>
+
+#ifdef _MSC_VER
+# pragma warning (push)
+# pragma warning (disable: 4996)
+#endif
 
 MPL_BEGIN_NAMESPACE
 
@@ -21,8 +27,65 @@ MDir::MDir()
 {
 }
 
+MDir::MDir(const char *s)
+{
+	_dir = s;
+}
+
+MDir::MDir(const std::string &str)
+{
+	_dir = str;
+}
+
+MDir::MDir(const MDir &other)
+{
+	inner_copy(other);
+}
+
 MDir::~MDir()
 {
 }
 
+bool MDir::isDir() const
+{
+	return MFileInfo(_dir).isDir();
+}
+
+MDir &MDir::operator=(const MDir &other)
+{
+	inner_copy(other);
+	return *this;
+}
+
+MDir &MDir::operator=(const char *s)
+{
+	_dir = s;
+	return *this;
+}
+
+MDir &MDir::operator=(const std::string &str)
+{
+	_dir = str;
+	return *this;
+}
+
+std::ostream &operator<<(std::ostream &out, const MDir &dir)
+{
+	out << dir.dir();
+	return out;
+}
+
+std::istream &operator>>(std::istream &in, MDir &dir)
+{
+	// TODO::
+	std::string str;
+	in >> str;
+	dir = str;
+	return in;
+}
+
 MPL_END_NAMESPACE
+
+#ifdef _MSC_VER
+# pragma warning (pop)
+#endif

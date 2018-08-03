@@ -13,17 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _MGLOBAL_H_
-#define _MGLOBAL_H_
+#ifndef _MPLSTD_H_
+#define _MPLSTD_H_
 
 #include <mpl/mcoredef.h>
-
-MPL_BEGIN_NAMESPACE
-
-const char *welcome();
-void abort(const char *errmsg);
-
-MPL_END_NAMESPACE
 
 #ifdef M_OS_WIN
 
@@ -45,4 +38,14 @@ void gettimeofday (struct timeval *tv, void *dummy);
 
 #endif /* M_OS_WIN */
 
-#endif /* _MGLOBAL_H_ */
+MPL_BEGIN_NAMESPACE
+
+const char *welcome();
+void abort(const char *errmsg);
+
+// idea of this function is copied from top size scaling
+std::string scaleSize(unsigned long size);
+
+MPL_END_NAMESPACE
+
+#endif /* _MPLSTD_H_ */

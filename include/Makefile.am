@@ -22,7 +22,7 @@ mpldir = $(includedir)/mpl
 
 mpl_HEADERS =					\
 mpl/mhttp.h					\
-mpl/mglobal.h					\
+mpl/mplstd.h					\
 mpl/msettings.h					\
 mpl/msettings_p.h				\
 mpl/msettings_utf.h				\

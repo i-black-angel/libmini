@@ -34,13 +34,30 @@ public:
 		symbolic_link,
 		sock,
 	};
+
+	enum Permission {
+		ReadUser				= S_IRUSR,
+		WriteUser				= S_IWUSR,
+		ExecUser				= S_IXUSR,
+		ReadWriteExecUser		= S_IRWXU,
+		ReadGroup				= S_IRGRP,
+		WriteGroup				= S_IWGRP,
+		ExecGroup				= S_IXGRP,
+		ReadWriteExecGroup		= S_IRWXG,
+		ReadOther				= S_IROTH,
+		WriteOther				= S_IWOTH,
+		ExecOther				= S_IXOTH,
+		ReadWriteExecOther		= S_IRWXO
+	};
     MFileInfo();
-	explicit MFileInfo(const std::string &file);
+	MFileInfo(const char *s);
+	MFileInfo(const std::string &file);
 	MFileInfo(const MFileInfo &fileinfo);
     virtual ~MFileInfo();
 
 	void setFile(const std::string &file);
 
+	std::string origin() const { return _origin; }
 	std::string filePath() const;
 	std::string absoluteFilePath() const;
 	std::string canonicalFilePath() const;
@@ -48,26 +65,18 @@ public:
 	std::string basename() const;
 	std::string filename() const;
 	std::string suffix() const;
-	std::string completeBaseName() const;
-	std::string bundleName() const;
-	std::string completeSuffix() const;
 
 	std::string path() const;
 	std::string absolutePath() const;
 	std::string canonicalPath() const;
 
-	static bool exists(const std::string &file);
-
 	bool exists() const;		// F_OK
 	bool isReadable() const;	// R_OK
 	bool isWritable() const;	// W_OK
 	bool isExecutable() const;	// X_OK
-	bool isHidden() const;
-	bool isNativePath() const;
 
-	bool isRelative() const;
-	inline bool isAbsolute() const { return !isRelative(); }
-	bool makeAbsolute();
+	inline bool isRelative() const { return !isAbsolute(); }
+	inline bool isAbsolute() const { return isAbsoluteFileName(_file); }
 
 	FileType filetype() const;
 	std::string filetypeString() const;
@@ -79,9 +88,6 @@ public:
 	bool isCharDev() const;
 	bool isFIFO() const;
 	bool isSock() const;
-	
-	bool isRoot() const;
-	bool isBundle() const;
 
 	std::string readLink() const;
 	inline std::string symLinkTarget() const { return readLink(); }
@@ -94,26 +100,40 @@ public:
 	size_t size() const;
 	void refresh();
 
+	int permissions() const;
+	bool permission(int perm) const;
+	
 	MDateTime lastStatusChanged() const;
 	MDateTime lastModified() const;
 	MDateTime lastRead() const;
 
 	MFileInfo& operator=(const MFileInfo &fileinfo);
-	bool operator==(const MFileInfo &fileinfo) const;
-	inline bool operator!=(const MFileInfo &fileinfo) const { return !operator==(fileinfo); }
+	MFileInfo& operator=(const std::string &str);
+	MFileInfo& operator=(const char *s);
 	
+	bool operator==(const MFileInfo &fileinfo) const;
+	inline bool operator!=(const MFileInfo &fileinfo) const
+		{ return !operator==(fileinfo); }
+
+	static bool exists(const std::string &file);
+	static std::string slash();
+	static char separator();
+	static bool isslash(char ch);
+	static bool isAbsoluteFileName(const std::string &filename);
+	static bool isRelativeFileName(const std::string &filename);
+	static std::string cleanPath(const std::string &path);
 private:
 	inline void inner_copy(const MFileInfo &other) {
+		_origin = other._origin;
 		_file = other._file;
 		_stat = other._stat;
 		_stat_ok = other._stat_ok;
-		// _filetype = other._filetype;
 	}
-	
+
+	std::string _origin;
 	std::string _file;
 	struct stat _stat;
 	bool _stat_ok;
-	// enum FileType _filetype;
 };
 
 MPL_END_NAMESPACE

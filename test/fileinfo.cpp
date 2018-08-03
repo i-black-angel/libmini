@@ -17,53 +17,41 @@
 
 int main(int argc, char *argv[])
 {
-	mpl::MFileInfo fileinfo(argv[0]);
-	mpl::MFileInfo cf(fileinfo);
-	std::cout << fileinfo.filePath() << std::endl;
-
-	std::cout << fileinfo.readLink() << std::endl;
-
-	std::cout << "exists " << fileinfo.exists() << std::endl;
-	std::cout << "isReadable " << cf.isReadable() << std::endl;
-	std::cout << "isWritable " << cf.isWritable() << std::endl;
-	std::cout << "isExecutable " << cf.isExecutable() << std::endl;
-
-	std::cout << cf.basename() << std::endl;
-	std::cout << cf.filename() << std::endl;
-	std::cout << cf.suffix() << std::endl;
-	std::cout << cf.dirname() << std::endl;
-
-	mpl::MFileInfo test(cf.dirname());
-	std::cout << test.basename() << std::endl;
-	std::cout << test.filename() << std::endl;
-	std::cout << test.suffix() << std::endl;
-
-	mpl::MFileInfo root("/");
-	std::cout << root.basename() << std::endl;
-	std::cout << root.filename() << std::endl;
-	std::cout << root.suffix() << std::endl;
-	std::cout << root.dirname() << std::endl;
-
-	mpl::MFileInfo file("music.mp3");
-	std::string ext = file.suffix(); // ext = "mp3"
-	std::cout << file.basename() << std::endl;
-	std::cout << file.filename() << std::endl;
-	std::cout << file.suffix() << std::endl;
+	mpl::MFileInfo file = "/tmp/./tmpflie";
+	printf ("origin: %s\n", file.origin().c_str());
+	std::cout << file.filePath() << std::endl;
 	std::cout << file.dirname() << std::endl;
-
-	mpl::MFileInfo rootfile("/etc/ts.conf");
-	std::cout << rootfile.exists() << std::endl;
-	std::cout << rootfile.isWritable() << std::endl;
-
-	std::cout << rootfile.lastModified().toString() << std::endl;
-	std::cout << rootfile.lastStatusChanged().toString() << std::endl;
-	std::cout << rootfile.lastRead().toString() << std::endl;
-	std::cout << rootfile.size() << std::endl;
-	std::cout << rootfile.owner() << std::endl;
-	std::cout << rootfile.group() << std::endl;
-	std::cout << rootfile.filetype() << std::endl;
-	std::cout << rootfile.filetypeString() << std::endl;
+	std::cout << file.filename() << std::endl;
+	std::cout << "exists: " << (file.exists() ? "true" : "false") << std::endl;
+	if (file.filetype() == mpl::MFileInfo::symbolic_link) {
+		std::cout << file.readLink() << std::endl;
+	}
 	
-	std::cout << mpl::MFileInfo::exists("/etc/resolv.conf") << std::endl;
+	file = "/etc/./sys/.././ts.conf";
+	printf ("%s %s an absolute filename\n", file.filePath().c_str(), file.isAbsolute() ? "is" : "is not");
+	if (file.isSymLink()) {
+		std::cout << file.readLink() << std::endl;
+	}
+	std::cout << file.canonicalFilePath() << std::endl;
+
+	printf("permissions: 0x%x\n", file.permissions());
+
+	if (file.permissions() & mpl::MFileInfo::ReadUser) {
+		std::cout << "user read permission" << std::endl;
+	}
+	if (file.permissions() & mpl::MFileInfo::WriteUser) {
+		std::cout << "user write permission" << std::endl;
+	}
+	if (file.permissions() & mpl::MFileInfo::ExecUser) {
+		std::cout << "user execute permission" << std::endl;
+	}
+	if (file.permissions() & mpl::MFileInfo::ReadGroup) {
+		std::cout << "group read permission" << std::endl;
+	}
+	if (file.permissions() & mpl::MFileInfo::WriteGroup) {
+		std::cout << "group write permission" << std::endl;
+	}
+
+	printf("last modified: %s\n", file.lastModified().toString().c_str());
     return 0;
 }

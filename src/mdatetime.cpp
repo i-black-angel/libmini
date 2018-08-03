@@ -59,6 +59,12 @@ MDateTime &MDateTime::operator=(const MDateTime &other)
 	return *this;
 }
 
+MDateTime &MDateTime::operator=(time_t val)
+{
+	_d = val;
+	return *this;
+}
+
 int MDateTime::year() const
 {
 	return localtime(&_d)->tm_year + 1900;

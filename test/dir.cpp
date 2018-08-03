@@ -17,8 +17,8 @@
 
 int main(int argc, char *argv[])
 {
-	int fd = open("/abc", O_RDONLY);
-	std::cout << "fd: " << fd << ", " << mpl::error() << std::endl;
-
+	std::string fname = "/sys/.././resolv.conf";
+	mpl::MDir dir = mpl::MFileInfo(fname).path();
+	std::cout << dir << std::endl;
     return 0;
 }

@@ -90,13 +90,14 @@ class MDateTime
 {
 public:
     MDateTime();
-	explicit MDateTime(time_t val);
-	MDateTime(int y, int m, int d, int H = 0, int M = 0, int S = 0);
+	MDateTime(time_t val);
+	explicit MDateTime(int y, int m, int d, int H = 0, int M = 0, int S = 0);
     MDateTime(const MDateTime &other);
     virtual ~MDateTime();
 
 	MDateTime &operator=(const MDateTime &other);
-
+	MDateTime &operator=(time_t val);
+	
 	int year() const;
 	int month() const;
 	int day() const;
@@ -112,8 +113,9 @@ public:
 	// bool isNull() const;
 	// bool isValid() const;
 	
+	time_t data() const { return _d; }
 	std::string toString(const std::string &format = "") const;
-
+	
     bool operator==(const MDateTime &other) const { return _d == other._d; }
     bool operator!=(const MDateTime &other) const { return _d != other._d; }
     bool operator< (const MDateTime &other) const { return _d <  other._d; }

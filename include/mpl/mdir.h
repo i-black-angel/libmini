@@ -23,9 +23,33 @@ MPL_BEGIN_NAMESPACE
 class MDir
 {
 public:
-    explicit MDir();
+    MDir();
+    MDir(const char *s);
+    MDir(const std::string &str);
+    MDir(const MDir &other);
     virtual ~MDir();
+
+	std::string dir() const { return _dir; }
+	bool isDir() const;
+	
+	MDir &operator=(const MDir &other);
+	MDir &operator=(const char *s);
+	MDir &operator=(const std::string &str);
+
+	bool operator==(const MDir &d) const
+		{ return _dir == d._dir; }
+	bool operator!=(const MDir &d) const
+		{ return !operator==(d); }
+
+private:
+	inline void inner_copy(const MDir &o) {
+		_dir = o._dir;
+	}
+	std::string _dir;
 };
+
+std::ostream &operator<<(std::ostream &, const MDir &);
+std::istream &operator>>(std::istream &, MDir &);
 
 MPL_END_NAMESPACE
 

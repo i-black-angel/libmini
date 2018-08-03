@@ -24,5 +24,9 @@ int main(int argc, char *argv[])
 	std::cout << datetime.dayOfYear() << std::endl;
 	std::cout << datetime.toString() << std::endl;
 	std::cout << datetime << std::endl;
+
+	sleep(1);
+	datetime = time(NULL);
+	std::cout << datetime << std::endl;
     return 0;
 }

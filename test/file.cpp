@@ -17,8 +17,18 @@
 
 int main(int argc, char *argv[])
 {
-	int fd = open("/abc", O_RDONLY);
-	std::cout << "fd: " << fd << ", " << mpl::error() << std::endl;
-
+	char buf[1024] = {0x00};
+	const char *fname = "/etc/resolv.conf";
+	mpl::MFileInfo fileinfo = fname;
+	if (fileinfo.isSymLink()) {
+		std::cout << "symbolic link size: " << fileinfo.size() << std::endl;
+	} else {
+		std::cout << "file size: " << fileinfo.size() << std::endl;
+	}
+	int n = mpl::MFile(fname).readbuf(buf, sizeof(buf));
+	if (n > 0) {
+		std::cout << n << std::endl;
+		std::cout << buf << std::endl;
+	}
     return 0;
 }

@@ -36,8 +36,13 @@ std::string hex2str(const uint8_t *data, size_t len);
 class MString : public std::string
 {
 public:
-    explicit MString();
+    MString();
+	MString(const char *s);
+	MString(const std::string &str);
     virtual ~MString();
+
+	std::string& replace(char before, char after);
+	std::string& replace(const std::string &before, const std::string &after);
 };
 
 MPL_END_NAMESPACE

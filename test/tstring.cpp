@@ -17,8 +17,19 @@
 
 int main(int argc, char *argv[])
 {
-	int fd = open("/abc", O_RDONLY);
-	std::cout << "fd: " << fd << ", " << mpl::error() << std::endl;
+	mpl::MString name = "name";
+	mpl::MString mstr = "\\etc\\resolv.conf";
+	std::cout << name << std::endl;
+	mstr.replace('\\', '/');
+	std::cout << mstr << std::endl;
 
+	name = "another";
+	std::cout << name << std::endl;
+	name = mstr;
+	std::cout << mstr << std::endl;
+
+	mpl::MFileInfo info = name;
+	std::cout << info.size() << std::endl;
+	std::cout << info.path() << std::endl;
     return 0;
 }

@@ -16,7 +16,7 @@ mdatetime.cpp					\
 mdir.cpp					\
 mfile.cpp					\
 mfileinfo.cpp					\
-mglobal.cpp					\
+mplstd.cpp					\
 mhostaddress.cpp				\
 mhttp.cpp					\
 mjson.cpp					\

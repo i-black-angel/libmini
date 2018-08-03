@@ -97,8 +97,38 @@ MString::MString()
 {
 }
 
+MString::MString(const std::string &str)
+	: std::string(str)
+{
+}
+
+MString::MString(const char *s)
+	: std::string(s)
+{
+}
+
 MString::~MString()
 {
+}
+
+std::string& MString::replace(char before, char after)
+{
+	size_type pos = rfind(before);
+	while (pos != npos) {
+		std::string::replace(pos, 1, 1, after);
+		pos = rfind(before);
+	}
+	return *this;
+}
+
+std::string& MString::replace(const std::string &before, const std::string &after)
+{
+	size_type pos = rfind(before);
+	while (pos != npos) {
+		std::string::replace(pos, before.size(), after);
+		pos = rfind(before);
+	}
+	return *this;
 }
 
 MPL_END_NAMESPACE

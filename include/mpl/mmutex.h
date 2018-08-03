@@ -17,7 +17,7 @@
 #define _MMUTEX_H_
 
 #include <mpl/mcoredef.h>
-#include <mpl/mglobal.h>
+#include <mpl/mplstd.h>
 
 MPL_BEGIN_NAMESPACE
 

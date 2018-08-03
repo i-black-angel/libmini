@@ -17,7 +17,7 @@
 #define _MPL_H_
 
 #include <mpl/mhttp.h>
-#include <mpl/mglobal.h>
+#include <mpl/mplstd.h>
 #include <mpl/msettings.h>
 #include <mpl/mthread.h>
 #include <mpl/mlog.h>

@@ -18,16 +18,39 @@
 
 #include <mpl/mcoredef.h>
 
+/* Get the definition of O_*, F_*, FD_*: all the
+   numbers and flag bits for `open', `fcntl', et al. */
+/* /usr/include/bits/fcntl-linux.h */
+
 MPL_BEGIN_NAMESPACE
 
 class MFile
 {
 public:
-    explicit MFile();
-    explicit MFile(const std::string &);
+    MFile();
+	MFile(const char *s);
+    MFile(const std::string &str);
+	MFile(const MFile &other);
     virtual ~MFile();
 
-	bool open();
+	int readbuf(char *buf, size_t bytes) const;
+	int writebuf(const char *buf, size_t bytes) const;
+	
+	static int readbuf(const std::string &file, char *buf, size_t bytes);
+	static int writebuf(const std::string &file, const char *buf, size_t bytes);
+
+	MFile &operator=(const MFile &other);
+	MFile &operator=(const char *s);
+	MFile &operator=(const std::string &str);
+
+	bool operator==(const MFile &f) const;
+	bool operator!=(const MFile &f) const
+		{ return !operator==(f); }
+private:
+	inline void inner_copy(const MFile &o) {
+		_fname = o._fname;
+	}
+	std::string _fname;
 };
 
 MPL_END_NAMESPACE
