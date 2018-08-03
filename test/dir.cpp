@@ -20,5 +20,12 @@ int main(int argc, char *argv[])
 	std::string fname = "/sys/.././resolv.conf";
 	mpl::MDir dir = mpl::MFileInfo(fname).path();
 	std::cout << dir << std::endl;
+
+	if (dir.mkpath("/tmp/hello/abc"))
+		std::cout << "mkpath /tmp/hello/abc success" << std::endl;
+
+	// if (dir.mkpath("../hello"))
+	// 	std::cout << "mkpath ../hello success" << std::endl;
+	
     return 0;
 }

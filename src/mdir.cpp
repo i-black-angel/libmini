@@ -15,6 +15,8 @@
  */
 #include <mpl/mdir.h>
 #include <mpl/mfileinfo.h>
+#include <mpl/merror.h>
+#include <mpl/mlog.h>
 
 #ifdef _MSC_VER
 # pragma warning (push)
@@ -49,6 +51,41 @@ MDir::~MDir()
 bool MDir::isDir() const
 {
 	return MFileInfo(_dir).isDir();
+}
+
+bool MDir::mkpath(const std::string &path)
+{
+	int err = 0;
+	mode_t mode = S_IRWXU | S_IRWXG | S_IRWXO;
+	std::string dirpath = MFileInfo(path).filePath();
+	char *str = new char[dirpath.size() + 1];
+	int len = dirpath.size();
+	strncpy(str, dirpath.data(), len);
+	str[len] = '\0';
+	for (int i = 0; i < len; ++i) {
+		if ( str[i] == MFileInfo::separator() ) {
+			str[i] = '\0';
+			if (strlen(str) > 0 && !MFileInfo::exists(str)) {
+				if ((err = mkdir(str, mode)) != 0) {
+					log_error("mkdir %s failed: %s", str, error().c_str());
+					delete[] str;
+					return false;
+				}
+			}
+			str[i] = MFileInfo::separator();
+		}
+	}
+	
+	if (strlen(str) > 0 && !MFileInfo::exists(str)) {
+		if ((err = mkdir(str, mode)) != 0) {
+			log_error("mkdir %s failed: %s", str, error().c_str());
+			delete[] str;
+			return false;
+		}
+	}
+	
+	delete[] str;
+	return true;
 }
 
 MDir &MDir::operator=(const MDir &other)

@@ -53,5 +53,9 @@ int main(int argc, char *argv[])
 	}
 
 	printf("last modified: %s\n", file.lastModified().toString().c_str());
+
+	mpl::MFileInfo dirpath = "../hello";
+	std::cout << dirpath.filePath() << std::endl;
+
     return 0;
 }

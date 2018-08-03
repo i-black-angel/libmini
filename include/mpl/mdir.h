@@ -31,6 +31,7 @@ public:
 
 	std::string dir() const { return _dir; }
 	bool isDir() const;
+	static bool mkpath(const std::string &path);
 	
 	MDir &operator=(const MDir &other);
 	MDir &operator=(const char *s);
