@@ -17,6 +17,8 @@
 #include <mpl/mfileinfo.h>
 #include <mpl/merror.h>
 #include <mpl/mlog.h>
+#include <mpl/mprocess.h>
+#include <dirent.h>
 
 #ifdef _MSC_VER
 # pragma warning (push)
@@ -31,12 +33,12 @@ MDir::MDir()
 
 MDir::MDir(const char *s)
 {
-	_dir = s;
+	setPath(s);
 }
 
 MDir::MDir(const std::string &str)
 {
-	_dir = str;
+	setPath(str);
 }
 
 MDir::MDir(const MDir &other)
@@ -48,9 +50,55 @@ MDir::~MDir()
 {
 }
 
+void MDir::setPath(const std::string &name)
+{
+	_dir = MFileInfo::cleanPath(name);
+}
+
 bool MDir::isDir() const
 {
 	return MFileInfo(_dir).isDir();
+}
+
+bool MDir::isRoot() const
+{
+	return _dir == rootPath();
+}
+
+bool MDir::exists() const
+{
+	return exists(_dir);
+}
+
+bool MDir::isReadable() const
+{
+	return MFileInfo(_dir).isReadable();
+}
+
+bool MDir::cd(const std::string &name)
+{
+	if (name.empty() || name == ".")
+		return true;
+
+	std::string dirpath = MFileInfo::cleanPath(name);
+	if (!isAbsolutePath(dirpath))
+		dirpath = MFileInfo(dirpath).absoluteFilePath();
+
+    if (chdir(dirpath.c_str()) == 0) {
+		setPath(dirpath);
+		return true;
+	}
+	return false;
+}
+
+bool MDir::cdup()
+{
+	return cd("..");
+}
+
+bool MDir::exists(const std::string &name)
+{
+	return MFileInfo::exists(name);
 }
 
 bool MDir::mkpath(const std::string &path)
@@ -88,6 +136,76 @@ bool MDir::mkpath(const std::string &path)
 	return true;
 }
 
+bool MDir::rmpath(const std::string &entry)
+{
+	if (entry.empty() || entry.compare(".")) return true;
+	
+	std::stack<std::string> entries;
+	struct dirent *dirp;
+	std::string path = MFileInfo(entry).absoluteFilePath();
+	DIR *dp = opendir(path.c_str());
+	if (NULL == dp) {
+		log_error("cannot open '%s'", path.c_str());
+		return false;
+	}
+	closedir(dp);
+
+	entries.push(path);
+	while (!entries.empty()) {
+		path = entries.top();
+	}
+	return true;
+}
+
+std::string MDir::absolutePath() const
+{
+	return MFileInfo(_dir).absoluteFilePath();
+}
+
+std::string MDir::canonicalPath() const
+{
+	return MFileInfo(_dir).canonicalFilePath();
+}
+
+std::string MDir::currentPath()
+{
+	return pwd();
+}
+
+std::string MDir::homePath()
+{
+	char *val = getenv("HOME");
+	std::string home = (val == NULL) ? "" : val;
+	if (home.empty())
+		home = rootPath();
+	return MFileInfo::cleanPath(home);
+}
+
+std::string MDir::tempPath()
+{
+	char *val = getenv("TMPDIR");
+	std::string temp = (val == NULL) ? "" : val;
+	if (temp.empty()) {
+		temp = "/tmp";
+	}
+	return MFileInfo::cleanPath(temp);
+}
+
+std::string MDir::rootPath()
+{
+	return "/";
+}
+
+char MDir::separator()
+{
+	return MFileInfo::separator();
+}
+
+bool MDir::isAbsolutePath(const std::string &path)
+{
+	return MFileInfo::isAbsoluteFileName(path);
+}
+
 MDir &MDir::operator=(const MDir &other)
 {
 	inner_copy(other);
@@ -96,13 +214,13 @@ MDir &MDir::operator=(const MDir &other)
 
 MDir &MDir::operator=(const char *s)
 {
-	_dir = s;
+	setPath(s);
 	return *this;
 }
 
 MDir &MDir::operator=(const std::string &str)
 {
-	_dir = str;
+	setPath(str);
 	return *this;
 }
 
@@ -114,7 +232,6 @@ std::ostream &operator<<(std::ostream &out, const MDir &dir)
 
 std::istream &operator>>(std::istream &in, MDir &dir)
 {
-	// TODO::
 	std::string str;
 	in >> str;
 	dir = str;

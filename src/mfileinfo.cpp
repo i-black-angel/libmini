@@ -18,6 +18,7 @@
 #include <mpl/merror.h>
 #include <mpl/mlog.h>
 #include <mpl/mstring.h>
+#include <mpl/mprocess.h>
 #include <pwd.h>
 #include <grp.h>
 
@@ -319,7 +320,7 @@ bool MFileInfo::exists() const
 
 bool MFileInfo::exists(const std::string &file)
 {
-	return mpl_access(file, F_OK);
+	return mpl_access(cleanPath(file), F_OK);
 }
 
 std::string MFileInfo::filePath() const
@@ -329,16 +330,21 @@ std::string MFileInfo::filePath() const
 
 std::string MFileInfo::absoluteFilePath() const
 {
-	if (isAbsolute())
+	if (isAbsolute()) 
 		return filePath();
-	return std::string();
+
+	return cleanPath(pwd() + "/" + _file);
 }
 
 std::string MFileInfo::canonicalFilePath() const
 {
 	// If the FILE dose not exist, just return an empty string.
-	if (!exists() || !isAbsolute())
-		return std::string();
+	if (!isAbsolute()) {
+		std::string file = cleanPath(pwd() + "/" + _file);
+		if (!exists(file))
+			return std::string();
+		return file;
+	}
 
 	return filePath();
 }
@@ -358,7 +364,6 @@ std::string MFileInfo::basename() const
 	if (idx == std::string::npos) { return file; }
 	return file.substr(idx + 1);
 }
-
 
 std::string MFileInfo::dirname() const
 {
@@ -386,14 +391,19 @@ std::string MFileInfo::absolutePath() const
 {
 	if (isAbsolute())
 		return path();
-	return std::string();
+
+	return cleanPath(pwd() + "/" + path());
 }
 
 std::string MFileInfo::canonicalPath() const
 {
 	// If the FILE dose not exist, just return an empty string.
-	if (!exists() || !isAbsolute())
-		return std::string();
+	if (!isAbsolute()) {
+		std::string p = cleanPath(pwd() + "/" + path());
+		if (!exists(p))
+			return std::string();
+		return p;
+	}
 
 	return path();
 }

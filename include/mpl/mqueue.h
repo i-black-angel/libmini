@@ -33,6 +33,11 @@ public:
 		std::deque<T>::push_back(t);
 	}
 
+	void push(const T& t) {
+		MScopedLock locker(_mutex);
+		std::deque<T>::push_back(t);
+	}
+
 	bool get(T &t) {
 		MScopedLock locker(_mutex);
 		if (!std::deque<T>::empty()) {

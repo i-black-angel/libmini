@@ -20,7 +20,7 @@
 
 MPL_BEGIN_NAMESPACE
 
-std::string workingDirectory();
+std::string pwd();
 
 class MProcess
 {
@@ -30,7 +30,7 @@ public:
 
 	int64_t pid() const;
 	std::string program() const;
-	std::string workingDirectory() const;
+	static std::string workingDirectory();
 	static int execute(const std::string &program, const std::vector<std::string> &arguments);
 	static int execute(const std::string &command);
 	static std::vector<std::string> systemEnvironment();

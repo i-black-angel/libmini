@@ -56,6 +56,12 @@ int main(int argc, char *argv[])
 
 	mpl::MFileInfo dirpath = "../hello";
 	std::cout << dirpath.filePath() << std::endl;
+	std::cout << dirpath.absoluteFilePath() << std::endl;
+	std::cout << dirpath.canonicalFilePath() << std::endl;
 
+	std::cout << dirpath.path() << std::endl;
+	std::cout << dirpath.absolutePath() << std::endl;
+	std::cout << dirpath.canonicalPath() << std::endl;
+	
     return 0;
 }

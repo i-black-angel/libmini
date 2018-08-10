@@ -21,6 +21,6 @@ int main(int argc, char *argv[])
     std::cout << mpl::applicationName() << std::endl;
     std::cout << mpl::applicationFilePath() << std::endl;
 	std::cout << mpl::pid() << std::endl;
-	std::cout << mpl::workingDirectory() << std::endl;
+	std::cout << mpl::pwd() << std::endl;
     return 0;
 }

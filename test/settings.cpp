@@ -18,7 +18,7 @@
 int main(int argc, char *argv[])
 {
 	// std::string path = mpl::applicationDirPath();
-	std::string path = mpl::workingDirectory() + "/settings.ini";
+	std::string path = mpl::pwd() + "/settings.ini";
 
 	mpl::MSettings settings(path.c_str());
 

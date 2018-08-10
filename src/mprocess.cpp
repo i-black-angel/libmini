@@ -17,10 +17,9 @@
 
 MPL_BEGIN_NAMESPACE
 
-std::string workingDirectory()
+std::string pwd()
 {
-	MProcess proc;
-	return proc.workingDirectory();
+	return MProcess().workingDirectory();
 }
 
 MProcess::MProcess()
@@ -40,7 +39,7 @@ std::string MProcess::program() const
 {
 }
 
-std::string MProcess::workingDirectory() const
+std::string MProcess::workingDirectory()
 {
 	char buf[1024] = {0x00};
 #ifdef M_OS_WIN

@@ -14,18 +14,85 @@
  * limitations under the License.
  */
 #include <mpl.h>
+#include <stack>
+#include <dirent.h>
+
+bool rm_file(const std::string &path, bool is_dir = false)
+{
+	int flag = is_dir ? AT_REMOVEDIR : 0;
+	if (unlinkat(AT_FDCWD, path.c_str(), flag) == 0)
+		return true;
+
+	log_error("cannot remove '%s': %s", path.c_str(), mpl::error().c_str());
+	return false;
+}
 
 int main(int argc, char *argv[])
 {
-	std::string fname = "/sys/.././resolv.conf";
-	mpl::MDir dir = mpl::MFileInfo(fname).path();
-	std::cout << dir << std::endl;
+	std::string entry = "/tmp/hello";
+	if (argc >= 2)
+		entry = argv[1];
 
-	if (dir.mkpath("/tmp/hello/abc"))
-		std::cout << "mkpath /tmp/hello/abc success" << std::endl;
+	std::stack<std::string> entries;
+	struct dirent *dirp;
+	std::string path = mpl::MFileInfo(entry).absoluteFilePath();
+	std::cout << path << std::endl;
+	DIR *dp = opendir(path.c_str());
+	if (dp == NULL) {
+		std::cout << "can't open " << entry << " directory" << std::endl;
+		return 1;
+	}
+	closedir(dp);
 
-	// if (dir.mkpath("../hello"))
-	// 	std::cout << "mkpath ../hello success" << std::endl;
-	
+	entries.push(path);
+	while (!entries.empty()) {
+		std::string path = entries.top();
+		if (path.empty()) continue;
+		DIR *dp = opendir(path.c_str());
+		if (NULL == dp) continue;
+
+		int subdir = 0;
+		while((dirp = readdir(dp)) != NULL) {
+			if (strcmp(dirp->d_name, ".") == 0
+				|| strcmp(dirp->d_name, "..") == 0)
+				continue;
+			std::string fullpath = path + mpl::MFileInfo::separator() + std::string(dirp->d_name);
+			if (dirp->d_type == DT_DIR) {
+				DIR *subdp = opendir(fullpath.c_str());
+				if (NULL != subdp) {
+					entries.push(fullpath);
+					++subdir;
+					closedir(subdp);
+				} else {
+					rm_file(fullpath, true);
+				}
+			} else {
+				rm_file(fullpath);
+			}
+ 		}
+		closedir(dp);
+		if (subdir == 0) {
+			rm_file(path, true);
+			entries.pop();
+		}
+	}
     return 0;
 }
+
+/*
+
+#!/bin/bash
+mkdir -p /tmp/hello/abc
+mkdir -p /tmp/hello/bcd
+mkdir -p /tmp/hello/def
+mkdir -p /tmp/hello/jon
+mkdir -p /tmp/hello/good
+
+echo "hello world" >> /tmp/hello/abc/kit.txt
+echo "hello world" >> /tmp/hello/bcd/kit.txt
+echo "hello world" >> /tmp/hello/kit.txt
+echo "hello world" >> /tmp/hello/kid.txt
+echo "hello world" >> /tmp/hello/def/kit.txt
+echo "hello world" >> /tmp/hello/jon/kit.txt
+
+ */

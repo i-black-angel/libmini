@@ -35,6 +35,7 @@
 #include <locale>
 #include <deque>
 #include <map>
+#include <stack>
 
 #ifdef _MSC_VER
 # ifndef M_OS_WIN

@@ -29,9 +29,32 @@ public:
     MDir(const MDir &other);
     virtual ~MDir();
 
-	std::string dir() const { return _dir; }
 	bool isDir() const;
+	bool isRoot() const;
+	bool isReadable() const;
+	bool exists() const;
+	bool cd(const std::string &name);
+	bool cdup();
+	
+	inline std::string dir() const { return _dir; }
+	std::string absolutePath() const;
+	std::string canonicalPath() const;
+
 	static bool mkpath(const std::string &path);
+	static bool rmpath(const std::string &path);
+	static bool exists(const std::string &name);
+	static inline MDir current() { return MDir(currentPath()); }
+	static std::string currentPath();
+	static inline MDir home() { return MDir(homePath()); }
+	static std::string homePath();
+	static inline MDir temp() { return MDir(tempPath()); }
+	static std::string tempPath();
+	static inline MDir root() { return MDir(rootPath()); }
+	static std::string rootPath();
+	static char separator();
+	static bool isAbsolutePath(const std::string &path);
+	static bool isRelativePath(const std::string &path)
+		{ return !isAbsolutePath(path); }
 	
 	MDir &operator=(const MDir &other);
 	MDir &operator=(const char *s);
@@ -43,6 +66,7 @@ public:
 		{ return !operator==(d); }
 
 private:
+	void setPath(const std::string &name);
 	inline void inner_copy(const MDir &o) {
 		_dir = o._dir;
 	}

@@ -35,6 +35,11 @@ public:
 		_event.signal();
 	}
 
+	void push(const T& t) {
+		_queue.push(t);
+		_event.signal();
+	}
+
 	void stop() {
 		interrupt();
 		_event.wakeAll();

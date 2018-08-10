@@ -24,19 +24,25 @@ protected:
 	}
 };
 
+DataHandler d;
+void insert(const std::string &val)
+{
+	d.push(val);
+}
+
 int main(int argc, char *argv[])
 {
-    DataHandler d;
 	d.start();
-
 	sleep(1);
 	for (int i = 0; i < 10; ++i) {
 		std::string index = mpl::format("index-%d", i);
-		d.push(index);
-		usleep(100);
+		insert(index);
+		// d.push(index);
+		sleep(1);
+		// usleep(1000);
 	}
 
-	// d.stop();
+	d.stop();
 	getchar();
 	// while (1) {
 	// 	sleep(1);

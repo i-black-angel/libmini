@@ -20,6 +20,11 @@
 #include <mpl/mstring.h>
 #include <mpl/merror.h>
 
+#ifdef _MSC_VER
+# pragma warning (push)
+# pragma warning (disable: 4996)
+#endif
+
 MPL_BEGIN_NAMESPACE
 
 MLog *MLog::_ins = NULL;
@@ -133,3 +138,7 @@ std::string MLog::strpriority(int pri) const
 }
 
 MPL_END_NAMESPACE
+
+#ifdef _MSC_VER
+# pragma warning (pop)
+#endif
