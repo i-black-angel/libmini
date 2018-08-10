@@ -27,6 +27,18 @@
 
 MPL_BEGIN_NAMESPACE
 
+static bool mpl_rm_file(const char *path, bool is_dir = false)
+{
+	if (path == NULL) return false;
+
+	int flag = is_dir ? AT_REMOVEDIR : 0;
+	if (unlinkat(AT_FDCWD, path, flag) == 0)
+		return true;
+
+	log_error("cannot remove '%s': %s", path, error().c_str());
+	return false;
+}
+	
 MDir::MDir()
 {
 }
@@ -111,7 +123,7 @@ bool MDir::mkpath(const std::string &path)
 	strncpy(str, dirpath.data(), len);
 	str[len] = '\0';
 	for (int i = 0; i < len; ++i) {
-		if ( str[i] == MFileInfo::separator() ) {
+		if ( str[i] == separator() ) {
 			str[i] = '\0';
 			if (strlen(str) > 0 && !MFileInfo::exists(str)) {
 				if ((err = mkdir(str, mode)) != 0) {
@@ -120,7 +132,7 @@ bool MDir::mkpath(const std::string &path)
 					return false;
 				}
 			}
-			str[i] = MFileInfo::separator();
+			str[i] = separator();
 		}
 	}
 	
@@ -138,10 +150,12 @@ bool MDir::mkpath(const std::string &path)
 
 bool MDir::rmpath(const std::string &entry)
 {
-	if (entry.empty() || entry.compare(".")) return true;
+	if (entry.empty()) return true;
 	
 	std::stack<std::string> entries;
+	std::string fullpath;
 	struct dirent *dirp;
+
 	std::string path = MFileInfo(entry).absoluteFilePath();
 	DIR *dp = opendir(path.c_str());
 	if (NULL == dp) {
@@ -153,7 +167,34 @@ bool MDir::rmpath(const std::string &entry)
 	entries.push(path);
 	while (!entries.empty()) {
 		path = entries.top();
-	}
+		dp = opendir(path.c_str());
+		if (NULL == dp) continue;
+
+		int subdir = 0;
+		while ((dirp = readdir(dp)) != NULL) {
+			if (strcmp(dirp->d_name, ".") == 0
+				|| strcmp(dirp->d_name, "..") == 0)
+				continue;
+			fullpath = path + separator() + std::string(dirp->d_name);
+			if (dirp->d_type == DT_DIR) {
+				DIR *subdp = opendir(fullpath.c_str());
+				if (NULL != subdp) {
+					entries.push(fullpath);
+					closedir(subdp);
+					++subdir;
+				} else {
+					log_error("cannot remove '%s': %s", fullpath.c_str(), error().c_str());
+				}
+			} else {
+				mpl_rm_file(fullpath.c_str());
+			}
+		} // while readdir()
+		closedir(dp);
+		if (subdir == 0) {
+			mpl_rm_file(path.c_str(), true);
+			entries.pop();
+		}
+	} // while entries.empty()
 	return true;
 }
 

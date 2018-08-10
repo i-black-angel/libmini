@@ -17,66 +17,13 @@
 #include <stack>
 #include <dirent.h>
 
-bool rm_file(const std::string &path, bool is_dir = false)
-{
-	int flag = is_dir ? AT_REMOVEDIR : 0;
-	if (unlinkat(AT_FDCWD, path.c_str(), flag) == 0)
-		return true;
-
-	log_error("cannot remove '%s': %s", path.c_str(), mpl::error().c_str());
-	return false;
-}
-
 int main(int argc, char *argv[])
 {
 	std::string entry = "/tmp/hello";
 	if (argc >= 2)
 		entry = argv[1];
 
-	std::stack<std::string> entries;
-	struct dirent *dirp;
-	std::string path = mpl::MFileInfo(entry).absoluteFilePath();
-	std::cout << path << std::endl;
-	DIR *dp = opendir(path.c_str());
-	if (dp == NULL) {
-		std::cout << "can't open " << entry << " directory" << std::endl;
-		return 1;
-	}
-	closedir(dp);
-
-	entries.push(path);
-	while (!entries.empty()) {
-		std::string path = entries.top();
-		if (path.empty()) continue;
-		DIR *dp = opendir(path.c_str());
-		if (NULL == dp) continue;
-
-		int subdir = 0;
-		while((dirp = readdir(dp)) != NULL) {
-			if (strcmp(dirp->d_name, ".") == 0
-				|| strcmp(dirp->d_name, "..") == 0)
-				continue;
-			std::string fullpath = path + mpl::MFileInfo::separator() + std::string(dirp->d_name);
-			if (dirp->d_type == DT_DIR) {
-				DIR *subdp = opendir(fullpath.c_str());
-				if (NULL != subdp) {
-					entries.push(fullpath);
-					++subdir;
-					closedir(subdp);
-				} else {
-					rm_file(fullpath, true);
-				}
-			} else {
-				rm_file(fullpath);
-			}
- 		}
-		closedir(dp);
-		if (subdir == 0) {
-			rm_file(path, true);
-			entries.pop();
-		}
-	}
-    return 0;
+	return mpl::MDir::rmpath(entry) ? 0 : 1;
 }
 
 /*

@@ -24,6 +24,10 @@ public:
 protected:
 	virtual void run() {
 		std::cout << id() << std::endl;
+		for (int i = 0; i < 10; ++i) {
+			std::cout << "index:" << i << std::endl;
+			sleep(1);
+		}
 	}
 };
 
@@ -31,8 +35,11 @@ int main(int argc, char *argv[])
 {
 	WorkThread work;
 	work.start();
-	sleep(1);
+	work.stop();
 	std::cout << "work end" << std::endl;
 	std::cout << WorkThread::currentId() << std::endl;
+	work.start();
+	work.stop();
+	std::cout << "work end second" << std::endl;
     return 0;
 }
