@@ -63,5 +63,8 @@ int main(int argc, char *argv[])
 	std::cout << dirpath.absolutePath() << std::endl;
 	std::cout << dirpath.canonicalPath() << std::endl;
 	
+	mpl::MFileInfo homepath = "~/docker";
+	std::cout << homepath.filePath() << std::endl;
+	std::cout << "isdir: " << (homepath.isDir() ? "true" : "false") << std::endl;
     return 0;
 }

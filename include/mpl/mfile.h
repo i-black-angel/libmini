@@ -33,6 +33,8 @@ public:
 	MFile(const MFile &other);
     virtual ~MFile();
 
+	std::string name() const { return _fname; }
+	
 	int readbuf(char *buf, size_t bytes) const;
 	int writebuf(const char *buf, size_t bytes) const;
 	

@@ -17,7 +17,6 @@
 
 int main(int argc, char *argv[])
 {
-	// std::cout << mpl::welcome() << std::endl;
 	mpl::MOptions opt("1.0.0", "");
 	opt.insert('x', "xman", "Wonderful count");
 	opt.insert('n', "name", "This application's name'");

@@ -508,6 +508,7 @@ std::string MFileInfo::owner() const
 {
 	if (!_stat_ok) return std::string();
 	struct passwd *pwd = getpwuid(_stat.st_uid);
+	if (pwd == NULL) return std::string();
 	// log_debug("passwd: %s", pwd->pw_passwd);
 	return std::string(pwd->pw_name);
 }
@@ -522,6 +523,7 @@ std::string MFileInfo::group() const
 {
 	if (!_stat_ok) return std::string();
 	struct group *grp = getgrgid(_stat.st_gid);
+	if (grp == NULL) return std::string();
 	return std::string(grp->gr_name);
 }
 

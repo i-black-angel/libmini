@@ -16,6 +16,8 @@
 #include <mpl/mfile.h>
 #include <mpl/mlog.h>
 #include <mpl/merror.h>
+#include <mpl/mdir.h>
+#include <mpl/mfileinfo.h>
 
 MPL_BEGIN_NAMESPACE
 
@@ -74,7 +76,7 @@ int MFile::readbuf(char *buf, size_t bytes) const
 int MFile::writebuf(const char *buf, size_t bytes) const
 {
 	if (_fname.empty()) return -1;
-	return writebuf(buf, bytes);
+	return writebuf(_fname, buf, bytes);
 }
 
 int MFile::readbuf(const std::string &file, char *buf, size_t bytes)
@@ -82,13 +84,12 @@ int MFile::readbuf(const std::string &file, char *buf, size_t bytes)
 	int n = -1;
 	int fd = open(file.c_str(), O_RDONLY);
 	if (fd == -1) {
-		log_error("open %s failed: %s", file.c_str(), error().c_str());
+		log_error("open '%s' failed: %s", file.c_str(), error().c_str());
 		return fd;
 	}
 	lseek(fd, 0L, SEEK_SET);
-	if ((n = read(fd, buf, bytes)) < 0) {
+	if ((n = read(fd, buf, bytes)) < 0) 
 		log_error("%s readbuf failed: %s", file.c_str(), error().c_str());
-	}
 
 	close(fd);
 	return n;
@@ -96,7 +97,27 @@ int MFile::readbuf(const std::string &file, char *buf, size_t bytes)
 
 int MFile::writebuf(const std::string &file, const char *buf, size_t bytes)
 {
-	return -1;
+	MFileInfo finfo = file;
+	std::string path = finfo.absolutePath();
+	std::string fpath = finfo.absoluteFilePath();
+
+	if (!MDir::exists(path) && !MDir::mkpath(path))
+		return -1;
+
+	int n = -1;
+	int flag = O_WRONLY | O_CREAT | O_TRUNC;
+	mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH;
+	int fd = open(fpath.c_str(), flag, mode);
+	if (fd == -1) {
+		log_error("open '%s' failed: %s", fpath.c_str(), error().c_str());
+		return -1;
+	}
+
+	if ((n = write(fd, buf, bytes)) < 0)
+		log_error("write '%s' failed: %s", fpath.c_str(), error().c_str());
+
+	close(fd);
+	return n;
 }
 
 MPL_END_NAMESPACE

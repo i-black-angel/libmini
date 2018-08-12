@@ -30,5 +30,9 @@ int main(int argc, char *argv[])
 		std::cout << n << std::endl;
 		std::cout << buf << std::endl;
 	}
+
+	memset(buf, 0x00, sizeof(buf));
+	strcpy(buf, "hello world!\n");
+	std::cout << mpl::MFile("/tmp/abc").writebuf(buf, strlen(buf)) << std::endl;
     return 0;
 }
