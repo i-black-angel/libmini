@@ -17,19 +17,17 @@
 
 int main(int argc, char *argv[])
 {
-	mpl::MString name = "name";
-	mpl::MString mstr = "\\etc\\resolv.conf";
-	std::cout << name << std::endl;
-	mstr.replace('\\', '/');
-	std::cout << mstr << std::endl;
-
-	name = "another";
-	std::cout << name << std::endl;
-	name = mstr;
-	std::cout << mstr << std::endl;
-
-	mpl::MFileInfo info = name;
-	std::cout << info.size() << std::endl;
-	std::cout << info.path() << std::endl;
+	std::string shortopts = "hVc:v";
+	std::cout << shortopts.size() << std::endl;
+	printf("%s\n", mpl::format("%c:", 'n').c_str());
+	printf("%s\n", mpl::format("%c:", 'x').c_str());
+	shortopts += mpl::format("%c:", 'n');
+	// shortopts += "n:";
+	std::cout << shortopts.size() << std::endl;
+	printf("%s\n", shortopts.c_str());
+	shortopts += mpl::format("%c:", 'x');
+	// shortopts += "x:";
+	std::cout << shortopts.size() << std::endl;
+	printf("%s\n", shortopts.c_str());
     return 0;
 }

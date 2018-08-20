@@ -29,6 +29,7 @@ public:
 		std::string longopt;
 		std::string desc;
 		bool req_arg;
+		std::string arg_alias;
 
 		bool operator==(int x) const
 			{ return (key == x); }
@@ -39,10 +40,10 @@ public:
     explicit MOptions(const char *version, const char *description);
     virtual ~MOptions();
 
-	void insert(int key, const std::string &longopt, const std::string &desc, bool reqArg = true);
+	void insert(int key, const std::string &longopt, const std::string &desc, bool reqArg = false, const std::string &argAlias = std::string());
 	bool find(int key) const;
 	int getint(int key) const;
-	std::string getstring(int key) const;
+	std::string getstr(int key) const; // is equal to value()
 	std::string value(int key) const;
 	void parse(int argc, char *argv[]);
 protected:

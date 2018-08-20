@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 #include <mpl/msysinfo.h>
+#include <mpl/mlog.h>
+#include <mpl/merror.h>
 
 #ifdef M_OS_LINUX
 /* GNU's uptime.
@@ -94,88 +96,75 @@ MPL_BEGIN_NAMESPACE
 
 std::string hostname()
 {
-	return MSysinfo::hostname();
-}
-
-MSysinfo::MSysinfo()
-{
-}
-
-MSysinfo::~MSysinfo()
-{
-}
-
-std::string MSysinfo::hostname()
-{
 	char buf[1024] = {0x00};
 	if (gethostname(buf, sizeof(buf)) == -1) {
-		perror("gethostname");
-		return "";
+		log_error("gethostname: %s", error().c_str());
+		return std::string();
 	}
 	return buf;
 }
 	
-std::string MSysinfo::buildCpuArchitecture()
+std::string buildCpuArchitecture()
 {
 }
 
-std::string MSysinfo::currentCpuArchitecture()
+std::string currentCpuArchitecture()
 {
 }
 
-std::string MSysinfo::buildAbi()
+std::string buildAbi()
 {
 }
 
-std::string MSysinfo::kernelType()
+std::string kernelType()
 {
 }
 
-std::string MSysinfo::kernelVersion()
+std::string kernelVersion()
 {
 }
 
-std::string MSysinfo::productType()
+std::string productType()
 {
 }
 
-std::string MSysinfo::productVersion()
+std::string productVersion()
 {
 }
 
-std::string MSysinfo::prettyProductName()
+std::string prettyProductName()
 {
 }
 
-uint64_t MSysinfo::memoryAvailSize()
+uint64_t memoryAvailSize()
 {
 }
 
-uint64_t MSysinfo::memoryTotalSize()
+uint64_t memoryTotalSize()
 {
 }
 
-uint64_t MSysinfo::memoryUsedSize()
+uint64_t memoryUsedSize()
 {
 }
 
-double MSysinfo::memoryPercent()
+double memoryPercent()
 {
 }
 
-double MSysinfo::cpuPercent()
+double cpuPercent()
 {
 }
 
-uint32_t MSysinfo::uptimelong()
+uint32_t uptimelong()
 {
 }
 
-std::string MSysinfo::uptime()
+std::string uptime()
 {
 }
 
-std::string MSysinfo::since()
+std::string since()
 {
 }
 

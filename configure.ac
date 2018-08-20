@@ -2,14 +2,14 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([libmpl], 1.0.1, iblackangel@163.com)
+AC_INIT([libmpl], 0.1.3, iblackangel@163.com)
 AC_CONFIG_SRCDIR([src/mapplication.cpp])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 
 lt_current="1"
-lt_revision="0"
+lt_revision="3"
 lt_age="1"
 LTLDFLAGS="-version-info ${lt_current}:${lt_revision}:${lt_age}"
 AC_SUBST(LTLDFLAGS)

@@ -44,6 +44,7 @@
 #include <mpl/mhash.h>
 #include <mpl/murl.h>
 #include <mpl/mqueue.h>
+#include <mpl/mlockfile.h>
 #include <mpl/mdatahandler.h>
 #include <mpl/mthreadpool.h>
 

@@ -23,7 +23,7 @@ std::string toXString(const char *fmt, ...)
 	va_list vargs;
 	va_start(vargs, fmt);
 	int len = vsnprintf(NULL, 0, fmt, vargs);
-	buffer.resize(len + 2);
+	buffer.resize(len);
 	va_start(vargs, fmt);
 	vsnprintf(&buffer[0], len + 1, fmt, vargs);
 	va_end(vargs);

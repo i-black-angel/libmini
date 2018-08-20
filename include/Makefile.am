@@ -30,6 +30,7 @@ mpl/mthread.h					\
 mpl/mlog.h					\
 mpl/mxml.h					\
 mpl/mfileinfo.h					\
+mpl/mlockfile.h					\
 mpl/mstring.h					\
 mpl/mmongodb.h					\
 mpl/mapplication.h				\

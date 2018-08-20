@@ -17,6 +17,6 @@
 
 int main(int argc, char *argv[])
 {
-	std::cout << mpl::md5sum("/bin/bash") << "\t" << "/bin/bash" << std::endl;
+	std::cout << mpl::md5sum("/mnt/downloads/iso/debian-9.5.0-amd64-DVD-1.iso") << "\t" << "debian-9.5.0-amd64-DVD-1.iso" << std::endl;
     return 0;
 }

@@ -24,6 +24,7 @@ mlog.cpp					\
 mmongodb.cpp					\
 mprocess.cpp					\
 mrand.cpp					\
+mlockfile.cpp					\
 msettings.cpp					\
 msocket.cpp					\
 mstring.cpp					\

@@ -42,9 +42,9 @@ MOptions::~MOptions()
 {
 }
 
-void MOptions::insert(int key, const std::string &longopt, const std::string &desc, bool reqArg)
+void MOptions::insert(int key, const std::string &longopt, const std::string &desc, bool reqArg, const std::string &argAlias)
 {
-	struct option_t item = {key, longopt, desc, reqArg};
+	struct option_t item = {key, longopt, desc, reqArg, argAlias};
 	_options.push_back(item);
 }
 
@@ -58,7 +58,7 @@ int MOptions::getint(int key) const
 	return strtol(value(key).c_str(), NULL, 10);
 }
 
-std::string MOptions::getstring(int key) const
+std::string MOptions::getstr(int key) const
 {
 	return value(key);
 }
@@ -81,8 +81,15 @@ void MOptions::help() const
 	printf("  -v, --verbose\t\t\tVerbose mode, explain what is being done\n");
 	for (options_const_iterator it = _options.begin(); it != _options.end();
 		 ++it) {
-		printf("  -%c, --%s\t\t\t%s\n",
-			   it->key, it->longopt.c_str(), it->desc.c_str());
+		if (!it->req_arg) {
+			printf("  -%c, --%s\t\t\t%s\n",
+				   it->key, it->longopt.c_str(), it->desc.c_str());
+		} else {
+			printf("  -%c, --%s=%s\t\t%s\n",
+				   it->key, it->longopt.c_str(),
+				   (it->arg_alias.empty()) ? "VAL" : it->arg_alias.c_str(),
+				   it->desc.c_str());
+		}
 	}
 }
 
@@ -104,7 +111,7 @@ void MOptions::parse(int argc, char *argv[])
 	longopts.push_back(opt_V);
 	longopts.push_back(opt_c);
 	longopts.push_back(opt_v);
-			
+
 	for (options_const_iterator it = _options.begin(); it != _options.end();
 		 ++it) {
 		struct option item = {
@@ -119,6 +126,9 @@ void MOptions::parse(int argc, char *argv[])
 			mpl::format("%c:", it->key) :
 			mpl::format("%c", it->key);
 	}
+    /* terminating NULL placeholder */
+	struct option opt_null = {NULL,   no_argument,       NULL, 0};
+	longopts.push_back(opt_null);
 
 	int opt = -1;
 	int longind = 0;

@@ -13,43 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _MSYSINFO_H_
-#define _MSYSINFO_H_
+#ifndef _MLOCKFILE_H_
+#define _MLOCKFILE_H_
 
 #include <mpl/mcoredef.h>
 
 MPL_BEGIN_NAMESPACE
 
-std::string hostname();
-
-class MCpuInfo
+class MLockFile
 {
 public:
-	std::string vendor() const;
-	std::string model() const;
-	std::string flags() const;
+    explicit MLockFile();
+	MLockFile(const char *s);
+	MLockFile(const std::string &str);
+	MLockFile(const MLockFile &other);
+    virtual ~MLockFile();
+
+	int lock();
+	void unlock();
+
+	MLockFile &operator=(const MLockFile &other);
+	MLockFile &operator=(const char *s);
+	MLockFile &operator=(const std::string &str);
+
+	bool operator==(const MLockFile &f) const;
+	bool operator!=(const MLockFile &f) const
+		{ return !operator==(f); }
+private:
+	inline void inner_copy(const MLockFile &o) {
+		_fname = o._fname;
+		_fd = o._fd;
+	}
+	std::string _fname;
+	int _fd;
 };
-
-std::string cpuArchitecture();
-int numberOfCores();
-
-std::string kernelType();
-std::string kernelVersion();
-std::string productType();
-std::string productVersion();
-std::string prettyProductName();
-
-uint64_t memoryAvailSize();
-uint64_t memoryTotalSize();
-uint64_t memoryUsedSize();
-double memoryPercent();
-
-double cpuPercent();
-
-uint32_t uptimelong();
-std::string uptime(); // how long the system has been running
-std::string since();	// System up since, yyyy-mm-dd HH:MM:SS
 
 MPL_END_NAMESPACE
 
-#endif /* _MSYSINFO_H_ */
+#endif /* _MLOCKFILE_H_ */
