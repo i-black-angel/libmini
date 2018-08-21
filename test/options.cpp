@@ -39,5 +39,10 @@ int main(int argc, char *argv[])
 	bool verbose = opt.find('v');
 	std::cout << (verbose ? "true" : "false") << std::endl;
 
+	std::cout << mpl::process::user() << std::endl;
+	std::cout << mpl::process::group() << std::endl;
+	std::cout << mpl::process::login() << std::endl;
+	std::cout << mpl::process::pwd() << std::endl;
+	std::cout << mpl::threadId() << std::endl;
     return 0;
 }

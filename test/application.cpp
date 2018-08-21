@@ -17,10 +17,12 @@
 
 int main(int argc, char *argv[])
 {
+	setlocale(LC_ALL, "");
+	
     std::cout << mpl::applicationDirPath() << std::endl;
     std::cout << mpl::applicationName() << std::endl;
     std::cout << mpl::applicationFilePath() << std::endl;
-	std::cout << mpl::pid() << std::endl;
-	std::cout << mpl::pwd() << std::endl;
+	std::cout << mpl::process::pid() << std::endl;
+	std::cout << mpl::process::pwd() << std::endl;
     return 0;
 }

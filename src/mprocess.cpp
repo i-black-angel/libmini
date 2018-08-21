@@ -14,32 +14,75 @@
  * limitations under the License.
  */
 #include <mpl/mprocess.h>
+#include <mpl/mapplication.h>
+
+#ifdef _MSC_VER
+# pragma warning (push)
+# pragma warning (disable: 4996)
+#endif
 
 MPL_BEGIN_NAMESPACE
 
-std::string pwd()
-{
-	return MProcess().workingDirectory();
-}
-
-MProcess::MProcess()
-{
-}
-
-MProcess::~MProcess()
-{
-}
-
-int64_t MProcess::pid() const
+pid_t process::pid()
 {
 	return getpid();
 }
 
-std::string MProcess::program() const
+pid_t process::ppid()
 {
+	return getppid();
 }
 
-std::string MProcess::workingDirectory()
+pid_t process::pgrp()
+{
+	return getpgrp();
+}
+
+uid_t process::uid()
+{
+	return getuid();
+}
+
+uid_t process::euid()
+{
+	return geteuid();
+}
+
+gid_t process::gid()
+{
+	return getgid();
+}
+
+gid_t process::egid()
+{
+	return getegid();
+}
+
+std::string process::user()
+{
+	struct passwd *pwd = getpwuid(getuid());
+	if (pwd == NULL) return std::string();
+	return std::string(pwd->pw_name);
+}
+
+std::string process::group()
+{
+	struct group *grp = getgrgid(getgid());
+	if (grp == NULL) return std::string();
+	return std::string(grp->gr_name);
+}
+
+std::string process::login()
+{
+	return getlogin();
+}
+
+std::string process::program()
+{
+	return applicationName();
+}
+
+std::string process::pwd()
 {
 	char buf[1024] = {0x00};
 #ifdef M_OS_WIN
@@ -50,16 +93,26 @@ std::string MProcess::workingDirectory()
 	return buf;
 }
 
-int MProcess::execute(const std::string &program, const std::vector<std::string> &arguments)
+int process::execute(const std::string &program, const std::vector<std::string> &arguments)
 {
 }
 
-int MProcess::execute(const std::string &command)
+int process::execute(const std::string &command)
 {
 }
 
-std::vector<std::string> MProcess::systemEnvironment()
+std::vector<std::string> process::systemEnvironment()
 {
+	std::vector<std::string> out;
+	for (int i = 0; environ[i] != NULL; ++i) {
+		std::string val = environ[i];
+		out.push_back(val);
+	}
+	return out;
 }
 
 MPL_END_NAMESPACE
+
+#ifdef _MSC_VER
+# pragma warning (pop)
+#endif

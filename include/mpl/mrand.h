@@ -20,14 +20,10 @@
 
 MPL_BEGIN_NAMESPACE
 
-class MRand
-{
-public:
-	static int rand();
-	static int rand(int low, int high);
-	static double range();
-	static double range(double low, double high);
-};
+int rand();
+int rand(int low, int high);
+double range();
+double range(double low, double high);
 
 MPL_END_NAMESPACE
 

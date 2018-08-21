@@ -19,8 +19,6 @@
 #include <mpl/mlog.h>
 #include <mpl/mstring.h>
 #include <mpl/mprocess.h>
-#include <pwd.h>
-#include <grp.h>
 
 #ifdef _MSC_VER
 # pragma warning (push)
@@ -333,14 +331,14 @@ std::string MFileInfo::absoluteFilePath() const
 	if (isAbsolute()) 
 		return filePath();
 
-	return cleanPath(pwd() + "/" + _file);
+	return cleanPath(process::pwd() + "/" + _file);
 }
 
 std::string MFileInfo::canonicalFilePath() const
 {
 	// If the FILE dose not exist, just return an empty string.
 	if (!isAbsolute()) {
-		std::string file = cleanPath(pwd() + "/" + _file);
+		std::string file = cleanPath(process::pwd() + "/" + _file);
 		if (!exists(file))
 			return std::string();
 		return file;
@@ -392,14 +390,14 @@ std::string MFileInfo::absolutePath() const
 	if (isAbsolute())
 		return path();
 
-	return cleanPath(pwd() + "/" + path());
+	return cleanPath(process::pwd() + "/" + path());
 }
 
 std::string MFileInfo::canonicalPath() const
 {
 	// If the FILE dose not exist, just return an empty string.
 	if (!isAbsolute()) {
-		std::string p = cleanPath(pwd() + "/" + path());
+		std::string p = cleanPath(process::pwd() + "/" + path());
 		if (!exists(p))
 			return std::string();
 		return p;

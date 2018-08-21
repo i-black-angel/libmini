@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 	work.start();
 	work.stop();
 	std::cout << "work end" << std::endl;
-	std::cout << WorkThread::currentId() << std::endl;
+	std::cout << mpl::threadId() << std::endl;
 	work.start();
 	work.stop();
 	std::cout << "work end second" << std::endl;

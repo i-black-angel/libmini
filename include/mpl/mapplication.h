@@ -23,7 +23,6 @@ MPL_BEGIN_NAMESPACE
 std::string applicationName();
 std::string applicationDirPath();
 std::string applicationFilePath();
-int64_t pid();
 
 class MApplication
 {
@@ -35,7 +34,6 @@ public:
 	static std::string applicationFilePath();
 	static std::string applicationName();
 	static std::string applicationVersion();
-	static int64_t pid();
 	static uint32_t uptime();
 
 	void setApplicationName(const std::string &application);

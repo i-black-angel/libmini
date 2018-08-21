@@ -49,7 +49,6 @@ public:
 	int detach();
 	int cancel();
 	
-	static int64_t currentId();
 	int64_t id();
 	
     // void setPriority(Priority priority);
@@ -80,6 +79,9 @@ private:
 	
 	M_DISABLE_COPY(MThread)
 };
+
+// get_thread_id
+int64_t threadId();
 
 MPL_END_NAMESPACE
 

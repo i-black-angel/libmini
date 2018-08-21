@@ -210,7 +210,7 @@ std::string MDir::canonicalPath() const
 
 std::string MDir::currentPath()
 {
-	return pwd();
+	return process::pwd();
 }
 
 std::string MDir::homePath()

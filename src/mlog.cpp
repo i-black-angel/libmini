@@ -17,6 +17,7 @@
 #include <mpl/msysinfo.h>
 #include <mpl/mdatetime.h>
 #include <mpl/mapplication.h>
+#include <mpl/mprocess.h>
 #include <mpl/mstring.h>
 #include <mpl/merror.h>
 
@@ -87,9 +88,9 @@ void MLog::log(const std::string &file, const std::string &func,
 	va_end(vargs);
 
 	// DATETIME HOSTNAME APPLICATIONNAME[PID] FILE FUNC[LINE] 
-	std::string logstr = mpl::format("%s %s %s[%lld] %s %s[%u]: <%s> %s",
+	std::string logstr = format("%s %s %s[%lld] %s %s[%u]: <%s> %s",
 								now().c_str(), hostname().c_str(),
-								applicationName().c_str(), pid(),
+								applicationName().c_str(), process::pid(),
 								file.c_str(), func.c_str(), line,
 								strpriority(pri).c_str(),
 								buffer.c_str());

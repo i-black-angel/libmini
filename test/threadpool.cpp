@@ -27,9 +27,9 @@ public:
 	// }
 
 	virtual void run() {
-		int msec = mpl::MRand::rand(1000, 5000);
+		int msec = mpl::rand(1000, 5000);
 		usleep(msec);
-		std::cout << mpl::MThread::currentId() << " recv: " << _arg1 << std::endl;
+		std::cout << mpl::threadId() << " recv: " << _arg1 << std::endl;
 		usleep(msec);
 	}
 private:

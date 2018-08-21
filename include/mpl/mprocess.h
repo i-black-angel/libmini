@@ -20,21 +20,29 @@
 
 MPL_BEGIN_NAMESPACE
 
-std::string pwd();
+namespace process {
 
-class MProcess
-{
-public:
-    explicit MProcess();
-    virtual ~MProcess();
+	// Get the process ID of the calling process.
+	pid_t pid();
+	// Get the process ID of the calling process's parent.
+	pid_t ppid();
+	// Get the process group ID of the calling process.
+	pid_t pgrp();
+	
+	uid_t uid();
+	uid_t euid();
+	gid_t gid();
+	gid_t egid();
+	std::string pwd();
+	std::string user();
+	std::string group();
+	std::string login();
+	std::string program();
+	int execute(const std::string &program, const std::vector<std::string> &arguments);
+	int execute(const std::string &command);
+	std::vector<std::string> systemEnvironment();
 
-	int64_t pid() const;
-	std::string program() const;
-	static std::string workingDirectory();
-	static int execute(const std::string &program, const std::vector<std::string> &arguments);
-	static int execute(const std::string &command);
-	static std::vector<std::string> systemEnvironment();
-};
+}
 
 MPL_END_NAMESPACE
 

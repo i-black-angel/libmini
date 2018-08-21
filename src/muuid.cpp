@@ -16,14 +16,14 @@
 #include <mpl/muuid.h>
 #include "muuid_p.h"
 
+#ifdef _MSC_VER
+# pragma warning (push)
+# pragma warning (disable: 4996)
+#endif
+
 MPL_BEGIN_NAMESPACE
 
 std::string uuidgen()
-{
-	return mpl::uuid::generate();
-}
-
-std::string uuid::generate()
 {
     char buf[64] = {0};
 #ifdef M_OS_WIN
@@ -55,3 +55,7 @@ std::string uuid::generate()
 }
 
 MPL_END_NAMESPACE
+
+#ifdef _MSC_VER
+# pragma warning (pop)
+#endif

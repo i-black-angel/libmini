@@ -13,33 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mpl/mrand.h>
+#include <signal.h>
 
-MPL_BEGIN_NAMESPACE
-
-int rand()
+int main(int argc, char *argv[])
 {
-	srand(time(NULL));
-	return ::rand();
+    sigset_t sigset;
+	sigemptyset(&sigset);
+	sigaddset(&sigset, SIGINT);
+	sigaddset(&sigset, SIGTERM);
+	sigaddset(&sigset, SIGQUIT);
+	sigprocmask(SIG_BLOCK, &sigset, 0);
+	
+    return 0;
 }
-
-int rand(int low, int high)
-{
-	int rlow = (std::min)(low, high);
-	int rhigh = (std::max)(low, high);
-	return (rand() % (1 + rhigh - rlow)) + rlow;
-}
-
-double range()
-{
-	return (rand() % 101) / 100.0;
-}
-
-double range(double low, double high)
-{
-	double rlow = (std::min)(low, high);
-	double rhigh = (std::max)(low, high);
-	return ((rand() % (int)(1 + rhigh * 100.0 - rlow * 100.0)) / 100.0) + rlow;
-}
-
-MPL_END_NAMESPACE

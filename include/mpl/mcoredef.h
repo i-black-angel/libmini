@@ -70,6 +70,8 @@
 # include <fcntl.h>
 # include <limits.h>
 # include <sys/epoll.h>
+# include <pwd.h>
+# include <grp.h>
 #endif
 
 #ifdef max

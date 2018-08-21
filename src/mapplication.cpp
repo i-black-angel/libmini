@@ -35,11 +35,6 @@ std::string applicationFilePath()
 	return MApplication::applicationFilePath();
 }
 
-int64_t pid()
-{
-	return MApplication::pid();
-}
-
 MApplication::MApplication(int argc, char *argv[])
 {
 }
@@ -99,11 +94,6 @@ std::string MApplication::applicationName()
 
 std::string MApplication::applicationVersion()
 {
-}
-
-int64_t MApplication::pid()
-{
-    return getpid();
 }
 
 uint32_t MApplication::uptime()

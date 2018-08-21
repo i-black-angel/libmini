@@ -93,8 +93,10 @@ int MFile::readbuf(const std::string &file, char *buf, size_t bytes)
 		return fd;
 	}
 	lseek(fd, 0L, SEEK_SET);
-	if ((n = read(fd, buf, bytes)) < 0) 
+	if ((n = read(fd, buf, bytes)) < 0) {
 		log_error("%s readbuf failed: %s", file.c_str(), error().c_str());
+		fflush(NULL);
+	}
 
 	close(fd);
 	return n;

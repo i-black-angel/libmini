@@ -96,10 +96,6 @@ int MThread::cancel()
 	return pthread_cancel(_self);
 }
 	
-int64_t MThread::currentId()
-{
-	return pthread_self();
-}
 
 int64_t MThread::id()
 {
@@ -133,6 +129,13 @@ void MThread::exec()
 	_interrupt = false;
 	
 	run();
+}
+
+// Begin functions
+// get_thread_id
+int64_t threadId()
+{
+	return pthread_self();
 }
 
 MPL_END_NAMESPACE

@@ -22,12 +22,6 @@ MPL_BEGIN_NAMESPACE
 
 std::string uuidgen();
 
-namespace uuid {
-
-	// mpl::uuidgen() is a convenience interface by libmpl provided
-	std::string generate();
-}
-
 MPL_END_NAMESPACE
 
 #endif /* _MUUID_H_ */
