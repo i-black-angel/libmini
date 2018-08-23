@@ -20,6 +20,7 @@
 
 MPL_BEGIN_NAMESPACE
 
+std::string hostname();
 
 class MCpuInfo
 {
@@ -30,17 +31,9 @@ public:
 	std::string vendor() const;
 	std::string model() const;
 	std::string flags() const;
+	int count() const;
+	std::string architecture() const;
 };
-
-std::string hostname();
-std::string cpuArchitecture();
-int numberOfCores();
-
-std::string productType();
-std::string productVersion();
-std::string prettyProductName();
-
-double cpuPercent();
 
 class MSysinfo
 {
@@ -49,14 +42,28 @@ public:
     virtual ~MSysinfo();
 
 	std::string kernelName() const;
-	std::string nodename() const;
+	std::string nodeName() const;
 	std::string kernelRelease() const;
 	std::string kernelVersion() const;
 	std::string machine() const;
 
-	uint64_t totalmem() const;	// Total usable main memory size
-	uint64_t freemem() const;	// Available memory size
-	uint64_t usedmem() const;	// Used memory size
+	uint64_t totalMem() const;	// Total usable main memory size
+	uint64_t freeMem() const;	// Available memory size
+	uint64_t usedMem() const;	// Used memory size
+	uint64_t sharedMem() const;
+	uint64_t bufferMem() const;
+	uint64_t totalSwap() const;
+	uint64_t freeSwap() const;
+	uint64_t usedSwap() const;
+	uint64_t cached() const;
+	uint64_t active() const;
+	uint64_t inactive() const;
+	
+	uint64_t totalDisk() const;	// Total disk space 
+	uint64_t freeDisk() const;
+	uint64_t usedDisk() const;
+	uint64_t availDisk() const;	
+
 	uint16_t procs() const;		// Number of current processes
 	// how long the system has been running,
 	// // and System up since, yyyy-mm-dd HH:MM:SS
@@ -66,6 +73,7 @@ public:
 private:
 	struct utsname _utsname;
 	struct sysinfo _sysinfo;
+	struct statfs _statfs;
 };
 
 MPL_END_NAMESPACE

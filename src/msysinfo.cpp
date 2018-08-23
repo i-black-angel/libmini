@@ -16,6 +16,7 @@
 #include <mpl/msysinfo.h>
 #include <mpl/mlog.h>
 #include <mpl/merror.h>
+#include <mpl/mfile.h>
 
 #ifdef _MSC_VER
 # pragma warning (push)
@@ -38,6 +39,7 @@ MSysinfo::MSysinfo()
 {
 	uname(&_utsname);
 	sysinfo(&_sysinfo);
+	statfs("/", &_statfs);
 }
 
 MSysinfo::~MSysinfo()
@@ -49,7 +51,7 @@ std::string MSysinfo::kernelName() const
 	return _utsname.sysname;
 }
 
-std::string MSysinfo::nodename() const
+std::string MSysinfo::nodeName() const
 {
 	return _utsname.nodename;
 }
@@ -69,19 +71,107 @@ std::string MSysinfo::machine() const
 	return _utsname.machine;
 }
 
-uint64_t MSysinfo::freemem() const
+uint64_t MSysinfo::freeMem() const
 {
-	return _sysinfo.freeram;
+	return _sysinfo.freeram * _sysinfo.mem_unit;
 }
 
-uint64_t MSysinfo::totalmem() const
+uint64_t MSysinfo::totalMem() const
 {
-	return _sysinfo.totalram;
+	return _sysinfo.totalram * _sysinfo.mem_unit;
 }
 
-uint64_t MSysinfo::usedmem() const
+uint64_t MSysinfo::usedMem() const
 {
-	return _sysinfo.totalram - _sysinfo.freeram;
+	return (_sysinfo.totalram - _sysinfo.freeram) * _sysinfo.mem_unit;
+}
+
+uint64_t MSysinfo::sharedMem() const
+{
+	return _sysinfo.sharedram * _sysinfo.mem_unit;
+}
+
+uint64_t MSysinfo::bufferMem() const
+{
+	return _sysinfo.bufferram * _sysinfo.mem_unit;
+}
+
+uint64_t MSysinfo::totalSwap() const
+{
+	return _sysinfo.totalswap * _sysinfo.mem_unit;
+}
+
+uint64_t MSysinfo::freeSwap() const
+{
+	return _sysinfo.freeswap * _sysinfo.mem_unit;
+}
+
+uint64_t MSysinfo::usedSwap() const
+{
+	return (_sysinfo.totalswap - _sysinfo.freeswap) * _sysinfo.mem_unit;
+}
+
+static uint64_t mpl_meminfo(const char *name)
+{
+	uint64_t slot = 0;
+	char buf[2048] = { 0x00 };
+	char *head, *tail;
+	MFile file = "/proc/meminfo";
+	if (file.readbuf(buf, sizeof(buf)) <= 0)
+		return 0;
+
+	head = buf;
+	for (; ;) {
+		tail = strchr(head, ':');
+		if (!tail) break;
+		*tail = '\0';
+		if (0 == strcmp(head, name)) { // goto next line
+			head = tail + 1;
+			slot = strtoull(head, &tail, 10);
+			break;
+		}
+		head = tail + 1;
+		tail = strchr(head, '\n');
+		if (!tail) break;
+		head = tail + 1;
+	}
+	
+	return slot << 10;
+}
+
+uint64_t MSysinfo::cached() const
+{
+	return mpl_meminfo("Cached");
+}
+
+uint64_t MSysinfo::active() const
+{
+	return mpl_meminfo("Active");
+}
+
+uint64_t MSysinfo::inactive() const
+{
+	return mpl_meminfo("Inactive");
+}
+
+uint64_t MSysinfo::totalDisk() const
+{
+	return _statfs.f_blocks * _statfs.f_bsize;
+}
+
+uint64_t MSysinfo::freeDisk() const
+{
+	return _statfs.f_bfree * _statfs.f_bsize;
+}
+
+uint64_t MSysinfo::usedDisk() const
+{
+	return (_statfs.f_blocks - _statfs.f_bfree) * _statfs.f_bsize;
+}
+
+uint64_t MSysinfo::availDisk() const
+{
+	return _statfs.f_bavail * _statfs.f_bsize;
 }
 
 uint16_t MSysinfo::procs() const

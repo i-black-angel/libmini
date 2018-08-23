@@ -23,16 +23,24 @@ int main(int argc, char *argv[])
 	std::cout << info.uptime() << std::endl;
 	std::cout << info.struptime(info.uptime()) << std::endl;
 	std::cout << info.since() << std::endl;
-	fprintf(stdout, "free:\t%s\n", mpl::scaleSize(info.freemem()).c_str());
-	fprintf(stdout, "total:\t%s\n", mpl::scaleSize(info.totalmem()).c_str());
-	fprintf(stdout, "used:\t%s\n", mpl::scaleSize(info.usedmem()).c_str());
+	fprintf(stdout, "free:\t%s\n", mpl::scaleSize(info.freeMem()).c_str());
+	fprintf(stdout, "total:\t%s\n", mpl::scaleSize(info.totalMem()).c_str());
+	fprintf(stdout, "used:\t%s\n", mpl::scaleSize(info.usedMem()).c_str());
+	fprintf(stdout, "cached:\t%s\n", mpl::scaleSize(info.cached()).c_str());
+	fprintf(stdout, "active:\t%s\n", mpl::scaleSize(info.active()).c_str());
+	fprintf(stdout, "inactive:\t%s\n", mpl::scaleSize(info.inactive()).c_str());
 	fprintf(stdout, "current procs:\t%u\n", info.procs());
 
 	std::cout << info.kernelName() << std::endl;
-	std::cout << info.nodename() << std::endl;
+	std::cout << info.nodeName() << std::endl;
 	std::cout << info.kernelRelease() << std::endl;
 	std::cout << info.kernelVersion() << std::endl;
 	std::cout << info.machine() << std::endl;
 	
+	fprintf(stdout, "disk free:\t%s\n", mpl::scaleSize(info.freeDisk()).c_str());
+	fprintf(stdout, "disk total:\t%s\n", mpl::scaleSize(info.totalDisk()).c_str());
+	fprintf(stdout, "disk used:\t%s\n", mpl::scaleSize(info.usedDisk()).c_str());
+	fprintf(stdout, "disk avail:\t%s\n", mpl::scaleSize(info.availDisk()).c_str());
+
     return 0;
 }

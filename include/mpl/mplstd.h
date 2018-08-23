@@ -45,6 +45,7 @@ void abort(const char *errmsg);
 
 // idea of this function is copied from top size scaling
 std::string scaleSize(unsigned long size);
+ssize_t wc(const char *file);
 
 MPL_END_NAMESPACE
 

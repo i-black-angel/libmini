@@ -116,5 +116,25 @@ std::string scaleSize(unsigned long size)
 	return std::string(buf);
 }
 
+ssize_t wc(const char *file)
+{
+	uint8_t buf[8] = { 0x00 };
+	int bytes_read = 0;
+	ssize_t bytes = 0;
+	int fd = open(file, O_RDONLY);
+	if (fd == -1)
+		return -1;
+
+	while ((bytes_read = read(fd, buf, sizeof(buf))) != 0) {
+		if (bytes_read == -1) {
+			close(fd);
+			return -1;
+		}
+		bytes += bytes_read;
+	}
+	close(fd);
+	return bytes;
+}
+
 MPL_END_NAMESPACE
 
