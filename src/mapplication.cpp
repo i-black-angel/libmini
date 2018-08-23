@@ -16,7 +16,6 @@
 #include <mpl/mapplication.h>
 #include <mpl/merror.h>
 #include <mpl/mlog.h>
-#include <mpl/mlockfile.h>
 
 MPL_BEGIN_NAMESPACE
 
@@ -108,17 +107,6 @@ void MApplication::setApplicationName(const std::string &application)
 void MApplication::setApplicationVersion(const std::string &version)
 {
 	_applicationVersion = version;
-}
-
-bool MApplication::alreadyRunning(const std::string &lockfile)
-{
-	MLockFile l = lockfile;
-	int res = l.lock();
-	if (res == -1) {
-		log_error("lock '%s' failed: %s", lockfile.c_str(), error().c_str());
-		exit(EXIT_FAILURE);
-	}
-	return (res == 1);
 }
 
 MPL_END_NAMESPACE

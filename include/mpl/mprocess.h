@@ -41,6 +41,7 @@ namespace process {
 	int execute(const std::string &program, const std::vector<std::string> &arguments);
 	int execute(const std::string &command);
 	std::vector<std::string> systemEnvironment();
+	bool alreadyRunning(const std::string &lockfile);
 
 }
 

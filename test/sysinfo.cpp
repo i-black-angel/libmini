@@ -14,32 +14,25 @@
  * limitations under the License.
  */
 #include <mpl.h>
-#include <signal.h>
-
-void sighandler(int signo)
-{
-	fprintf(stdout, "app exit by signal %s\n", strsignal(signo));
-	// exit(0);
-}
 
 int main(int argc, char *argv[])
 {
 	setlocale(LC_ALL, "");
 
-	if (signal(SIGINT, sighandler) == SIG_ERR)
-		perror("signal SIGINT");
-	if (signal(SIGQUIT, sighandler) == SIG_ERR)
-		perror("signal SIGQUIT");
-	if (signal(SIGTERM, sighandler) == SIG_ERR)
-		perror("signal SIGTERM");
-    // sigset_t sigset;
-	// sigemptyset(&sigset);
-	// sigaddset(&sigset, SIGINT);
-	// sigaddset(&sigset, SIGTERM);
-	// sigaddset(&sigset, SIGQUIT);
-	// sigprocmask(SIG_BLOCK, &sigset, 0);
-	// for (; ; )
-	int res = pause();
-	fprintf(stdout, "pause return %d: %s\n", res, strerror(errno));
+	mpl::MSysinfo info;
+	std::cout << info.uptime() << std::endl;
+	std::cout << info.struptime(info.uptime()) << std::endl;
+	std::cout << info.since() << std::endl;
+	fprintf(stdout, "free:\t%s\n", mpl::scaleSize(info.freemem()).c_str());
+	fprintf(stdout, "total:\t%s\n", mpl::scaleSize(info.totalmem()).c_str());
+	fprintf(stdout, "used:\t%s\n", mpl::scaleSize(info.usedmem()).c_str());
+	fprintf(stdout, "current procs:\t%u\n", info.procs());
+
+	std::cout << info.kernelName() << std::endl;
+	std::cout << info.nodename() << std::endl;
+	std::cout << info.kernelRelease() << std::endl;
+	std::cout << info.kernelVersion() << std::endl;
+	std::cout << info.machine() << std::endl;
+	
     return 0;
 }

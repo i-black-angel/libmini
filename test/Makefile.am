@@ -19,6 +19,7 @@ noinst_PROGRAMS = hostaddress welcome assert mutex condition udpsocket
 noinst_PROGRAMS += thread udpclient error uuid fileinfo md5sum datetime
 noinst_PROGRAMS += application tcpclient tcpserver datahandler threadpool
 noinst_PROGRAMS += settings options dirt tstring file process
+noinst_PROGRAMS += signal sysinfo
 
 hostaddress_CPPFLAGS = -I$(top_srcdir)/include
 hostaddress_LDADD = ../src/libmpl.la
@@ -115,3 +116,11 @@ file_SOURCES = file.cpp
 process_CPPFLAGS = -I$(top_srcdir)/include
 process_LDADD = ../src/libmpl.la
 process_SOURCES = process.cpp
+
+signal_CPPFLAGS = -I$(top_srcdir)/include
+signal_LDADD = ../src/libmpl.la
+signal_SOURCES = signal.cpp
+
+sysinfo_CPPFLAGS = -I$(top_srcdir)/include
+sysinfo_LDADD = ../src/libmpl.la
+sysinfo_SOURCES = sysinfo.cpp

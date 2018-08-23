@@ -15,6 +15,9 @@
  */
 #include <mpl/mprocess.h>
 #include <mpl/mapplication.h>
+#include <mpl/mlockfile.h>
+#include <mpl/mlog.h>
+#include <mpl/merror.h>
 
 #ifdef _MSC_VER
 # pragma warning (push)
@@ -109,6 +112,17 @@ std::vector<std::string> process::systemEnvironment()
 		out.push_back(val);
 	}
 	return out;
+}
+
+bool process::alreadyRunning(const std::string &lockfile)
+{
+	MLockFile l = lockfile;
+	int res = l.lock();
+	if (res == -1) {
+		log_error("lock '%s' failed: %s", lockfile.c_str(), error().c_str());
+		exit(EXIT_FAILURE);
+	}
+	return (res == 1);
 }
 
 MPL_END_NAMESPACE

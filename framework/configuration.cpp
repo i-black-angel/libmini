@@ -13,30 +13,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mpl.h>
+#include "configuration.h"
 
-int main(int argc, char *argv[])
+#ifdef _MSC_VER
+# pragma warning (push)
+# pragma warning (disable: 4996)
+#endif
+
+Configuration *Configuration::_ins = NULL;
+
+Configuration *Configuration::instance()
 {
-	mpl::MOptions opt("1.0.0", "");
-	opt.insert('n', "name", "This application's name'", true);
-	opt.insert('x', "xman", "Wonderful count", true, "XMAN");
-	opt.parse(argc, argv);
-
-	if (opt.find('n')) {
-		std::string name = opt.getstr('n');
-		std::cout << name << std::endl;
+	if (NULL == _ins) {
+		_ins = new Configuration();
+		atexit(desposed);
 	}
-	if (opt.find('x')) {
-		int count = opt.getint('x');
-		std::cout << count << std::endl;
-	}
-
-	if (opt.find('c')) {
-		std::string conf = opt.value('c');
-		std::cout << conf << std::endl;
-	}
-
-	bool verbose = opt.find('v');
-	std::cout << (verbose ? "true" : "false") << std::endl;
-    return 0;
+	return _ins;
 }
+
+void Configuration::desposed()
+{
+	if (NULL != _ins) {
+		delete _ins; _ins = NULL;
+	}
+}
+
+Configuration::Configuration()
+{
+	_conf = new mpl::MSettings();
+}
+
+Configuration::~Configuration()
+{
+	SAFE_DELETE(_conf);
+}
+
+void Configuration::load(const std::string &path)
+{
+	_conf->load(path.c_str());
+}
+
+#ifdef _MSC_VER
+# pragma warning (pop)
+#endif

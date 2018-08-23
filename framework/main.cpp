@@ -13,30 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mpl.h>
+#include "servicemanager.h"
 
 int main(int argc, char *argv[])
 {
-	mpl::MOptions opt("1.0.0", "");
-	opt.insert('n', "name", "This application's name'", true);
-	opt.insert('x', "xman", "Wonderful count", true, "XMAN");
-	opt.parse(argc, argv);
-
-	if (opt.find('n')) {
-		std::string name = opt.getstr('n');
-		std::cout << name << std::endl;
-	}
-	if (opt.find('x')) {
-		int count = opt.getint('x');
-		std::cout << count << std::endl;
-	}
-
-	if (opt.find('c')) {
-		std::string conf = opt.value('c');
-		std::cout << conf << std::endl;
-	}
-
-	bool verbose = opt.find('v');
-	std::cout << (verbose ? "true" : "false") << std::endl;
-    return 0;
+    setlocale(LC_ALL, "");
+    ServiceManager sm;
+    return sm.exec(argc, argv);
 }

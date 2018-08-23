@@ -13,30 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#ifndef _CONFIGURATION_H_
+#define _CONFIGURATION_H_
+
 #include <mpl.h>
 
-int main(int argc, char *argv[])
+// singleton
+class Configuration
 {
-	mpl::MOptions opt("1.0.0", "");
-	opt.insert('n', "name", "This application's name'", true);
-	opt.insert('x', "xman", "Wonderful count", true, "XMAN");
-	opt.parse(argc, argv);
+public:
+	static Configuration *instance();
+    virtual ~Configuration();
 
-	if (opt.find('n')) {
-		std::string name = opt.getstr('n');
-		std::cout << name << std::endl;
-	}
-	if (opt.find('x')) {
-		int count = opt.getint('x');
-		std::cout << count << std::endl;
-	}
+	void load(const std::string &path);
 
-	if (opt.find('c')) {
-		std::string conf = opt.value('c');
-		std::cout << conf << std::endl;
-	}
+	// TODO::args
+protected:
+    explicit Configuration();
+	static void desposed();
+private:
+	static Configuration *_ins;
 
-	bool verbose = opt.find('v');
-	std::cout << (verbose ? "true" : "false") << std::endl;
-    return 0;
-}
+	mpl::MSettings *_conf;
+};
+
+#endif /* _CONFIGURATION_H_ */

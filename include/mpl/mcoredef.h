@@ -56,22 +56,24 @@
 # include <direct.h>     /* _getcwd */
 # include <shlwapi.h>	 /* PathRemoveFileSpec */
 #else
+# include <pwd.h>
+# include <grp.h>
 # include <unistd.h>
-# include <sys/socket.h>
-# include <arpa/inet.h>
 # include <netdb.h>
-# include <pthread.h>
 # include <getopt.h>
 # include <syslog.h>
+# include <fcntl.h>
+# include <limits.h>
+# include <pthread.h>
+# include <arpa/inet.h>
+# include <sys/socket.h>
 # include <sys/time.h>
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <sys/file.h>
-# include <fcntl.h>
-# include <limits.h>
 # include <sys/epoll.h>
-# include <pwd.h>
-# include <grp.h>
+# include <sys/sysinfo.h>
+# include <sys/utsname.h>
 #endif
 
 #ifdef max

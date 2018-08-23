@@ -17,79 +17,9 @@
 #include <mpl/mlog.h>
 #include <mpl/merror.h>
 
-#ifdef M_OS_LINUX
-/* GNU's uptime.
-   Copyright (C) 1992-2013 Free Software Foundation, Inc.
-
-   This program is free software: you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
-#define BAD_OPEN_MESSAGE											\
-	"Error: /proc must be mounted\n"								\
-	"  To mount /proc at boot you need an /etc/fstab line like:\n"	\
-	"      proc   /proc   proc    defaults\n"						\
-	"  In the meantime, run \"mount proc /proc -t proc\"\n"
-
-#define UPTIME_FILE  "/proc/uptime"
-static int uptime_fd = -1;
-#define MEMINFO_FILE "/proc/meminfo"
-static int meminfo_fd = -1;
-
-/* This macro opens filename only if necessary and seeks to 0 so
- * that successive calls to the functions are more efficient.
- * It also reads the current contents of the file into the global buf.
- */
-#define FILE_TO_BUF(filename, fd, buf) do{							\
-		static int local_n;											\
-		if (fd == -1 && (fd = open(filename, O_RDONLY)) == -1) {	\
-			fputs(BAD_OPEN_MESSAGE, stderr);						\
-			fflush(NULL);											\
-			_exit(102);												\
-		}															\
-		lseek(fd, 0L, SEEK_SET);									\
-		if ((local_n = read(fd, buf, sizeof buf - 1)) < 0) {		\
-			perror(filename);										\
-			fflush(NULL);											\
-			_exit(103);												\
-		}															\
-		buf[local_n] = '\0';										\
-	}while(0)
-
-/* evals 'x' twice */
-#define SET_IF_DESIRED(x,y) do{  if(x) *(x) = (y); }while(0)
-
-/***********************************************************************/
-int uptime(double * uptime_secs, double * idle_secs) {
-	// As of 2.6.24 /proc/meminfo seems to need 888 on 64-bit,
-	// and would need 1258 if the obsolete fields were there.
-	char buf[2048] = {0x00};
-	double up=0, idle=0;
-	char *savelocale;
-
-	FILE_TO_BUF(UPTIME_FILE,uptime_fd, buf);
-	savelocale = strdup(setlocale(LC_NUMERIC, NULL));
-	setlocale(LC_NUMERIC,"C");
-	if (sscanf(buf, "%lf %lf", &up, &idle) < 2) {
-		setlocale(LC_NUMERIC,savelocale);
-		free(savelocale);
-		fputs("bad data in " UPTIME_FILE "\n", stderr);
-		return 0;
-	}
-	setlocale(LC_NUMERIC,savelocale);
-	free(savelocale);
-	SET_IF_DESIRED(uptime_secs, up);
-	SET_IF_DESIRED(idle_secs, idle);
-	return up;	/* assume never be zero seconds in practice */
-}
+#ifdef _MSC_VER
+# pragma warning (push)
+# pragma warning (disable: 4996)
 #endif
 
 MPL_BEGIN_NAMESPACE
@@ -103,69 +33,156 @@ std::string hostname()
 	}
 	return buf;
 }
-	
-std::string buildCpuArchitecture()
+
+MSysinfo::MSysinfo()
+{
+	uname(&_utsname);
+	sysinfo(&_sysinfo);
+}
+
+MSysinfo::~MSysinfo()
 {
 }
 
-std::string currentCpuArchitecture()
+std::string MSysinfo::kernelName() const
 {
+	return _utsname.sysname;
 }
 
-std::string buildAbi()
+std::string MSysinfo::nodename() const
 {
+	return _utsname.nodename;
 }
 
-std::string kernelType()
+std::string MSysinfo::kernelRelease() const
 {
+	return _utsname.release;
 }
 
-std::string kernelVersion()
+std::string MSysinfo::kernelVersion() const
 {
+	return _utsname.version;
 }
 
-std::string productType()
+std::string MSysinfo::machine() const
 {
+	return _utsname.machine;
 }
 
-std::string productVersion()
+uint64_t MSysinfo::freemem() const
 {
+	return _sysinfo.freeram;
 }
 
-std::string prettyProductName()
+uint64_t MSysinfo::totalmem() const
 {
+	return _sysinfo.totalram;
 }
 
-uint64_t memoryAvailSize()
+uint64_t MSysinfo::usedmem() const
 {
+	return _sysinfo.totalram - _sysinfo.freeram;
 }
 
-uint64_t memoryTotalSize()
+uint16_t MSysinfo::procs() const
 {
+	return _sysinfo.procs;
 }
 
-uint64_t memoryUsedSize()
+long MSysinfo::uptime() const
 {
+	return _sysinfo.uptime;
 }
 
-double memoryPercent()
+std::string MSysinfo::struptime(long uptime_secs) const
 {
+	int upminutes, uphours, updays, upweeks, upyears, updecades;
+	int pos;
+	int comma;
+	char buf[1024] = { 0x00 };
+
+	/* read and calculate the amount of uptime */
+	updecades = uptime_secs / (60 * 60 * 24 * 365 * 10);
+	upyears = (uptime_secs / (60 * 60 * 24 * 365)) % 10;
+	upweeks = (uptime_secs / (60 * 60 * 24 * 7)) % 52;
+	updays = (uptime_secs / (60 * 60 * 24)) % 7;
+
+	strcat(buf, "up ");
+	pos += 3;
+
+	upminutes = uptime_secs / 60;
+	uphours = upminutes / 60;
+	uphours = uphours % 24;
+	upminutes = upminutes % 60;
+
+	comma = 0;
+
+	if (updecades) {
+		pos += sprintf(buf + pos, "%d %s", updecades,
+					   updecades > 1 ? "decades" : "decade");
+		comma += 1;
+	}
+
+	if (upyears) {
+		pos += sprintf(buf + pos, "%s%d %s", comma > 0 ? ", " : "", upyears,
+					   upyears > 1 ? "years" : "year");
+		comma += 1;
+	}
+
+	if (upweeks) {
+		pos += sprintf(buf + pos, "%s%d %s", comma > 0 ? ", " : "", upweeks,
+					   upweeks > 1 ? "weeks" : "week");
+		comma += 1;
+	}
+
+	if (updays) {
+		pos += sprintf(buf + pos, "%s%d %s", comma > 0 ? ", " : "", updays,
+					   updays > 1 ? "days" : "day");
+		comma += 1;
+	}
+
+	if (uphours) {
+		pos += sprintf(buf + pos, "%s%d %s", comma > 0 ? ", " : "", uphours,
+					   uphours > 1 ? "hours" : "hour");
+		comma += 1;
+	}
+
+	if (upminutes) {
+		pos += sprintf(buf + pos, "%s%d %s", comma > 0 ? ", " : "", upminutes,
+					   upminutes > 1 ? "minutes" : "minute");
+		comma += 1;
+	}
+
+	return buf;
 }
 
-double cpuPercent()
+std::string MSysinfo::since() const
 {
-}
+	double now, uptimeSecs;
+	time_t upSinceSecs;
+	struct tm *upSince;
+	struct timeval tim;
+	char buf[64] = { 0x00 };
 
-uint32_t uptimelong()
-{
-}
+	// Get the current time and convert it to a double
+	gettimeofday(&tim, NULL);
+	now = tim.tv_sec + (tim.tv_usec / 1000000.0);
 
-std::string uptime()
-{
-}
+	// Get the uptime and calculate when that was
+	uptimeSecs = uptime();
+	upSinceSecs = (time_t)((now - uptimeSecs) + 0.5);
 
-std::string since()
-{
+	// Show this
+	upSince = localtime(&upSinceSecs);
+	snprintf(buf, sizeof(buf) - 1,
+			 "%04d-%02d-%02d %02d:%02d:%02d",
+			 upSince->tm_year + 1900, upSince->tm_mon + 1, upSince->tm_mday,
+			 upSince->tm_hour, upSince->tm_min, upSince->tm_sec);
+	return std::string(buf);
 }
 
 MPL_END_NAMESPACE
+
+#ifdef _MSC_VER
+# pragma warning (pop)
+#endif

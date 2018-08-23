@@ -39,7 +39,6 @@ public:
 	void setApplicationName(const std::string &application);
 	void setApplicationVersion(const std::string &version);
 
-	static bool alreadyRunning(const std::string &lockfile);
 private:
 	std::string _applicationName;
 	std::string _applicationVersion;
