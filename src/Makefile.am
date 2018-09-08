@@ -4,6 +4,7 @@ lib_LTLIBRARIES = libmpl.la
 libmpl_la_LDFLAGS=$(LTLDFLAGS)
 
 libmpl_la_CPPFLAGS = -I$(top_srcdir)/include $(all_includes)
+libmpl_la_CPPFLAGS += -DMG_ENABLE_CALLBACK_USERDATA=1
 ######################################
 # Cflags and Libs
 # libmpl_la_CXXFLAGS = $(LIBICONV_CFLAGS)
@@ -40,4 +41,6 @@ muuid_unix.cpp					\
 mhash.cpp					\
 mhash_md5.h					\
 mhash_md5.c					\
-msettings_utf.c				
+msettings_utf.c					\
+mongoose.c					\
+mongoose.h

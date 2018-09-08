@@ -24,43 +24,69 @@ class MUrl
 {
 public:
     explicit MUrl();
+	MUrl(const char *s);
+	MUrl(const std::string &str);
 	MUrl(const MUrl &other);
-	MUrl(const std::string &url);
     virtual ~MUrl();
 
-	std::string scheme() const;
-	std::string host() const;
-	int port() const;
-	std::string path() const;
-	std::string pathname() const;
-	std::string query() const;
-	std::string fragment() const;
-	
+	inline std::string url() const { return _url; }
+	inline std::string protocol() const { return _protocol; }
+	inline std::string auth() const { return _auth; }
+	inline std::string host() const { return _host; }
+	inline std::string hostname() const { return _hostname; }
+	inline std::string pathname() const { return _pathname; }
+	inline std::string search() const { return _search; }
+	inline std::string path() const { return _path; }
+	inline std::string hash() const { return _hash; }
+	inline std::string query() const { return _query; }
+	inline int port() const { return _port; }
+	MUrl &operator=(const char *s);
+	MUrl &operator=(const std::string &str);
 	MUrl &operator=(const MUrl &url);
-	bool operator!=(const MUrl &url) const;
+
 	bool operator==(const MUrl &url) const;
+	inline bool operator!=(const MUrl &url) const
+		{ return !operator==(url); }
 
-	void setUrl(const std::string &url);
 	std::string toString() const;
-
+	inline bool isValid() const { return _valid; }
 protected:
-	void copy(const MUrl &other);
-
+	void setUrl(const std::string &url);
 	std::string getPart(const std::string &url, const std::string &format, int l);
-	void parse(const std::string &url);
-	std::string parseProtocol(const std::string &url);
+	bool parse(const std::string &url);
+	std::string getProtocol(const std::string &url);
 	bool isProtocol(const std::string &proto);
 	bool isSSh(const std::string &ssh);
 private:
+	void inner_copy(const MUrl &other) {
+		_url = other._url;
+
+		_protocol = other._protocol;
+		_auth = other._auth;
+		_host = other._host;
+		_hostname = other._hostname;
+		_pathname = other._pathname;
+		_search = other._search;
+		_path = other._path;
+		_hash = other._hash;
+		_query = other._query;
+		_port = other._port;
+		_valid = other._valid;
+	}
+
 	std::string _url;
 
-	std::string _scheme;
+	std::string _protocol;
+	std::string _auth;
 	std::string _host;
-	int _port;
-	std::string _path;
+	std::string _hostname;
 	std::string _pathname;
+	std::string _search;
+	std::string _path;
+	std::string _hash;
 	std::string _query;
-	std::string _fragment;
+	int _port;
+	bool _valid;
 };
 
 std::ostream &operator<<(std::ostream &out, const MUrl &url);

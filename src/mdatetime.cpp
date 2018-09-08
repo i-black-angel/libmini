@@ -15,6 +15,11 @@
  */
 #include <mpl/mdatetime.h>
 
+#ifdef _MSC_VER
+# pragma warning (push)
+# pragma warning (disable: 4996)
+#endif
+
 MPL_BEGIN_NAMESPACE
 
 std::string now()
@@ -162,3 +167,7 @@ std::ostream &operator<<(std::ostream &out, const MDateTime &datetime)
 }
 
 MPL_END_NAMESPACE
+
+#ifdef _MSC_VER
+# pragma warning (pop)
+#endif

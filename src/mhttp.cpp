@@ -14,23 +14,76 @@
  * limitations under the License.
  */
 #include <mpl/mhttp.h>
+#include <mpl/mlog.h>
+#include "mongoose.h"
+
+static void mpl_ev_handler(struct mg_connection *nc, int ev, void *ev_data, void *user_data)
+{
+    switch (ev) {
+	case MG_EV_HTTP_REQUEST:
+		struct http_message *msg = (struct http_message *) ev_data;
+		mpl::MHttpServer *srv = (mpl::MHttpServer *)user_data;
+
+		// receive message
+		std::string message = std::string(msg->message.p, msg->message.len);
+		log_debug("%s", message.c_str());
+
+		srv->handler(nc, msg);
+		break;
+    }
+}
 
 MPL_BEGIN_NAMESPACE
 
 MHttp::MHttp()
 {
+	_mgr = new mg_mgr();
+	mg_mgr_init(_mgr, NULL);
 }
 
 MHttp::~MHttp()
 {
+	mg_mgr_free(_mgr);
+	delete _mgr;
 }
 
-MHttpServer::MHttpServer()
+MHttpServer::MHttpServer(int msec)
+	: _msec(msec),
+	  _interrupt(false)
 {
 }
 
 MHttpServer::~MHttpServer()
 {
+}
+
+bool MHttpServer::bind(const std::string &port)
+{
+	_nc = mg_bind(_mgr, port.c_str(), mpl_ev_handler, this);
+	if (_nc == NULL) {
+		log_error("bind '%s' failed", port.c_str());
+		return false;
+	}
+	mg_set_protocol_http_websocket(_nc);
+	log_debug("Starting web server on port: %s", port.c_str());
+	return true;
+}
+
+void MHttpServer::start()
+{
+	while ( !isInterrupted() ) {
+		mg_mgr_poll(_mgr, _msec);
+	}
+}
+
+void MHttpServer::stop()
+{
+	interrupt();
+}
+
+void MHttpServer::handler(struct mg_connection *nc, struct http_message *msg)
+{
+	std::cout << "handler" << std::endl;
 }
 
 MHttpClient::MHttpClient()

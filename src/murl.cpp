@@ -22,7 +22,6 @@
 
 MPL_BEGIN_NAMESPACE
 
-
 /** 
  * URI Schemes 
  * http://en.wikipedia.org/wiki/URI_scheme 
@@ -56,7 +55,12 @@ MUrl::MUrl()
 
 MUrl::MUrl(const MUrl &other)
 {
-	copy(other);
+	inner_copy(other);
+}
+
+MUrl::MUrl(const char *url)
+{
+	setUrl(url);
 }
 
 MUrl::MUrl(const std::string &url)
@@ -68,62 +72,22 @@ MUrl::~MUrl()
 {
 }
 
-void MUrl::copy(const MUrl &other)
-{
-	_url = other._url;
-
-	_scheme = other._scheme;
-	_host = other._host;
-	_port = other._port;
-	_path = other._path;
-	_query = other._query;
-	_fragment = other._fragment;
-}	
-
-std::string MUrl::scheme() const
-{
-	return _scheme;
-}
-
-std::string MUrl::host() const
-{
-	return _host;
-}
-
-int MUrl::port() const
-{
-	return _port;
-}
-
-std::string MUrl::path() const
-{
-	return _path;
-}
-
-std::string MUrl::pathname() const
-{
-	return _pathname;
-}
-
-std::string MUrl::query() const
-{
-	return _query;
-}
-
-std::string MUrl::fragment() const
-{
-	return _fragment;
-}
-	
 MUrl &MUrl::operator=(const MUrl &url)
 {
-	copy(url);
+	inner_copy(url);
 	return *this;
 }
 
-bool MUrl::operator!=(const MUrl &url) const
+MUrl &MUrl::operator=(const char *s)
 {
-	return (_url != url._url);
+	setUrl(s);
+	return *this;
+}
+
+MUrl &MUrl::operator=(const std::string &str)
+{
+	setUrl(str);
+	return *this;
 }
 
 bool MUrl::operator==(const MUrl &url) const
@@ -135,21 +99,24 @@ void MUrl::setUrl(const std::string &url)
 {
 	_url = url;
 
-	parse(_url);
+	_valid = parse(_url);
 }
 
 std::string MUrl::toString() const
 {
+	return url();
 }
 
-void MUrl::parse(const std::string &url)
+bool MUrl::parse(const std::string &url)
 {
 	bool is_ssh = false;
 
-	std::string protocol = parseProtocol(url);
-	if (protocol.empty()) return;
+	std::string protocol = getProtocol(url);
+	if (protocol.empty()) return false;
 	// length of protocol plus ://
 	int protocol_len = protocol.size() + 3;
+	_protocol = protocol;	
+
 	is_ssh = isSSh(protocol);
 
 	std::string auth;
@@ -159,15 +126,17 @@ void MUrl::parse(const std::string &url)
 		auth_len = auth.size();
 		if (!auth.empty()) auth_len++;
 	}
+	_auth = auth;
 
 	std::string hostname;
 	hostname = (is_ssh)
 		? getPart(url, "%[^:]", protocol_len + auth_len)
 		: getPart(url, "%[^/]", protocol_len + auth_len);
-	if (hostname.empty()) return;
+	if (hostname.empty()) return false;
+	_hostname = hostname;
 
 	char *host = (char *)malloc(hostname.size() * sizeof(char));
-	if (!host) return;
+	if (!host) return false;
 	sscanf(hostname.c_str(), "%[^:]", host);
 	_host = host;
 	free(host);
@@ -177,7 +146,7 @@ void MUrl::parse(const std::string &url)
 		? getPart(url, ":%s", protocol_len + auth_len + hostname.size())
 		: getPart(url, "/%s", protocol_len + auth_len + hostname.size());
 	char *path = (char *)malloc(tmp_path.size() * sizeof(char));
-	if (!path) return;
+	if (!path) return false;
 	std::string fmt = (is_ssh) ? "%s" : "/%s";
 	sprintf(path, fmt.c_str(), tmp_path.c_str());
 	_path = path;
@@ -190,35 +159,35 @@ void MUrl::parse(const std::string &url)
 	free(pathname);
 
 	char *search = (char *)malloc(sizeof(char));
-	if (!search) return;
+	if (!search) return false;
 	tmp_path = tmp_path.substr(_pathname.size());
 	strcat(search, "");
 	sscanf(tmp_path.c_str(), "%[^#]", search);
-	std::string _search = search;
+	_search = search;
 	free(search);
 
 	char *query = (char *)malloc(sizeof(char));
-	if (!query) return;
+	if (!query) return false;
 	sscanf(_search.c_str(), "?%s", query);
 	_query = query;
 
 	char *hash = (char *)malloc(sizeof(char));
-	if (!hash) return;
+	if (!hash) return false;
 	tmp_path = _path.substr(_pathname.size() + _search.size());
 	strcat(hash, "");
 	sscanf(tmp_path.c_str(), "%s", hash);
-	std::string _hash = hash;
+	_hash = hash;
 	free(hash);
 
-	char *port = (char *)malloc(sizeof(char));
-	if (!port) return;
-	std::string tmp_hostname = hostname.substr(_host.size() + 1); // +1 for ':' char
-	sscanf(tmp_hostname.c_str(), "%s", port);
-	_port = atoi(port);
-	free(port);
+	_port = 0;
+	if (_hostname.size() != _host.size()) {
+		std::string p = hostname.substr(_host.size() + 1); // +1 for ':' char
+		_port = atoi(p.c_str());
+	}
+	return true;
 }
 
-std::string MUrl::parseProtocol(const std::string &url)
+std::string MUrl::getProtocol(const std::string &url)
 {
 	char protocol[16] = {0x00};
 	sscanf(url.c_str(), "%[^://]", protocol);
@@ -269,7 +238,7 @@ std::istream &operator>>(std::istream &in, MUrl &url)
 {
 	std::string strurl;
 	in >> strurl;
-	url.setUrl(strurl);
+	url = strurl;
 	return in;
 }
 

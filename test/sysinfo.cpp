@@ -31,11 +31,11 @@ int main(int argc, char *argv[])
 	fprintf(stdout, "inactive:\t%s\n", mpl::scaleSize(info.inactive()).c_str());
 	fprintf(stdout, "current procs:\t%u\n", info.procs());
 
-	std::cout << info.kernelName() << std::endl;
-	std::cout << info.nodeName() << std::endl;
-	std::cout << info.kernelRelease() << std::endl;
-	std::cout << info.kernelVersion() << std::endl;
-	std::cout << info.machine() << std::endl;
+	fprintf(stdout, "kernel name:\t%s\n", info.kernelName().c_str());
+	fprintf(stdout, "node name:\t%s\n", info.nodeName().c_str());
+	fprintf(stdout, "kernel release:\t%s\n", info.kernelRelease().c_str());
+	fprintf(stdout, "kernel version:\t%s\n", info.kernelVersion().c_str());
+	fprintf(stdout, "machine:\t%s\n", info.machine().c_str());
 	
 	fprintf(stdout, "disk free:\t%s\n", mpl::scaleSize(info.freeDisk()).c_str());
 	fprintf(stdout, "disk total:\t%s\n", mpl::scaleSize(info.totalDisk()).c_str());

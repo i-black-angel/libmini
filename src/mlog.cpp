@@ -82,7 +82,7 @@ void MLog::log(const std::string &file, const std::string &func,
 	va_list vargs;
 	va_start(vargs, __format);
 	len = vsnprintf(NULL, 0, __format, vargs);
-	buffer.resize(len + 2);
+	buffer.resize(len);
 	va_start(vargs, __format);
 	vsnprintf(&buffer[0], len + 1, __format, vargs);
 	va_end(vargs);

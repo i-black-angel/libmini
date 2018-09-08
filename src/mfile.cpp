@@ -112,6 +112,7 @@ int MFile::writebuf(const std::string &file, const char *buf, size_t bytes)
 		return -1;
 
 	int n = -1;
+#ifndef M_OS_WIN
 	int flag = O_WRONLY | O_CREAT | O_TRUNC;
 	mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH;
 	int fd = open(fpath.c_str(), flag, mode);
@@ -124,6 +125,18 @@ int MFile::writebuf(const std::string &file, const char *buf, size_t bytes)
 		log_error("write '%s' failed: %s", fpath.c_str(), error().c_str());
 
 	close(fd);
+#else
+	FILE *fp = fopen(fpath.c_str(), "wb");
+	if (NULL == fp) {
+		log_error("open '%s' failed: %s", fpath.c_str(), error().c_str());
+		return -1;
+	}
+
+	if ((n = fwrite(buf, 1, bytes, fp)) < 0)
+		log_error("write '%s' failed: %s", fpath.c_str(), error().c_str());
+	
+	fclose(fp);
+#endif	// #ifndef M_OS_WIN
 	return n;
 }
 

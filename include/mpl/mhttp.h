@@ -17,6 +17,11 @@
 #define _MHTTP_H_
 
 #include <mpl/mcoredef.h>
+#include <mpl/mthread.h>
+
+struct mg_mgr;
+struct mg_connection;
+struct http_message;
 
 MPL_BEGIN_NAMESPACE
 
@@ -25,13 +30,31 @@ class MHttp
 public:
     explicit MHttp();
     virtual ~MHttp();
+protected:
+	struct mg_mgr *_mgr;
+	struct mg_connection *_nc;
 };
 
 class MHttpServer : public MHttp
 {
 public:
-    explicit MHttpServer();
+    explicit MHttpServer(int msec = 500); // default is 500 milliseconds
     virtual ~MHttpServer();
+	bool bind(const std::string &port);
+	void start();
+	void stop();
+
+	int sleeptime() const { return _msec; }
+	void setSleeptime(int msec) { _msec = msec; }
+	void interrupt() { MScopedLock locker(_mutex); _interrupt = true; }
+	bool isInterrupted() const { return _interrupt; }
+
+	// over-load function
+	virtual void handler(struct mg_connection *nc, struct http_message *msg);
+private:
+	MMutex _mutex;
+	bool _interrupt;
+	int _msec;
 };
 
 class MHttpClient : public MHttp

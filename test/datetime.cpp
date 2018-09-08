@@ -28,5 +28,9 @@ int main(int argc, char *argv[])
 	sleep(1);
 	datetime = time(NULL);
 	std::cout << datetime << std::endl;
+	std::cout << datetime.data() << std::endl;
+
+	mpl::MDateTime dt = 0x7FFFFFFF;
+	std::cout << dt << std::endl;
     return 0;
 }

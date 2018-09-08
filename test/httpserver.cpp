@@ -13,44 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _MEVENT_H_
-#define _MEVENT_H_
+#include <mpl.h>
 
-#include <mpl/mcoredef.h>
-#include <mpl/mcondition.h>
-#include <mpl/mmutex.h>
-
-MPL_BEGIN_NAMESPACE
-
-class MEvent
+int main(int argc, char *argv[])
 {
-public:
-    explicit MEvent() { }
-    virtual ~MEvent() { }
-
-	// timeout millseconds
-	inline void wait(unsigned long timeout = ULONG_MAX)
-		{
-			MScopedLock lock(_mutex);
-			_condition.wait(_mutex, timeout);
-		}
-
-	inline void signal()
-		{
-			_condition.wake();
-		}
-
-	inline void wakeAll()
-		{
-			_condition.wakeAll();
-		}
-private:
-	M_DISABLE_COPY(MEvent)
-
-	MMutex _mutex;
-	MCondition _condition;
-};
-
-MPL_END_NAMESPACE
-
-#endif /* _MEVENT_H_ */
+    setlocale(LC_ALL, "");
+	mpl::MHttpServer srv;
+	srv.bind("7900");
+	srv.start();
+    return 0;
+}
