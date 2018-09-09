@@ -22,6 +22,7 @@
 struct mg_mgr;
 struct mg_connection;
 struct http_message;
+struct mg_serve_http_opts;
 
 MPL_BEGIN_NAMESPACE
 
@@ -49,8 +50,16 @@ public:
 	void interrupt() { MScopedLock locker(_mutex); _interrupt = true; }
 	bool isInterrupted() const { return _interrupt; }
 
+	void setDocumentRoot(const char *doc); /* doc must be const char * type */
+	void disableDirectoryListing(); /* Enabled by default. */
+
+	void sendHttp(struct mg_connection *nc, const std::string &buf);
+
 	// over-load function
 	virtual void handler(struct mg_connection *nc, struct http_message *msg);
+protected:
+	bool compare(struct http_message *msg, const std::string &prefix);
+	struct mg_serve_http_opts *_option;
 private:
 	MMutex _mutex;
 	bool _interrupt;

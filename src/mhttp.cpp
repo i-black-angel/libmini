@@ -51,10 +51,22 @@ MHttpServer::MHttpServer(int msec)
 	: _msec(msec),
 	  _interrupt(false)
 {
+	_option = new struct mg_serve_http_opts();
 }
 
 MHttpServer::~MHttpServer()
 {
+	delete _option;
+}
+
+void MHttpServer::setDocumentRoot(const char *doc)
+{
+	_option->document_root = doc;
+}
+
+void MHttpServer::disableDirectoryListing()
+{
+	_option->enable_directory_listing = "no";
 }
 
 bool MHttpServer::bind(const std::string &port)
@@ -81,9 +93,26 @@ void MHttpServer::stop()
 	interrupt();
 }
 
+bool MHttpServer::compare(struct http_message *msg, const std::string &prefix)
+{
+	return (mg_vcmp(&(msg->uri), prefix.c_str()) == 0);
+}
+
 void MHttpServer::handler(struct mg_connection *nc, struct http_message *msg)
 {
-	std::cout << "handler" << std::endl;
+	mg_serve_http(nc, msg, *_option);
+}
+
+void MHttpServer::sendHttp(struct mg_connection *nc, const std::string &buf)
+{
+	// Use chunked encoding in order to avoid calculating Content-Length
+	mg_printf(nc, "%s", "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n\r\n");
+
+	// Output JSON object which holds CPU usage data
+	mg_printf_http_chunk(nc, "%s", buf.c_str());
+
+	// Send empty chunk, the end of response
+	mg_send_http_chunk(nc, "", 0);
 }
 
 MHttpClient::MHttpClient()
