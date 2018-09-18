@@ -20,11 +20,26 @@
 
 MPL_BEGIN_NAMESPACE
 
+// XML concept:
+// # Document
+// # Element
+// # Attribute
+
+// XML DOM (XML Document Object Model)
+// node-tree:
+// - parent
+//   - children
+//     - children
+//   - sibling
+//   - sibling
 class MXml
 {
 public:
     explicit MXml();
     virtual ~MXml();
+
+	// load xml file or xml string
+	bool load(const char *param);
 };
 
 MPL_END_NAMESPACE

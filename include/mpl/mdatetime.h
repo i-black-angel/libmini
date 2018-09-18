@@ -22,45 +22,6 @@ MPL_BEGIN_NAMESPACE
 
 std::string now();
 
-// class PDate
-// {
-// public:
-// 	PDate();
-//     PDate(int y, int m, int d);
-// 	PDate(const PDate &other);
-//     virtual ~PDate();
-
-// 	PDate &operator=(const PDate &other);
-	
-// 	int year() const;
-// 	int month() const;
-// 	int day() const;
-// 	int dayOfWeek() const;
-// 	int dayOfYear() const;
-// 	int daysInMonth() const;
-// 	int daysInYear() const;
-
-// 	std::string toString(const std::string &format = "") const;
-// 	bool setDate(int year, int month, int day);
-// 	void getDate(int *year, int *month, int *day);
-// 	PDate addDays(int64_t days) const;
-// 	PDate addMonths(int months) const;
-// 	PDate addYears(int years) const;
-// 	int64_t daysTo(const PDate &) const;
-
-//     bool operator==(const PDate &other) const { return _jd == other._jd; }
-//     bool operator!=(const PDate &other) const { return _jd != other._jd; }
-//     bool operator< (const PDate &other) const { return _jd <  other._jd; }
-//     bool operator<=(const PDate &other) const { return _jd <= other._jd; }
-//     bool operator> (const PDate &other) const { return _jd >  other._jd; }
-//     bool operator>=(const PDate &other) const { return _jd >= other._jd; }
-	
-// 	static PDate currentDate();
-// 	static bool isLeapYear(int year);
-// private:
-// 	time_t _jd;
-// };
-
 class MTime
 {
 public:
@@ -107,11 +68,6 @@ public:
 	int msec() const;
 	int dayOfWeek() const;
 	int dayOfYear() const;
-	// int daysInMonth() const;
-	// int daysInYear() const;
-
-	// bool isNull() const;
-	// bool isValid() const;
 	
 	time_t data() const { return _d; }
 	std::string toString(const std::string &format = "") const;
