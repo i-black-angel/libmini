@@ -27,14 +27,29 @@ MPL_BEGIN_NAMESPACE
 
 std::string hostname()
 {
+#ifdef _MSC_VER
+	WSADATA wsaData;
+	int err = WSAStartup(WINSOCK_VERSION, &wsaData);
+	if (0 != err) {
+		fprintf(stderr, "WSAStartup failure!\n");
+		return "";
+	}
+#endif
 	char buf[1024] = {0x00};
 	if (gethostname(buf, sizeof(buf)) == -1) {
 		log_error("gethostname: %s", error().c_str());
-		return std::string();
+#ifdef _MSC_VER
+		WSACleanup();
+#endif
+		return "";
 	}
-	return buf;
+#ifdef _MSC_VER
+	WSACleanup();
+#endif
+	return buf;		
 }
 
+#ifdef M_OS_LINUX
 MSysinfo::MSysinfo()
 {
 	uname(&_utsname);
@@ -270,6 +285,7 @@ std::string MSysinfo::since() const
 			 upSince->tm_hour, upSince->tm_min, upSince->tm_sec);
 	return std::string(buf);
 }
+#endif
 
 MPL_END_NAMESPACE
 

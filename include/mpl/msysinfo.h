@@ -71,9 +71,11 @@ public:
 	std::string struptime(long uptime_secs) const; 
 	std::string since() const;
 private:
+#ifdef M_OS_LINUX
 	struct utsname _utsname;
 	struct sysinfo _sysinfo;
 	struct statfs _statfs;
+#endif
 };
 
 MPL_END_NAMESPACE
