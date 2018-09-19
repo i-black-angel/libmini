@@ -118,7 +118,7 @@ std::string toUTF8(const std::string &str)
 	strUnicode = NULL;
 	strUtf8 = NULL;
 	return strOut;
-#else
+#elif defined(HAVE_ICONV_H)
 	char *gbk = new char[str.size() + 1];
 	size_t inbytes = str.size();
 	strcpy(gbk, str.c_str());
@@ -155,6 +155,8 @@ std::string toUTF8(const std::string &str)
 	delete gbk;
 	delete utf8;
 	return outstr;
+#else
+	return str;
 #endif
 }
 
@@ -176,7 +178,7 @@ std::string toGBK(const std::string &str)
 	delete[]szGBK;
 	delete[]wszGBK;
 	return strTemp;
-#else
+#elif defined(HAVE_ICONV_H)
 	char *utf8 = new char[str.size() + 1];
 	size_t inbytes = str.size();
 	strcpy(utf8, str.c_str());
@@ -213,6 +215,8 @@ std::string toGBK(const std::string &str)
 	delete gbk;
 	delete utf8;
 	return outstr;
+#else
+	return str;
 #endif
 }
 
