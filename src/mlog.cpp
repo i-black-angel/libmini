@@ -98,7 +98,11 @@ void MLog::log(const std::string &file, const std::string &func,
 	std::cout << logstr << std::endl;
 
 	if (_logfile.empty()) {
+#ifdef M_OS_LINUX
 		syslog(LOG_DEBUG, "%s", logstr.c_str());
+#else
+		OutputDebugString(logstr.c_str());
+#endif
 	} else {
 		FILE *fp = fopen(_logfile.c_str(), "a");
 		if (fp == NULL) {

@@ -18,6 +18,11 @@
 #include <mpl/msettings_p.h>
 #include <mpl/merror.h>
 
+#ifdef _MSC_VER
+# pragma warning (push)
+# pragma warning (disable: 4996)
+#endif
+
 MPL_BEGIN_NAMESPACE
 
 #define SI_ERROR_STR_OK          "No error"
@@ -153,3 +158,7 @@ bool MSettings::setValue(const char *section, const char *key, bool value)
 }
 
 MPL_END_NAMESPACE
+
+#ifdef _MSC_VER
+# pragma warning (pop)
+#endif
