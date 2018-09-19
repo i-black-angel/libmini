@@ -72,9 +72,9 @@ gid_t process::egid()
 std::string process::user()
 {
 #if defined(_MSC_VER) || defined(M_OS_WIN)
-	char userName[MAX_NAME] = { 0x00 };
+	char userName[256] = { 0x00 };
 	DWORD nameSize = sizeof(userName);
-	GetUserName((LPWSTR)userName, &nameSize);
+	GetUserName((LPSTR)userName, &nameSize);
 	return userName;
 #else
 	struct passwd *pwd = getpwuid(getuid());

@@ -35,7 +35,7 @@ std::string hostname()
 		return "";
 	}
 #endif
-	char buf[1024] = {0x00};
+	char buf[1024] = { 0x00 };
 	if (gethostname(buf, sizeof(buf)) == -1) {
 		log_error("gethostname: %s", error().c_str());
 #ifdef _MSC_VER
