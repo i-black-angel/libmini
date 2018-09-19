@@ -15,9 +15,11 @@
  */
 #include <mpl/mprocess.h>
 #include <mpl/mapplication.h>
-#include <mpl/mlockfile.h>
 #include <mpl/mlog.h>
 #include <mpl/merror.h>
+#ifdef M_OS_LINUX
+#include <mpl/mlockfile.h>
+#endif /* M_OS_LINUX */
 
 #ifdef _MSC_VER
 # pragma warning (push)
@@ -28,9 +30,14 @@ MPL_BEGIN_NAMESPACE
 
 pid_t process::pid()
 {
+#if defined(_MSC_VER) || defined(M_OS_WIN)
+	return GetCurrentProcessId();
+#else
 	return getpid();
+#endif
 }
 
+#ifdef M_OS_LINUX
 pid_t process::ppid()
 {
 	return getppid();
@@ -60,6 +67,7 @@ gid_t process::egid()
 {
 	return getegid();
 }
+#endif /* M_OS_LINUX */
 
 std::string process::user()
 {
@@ -98,10 +106,12 @@ std::string process::pwd()
 
 int process::execute(const std::string &program, const std::vector<std::string> &arguments)
 {
+	return 0;
 }
 
 int process::execute(const std::string &command)
 {
+	return 0;
 }
 
 std::vector<std::string> process::systemEnvironment()
@@ -114,6 +124,7 @@ std::vector<std::string> process::systemEnvironment()
 	return out;
 }
 
+#ifdef M_OS_LINUX
 bool process::alreadyRunning(const std::string &lockfile)
 {
 	MLockFile l = lockfile;
@@ -124,6 +135,7 @@ bool process::alreadyRunning(const std::string &lockfile)
 	}
 	return (res == 1);
 }
+#endif
 
 MPL_END_NAMESPACE
 

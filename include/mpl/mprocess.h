@@ -18,6 +18,12 @@
 
 #include <mpl/mcoredef.h>
 
+#if defined(_MSC_VER) || defined(M_OS_WIN)
+typedef DWORD pid_t;
+typedef DWORD uid_t;
+typedef DWORD gid_t;
+#endif
+
 MPL_BEGIN_NAMESPACE
 
 namespace process {
@@ -25,14 +31,17 @@ namespace process {
 	// Get the process ID of the calling process.
 	pid_t pid();
 	// Get the process ID of the calling process's parent.
+#ifdef M_OS_LINUX
 	pid_t ppid();
 	// Get the process group ID of the calling process.
 	pid_t pgrp();
-	
 	uid_t uid();
 	uid_t euid();
 	gid_t gid();
 	gid_t egid();
+	bool alreadyRunning(const std::string &lockfile);
+#endif /* M_OS_LINUX */
+	
 	std::string pwd();
 	std::string user();
 	std::string group();
@@ -41,7 +50,6 @@ namespace process {
 	int execute(const std::string &program, const std::vector<std::string> &arguments);
 	int execute(const std::string &command);
 	std::vector<std::string> systemEnvironment();
-	bool alreadyRunning(const std::string &lockfile);
 
 }
 

@@ -17,6 +17,11 @@
 #include <mpl/merror.h>
 #include <mpl/mlog.h>
 
+#ifdef _MSC_VER
+# pragma warning (push)
+# pragma warning (disable: 4996)
+#endif
+
 MPL_BEGIN_NAMESPACE
 
 std::string applicationName()
@@ -42,61 +47,72 @@ MApplication::~MApplication()
 {
 }
 
-std::string MApplication::applicationDirPath()
-{
-	std::string ret;
-
-	char path[PATH_MAX] = { 0x00 };
-	if (readlink("/proc/self/exe", path, sizeof(path)) == -1) {
-		log_error("%s", error().c_str());
-		return ret;
-	}
-
-	std::string file = path;
-	size_t idx = file.find_last_of("/");
-	if (idx == std::string::npos) { return std::string("."); }
-	if (idx == 0) idx = 1;
-
-    return file.substr(0, idx);
-}
-
 std::string MApplication::applicationFilePath()
 {
-	std::string ret;
+#if defined(_MSC_VER) || defined(M_OS_WIN)
+	char path[MAX_PATH] = { 0x00 };
+	GetModuleFileName(0, path, MAX_PATH);
 
+	return path;
+#else
 	char path[PATH_MAX] = { 0x00 };
 	if (readlink("/proc/self/exe", path, sizeof(path)) == -1) {
 		log_error("%s", error().c_str());
-		return ret;
+		return "";
 	}
 
 	return path;
+#endif
+}
+
+std::string MApplication::applicationDirPath()
+{
+#if defined(_MSC_VER) || defined(M_OS_WIN)
+	char path[MAX_PATH] = { 0x00 };
+	GetModuleFileName(0, path, MAX_PATH);
+
+	*strrchr(path, '\\') = 0;
+	return path;
+#else
+	char path[PATH_MAX] = { 0x00 };
+	if (readlink("/proc/self/exe", path, sizeof(path)) == -1) {
+		log_error("%s", error().c_str());
+		return "";
+	}
+
+	*strrchr(path, '/') = 0;
+	return path;
+#endif
 }
 
 std::string MApplication::applicationName()
 {
-	std::string ret;
+#if defined(_MSC_VER) || defined(M_OS_WIN)
+	char path[MAX_PATH] = { 0x00 };
+	GetModuleFileName(0, path, MAX_PATH);
 
+	char *ptr = strrchr(path, '\\') + 1;
+	return ptr;
+#else
 	char path[PATH_MAX] = { 0x00 };
 	if (readlink("/proc/self/exe", path, sizeof(path)) == -1) {
 		log_error("%s", error().c_str());
-		return ret;
+		return "";
 	}
 
-	std::string file = path;
-	size_t idx = file.find_last_of("/");
-	if (idx == std::string::npos) ret = file;
-	ret = file.substr(idx + 1);
-
-	return ret;
+	char *ptr = strrchr(path, '/') + 1;
+	return ptr;
+#endif
 }
 
 std::string MApplication::applicationVersion()
 {
+	return "";
 }
 
 uint32_t MApplication::uptime()
 {
+	return 0;
 }
 
 void MApplication::setApplicationName(const std::string &application)
@@ -110,3 +126,7 @@ void MApplication::setApplicationVersion(const std::string &version)
 }
 
 MPL_END_NAMESPACE
+
+#ifdef _MSC_VER
+# pragma warning (pop)
+#endif
