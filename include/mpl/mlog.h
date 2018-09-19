@@ -66,21 +66,21 @@ private:
 MPL_END_NAMESPACE
 
 #define log_init                  mpl::MLog::instance()->init
-#define log_emerg(__format, ...)  mpl::MLog::instance()->log(__FILE__, __func__, __LINE__, \
+#define log_emerg(__format, ...)  mpl::MLog::instance()->log(__FILE__, __FUNCTION__, __LINE__, \
 																 mpl::MLog::kEmerg, __format, ## __VA_ARGS__)
-#define log_alert(__format, ...)  mpl::MLog::instance()->log(__FILE__, __func__, __LINE__, \
+#define log_alert(__format, ...)  mpl::MLog::instance()->log(__FILE__, __FUNCTION__, __LINE__, \
 																 mpl::MLog::kAlert, __format, ## __VA_ARGS__)
-#define log_crit(__format, ...)   mpl::MLog::instance()->log(__FILE__, __func__, __LINE__, \
+#define log_crit(__format, ...)   mpl::MLog::instance()->log(__FILE__, __FUNCTION__, __LINE__, \
 																 mpl::MLog::kCrit, __format, ## __VA_ARGS__)
-#define log_error(__format, ...)  mpl::MLog::instance()->log(__FILE__, __func__, __LINE__, \
+#define log_error(__format, ...)  mpl::MLog::instance()->log(__FILE__, __FUNCTION__, __LINE__, \
 																 mpl::MLog::kError, __format, ## __VA_ARGS__)
-#define log_warn(__format, ...)   mpl::MLog::instance()->log(__FILE__, __func__, __LINE__, \
+#define log_warn(__format, ...)   mpl::MLog::instance()->log(__FILE__, __FUNCTION__, __LINE__, \
 																 mpl::MLog::kWarn, __format, ## __VA_ARGS__)
-#define log_notice(__format, ...) mpl::MLog::instance()->log(__FILE__, __func__, __LINE__, \
+#define log_notice(__format, ...) mpl::MLog::instance()->log(__FILE__, __FUNCTION__, __LINE__, \
 																 mpl::MLog::kNotice, __format, ## __VA_ARGS__)
-#define log_info(__format, ...)   mpl::MLog::instance()->log(__FILE__, __func__, __LINE__, \
+#define log_info(__format, ...)   mpl::MLog::instance()->log(__FILE__, __FUNCTION__, __LINE__, \
 																 mpl::MLog::kInfo, __format, ## __VA_ARGS__)
-#define log_debug(__format, ...)  mpl::MLog::instance()->log(__FILE__, __func__, __LINE__, \
+#define log_debug(__format, ...)  mpl::MLog::instance()->log(__FILE__, __FUNCTION__, __LINE__, \
 																 mpl::MLog::kDebug, __format, ## __VA_ARGS__)
 
 #endif /* _MLOG_H_ */
