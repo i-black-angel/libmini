@@ -109,7 +109,11 @@ void MLog::log(const std::string &file, const std::string &func,
 			std::string errstr = mpl::format("open %s failed: %s",
 												 _logfile.c_str(), error().c_str());
 			fprintf(stderr, "%s\n", errstr.c_str());
+#ifdef M_OS_LINUX
 			syslog(LOG_ERR, "%s", errstr.c_str());
+#else
+			OutputDebugString(logstr.c_str());
+#endif /* M_OS_LINUX */
 			return;
 		}
 		fprintf(fp, "%s\n", logstr.c_str());
