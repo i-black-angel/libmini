@@ -71,21 +71,35 @@ gid_t process::egid()
 
 std::string process::user()
 {
+#if defined(_MSC_VER) || defined(M_OS_WIN)
+	char userName[MAX_NAME] = { 0x00 };
+	DWORD nameSize = sizeof(userName);
+	GetUserName((LPWSTR)userName, &nameSize);
+	return userName;
+#else
 	struct passwd *pwd = getpwuid(getuid());
 	if (pwd == NULL) return std::string();
 	return std::string(pwd->pw_name);
+#endif
 }
 
 std::string process::group()
 {
+#if defined(_MSC_VER) || defined(M_OS_WIN)
+#else
 	struct group *grp = getgrgid(getgid());
 	if (grp == NULL) return std::string();
 	return std::string(grp->gr_name);
+#endif
 }
 
 std::string process::login()
 {
+#if defined(_MSC_VER) || defined(M_OS_WIN)
+	return user();
+#else
 	return getlogin();
+#endif
 }
 
 std::string process::program()
