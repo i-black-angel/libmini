@@ -72,9 +72,9 @@ void MSettings::load(const char *path)
 	if (path != NULL) {
 		SI_Error err = _simpleini->LoadFile(path);
 		if (SI_OK != err) {
-			log_error("LoadFile %s failed: %s", path, sierror(err).c_str());
+			log_error("LoadFile '%s' failed: %s", path, sierror(err).c_str());
 		} else {
-			log_debug("LoadFile %s success", path);
+			log_debug("LoadFile '%s' success", path);
 		}
 	} else {
 		log_error("path is nullptr");
@@ -90,10 +90,10 @@ bool MSettings::save(const char *path)
 {
 	SI_Error err = _simpleini->SaveFile(path);
 	if (SI_OK != err) {
-		log_error("SaveFile %s failed: %s", path, sierror(err).c_str());
+		log_error("SaveFile '%s' failed: %s", path, sierror(err).c_str());
 		return false;
 	}
-	log_debug("SaveFile %s success");
+	log_debug("SaveFile '%s' success");
 	return true;
 }
 	
@@ -121,7 +121,7 @@ bool MSettings::setValue(const char *section, const char *key, const char *value
 {
 	SI_Error err = _simpleini->SetValue(section, key, value);
 	if (err != SI_OK) {
-		log_error("SetValue %s/%s failed: %s", section, key, sierror(err).c_str());
+		log_error("SetValue '%s/%s' failed: %s", section, key, sierror(err).c_str());
 		return false;
 	}
 	return true;
@@ -131,7 +131,7 @@ bool MSettings::setValue(const char *section, const char *key, int value)
 {
 	SI_Error err = _simpleini->SetLongValue(section, key, (long)value);
 	if (err != SI_OK) {
-		log_error("SetValue %s/%s failed: %s", section, key, sierror(err).c_str());
+		log_error("SetValue '%s/%s' failed: %s", section, key, sierror(err).c_str());
 		return false;
 	}
 	return true;
@@ -141,7 +141,7 @@ bool MSettings::setValue(const char *section, const char *key, double value)
 {
 	SI_Error err = _simpleini->SetDoubleValue(section, key, value);
 	if (err != SI_OK) {
-		log_error("SetValue %s/%s failed: %s", section, key, sierror(err).c_str());
+		log_error("SetValue '%s/%s' failed: %s", section, key, sierror(err).c_str());
 		return false;
 	}
 	return true;
@@ -151,7 +151,7 @@ bool MSettings::setValue(const char *section, const char *key, bool value)
 {
 	SI_Error err = _simpleini->SetBoolValue(section, key, value);
 	if (err != SI_OK) {
-		log_error("SetValue %s/%s failed: %s", section, key, sierror(err).c_str());
+		log_error("SetValue '%s/%s' failed: %s", section, key, sierror(err).c_str());
 		return false;
 	}
 	return true;

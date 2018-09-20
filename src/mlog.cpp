@@ -88,7 +88,12 @@ void MLog::log(const std::string &file, const std::string &func,
 	va_end(vargs);
 
 	// DATETIME HOSTNAME APPLICATIONNAME[PID] FILE FUNC[LINE] 
-	std::string logstr = format("%s %s %s[%lld] %s %s[%u]: <%s> %s",
+#if defined(_MSC_VER) || defined(M_OS_WIN)
+	const char *fmt = "%s %s %s[%ld] %s %s[%u]: <%s> %s";
+#else
+	const char *fmt = "%s %s %s[%lld] %s %s[%u]: <%s> %s";
+#endif
+	std::string logstr = format(fmt,
 								now().c_str(), hostname().c_str(),
 								applicationName().c_str(), process::pid(),
 								file.c_str(), func.c_str(), line,

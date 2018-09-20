@@ -86,6 +86,7 @@ std::string process::user()
 std::string process::group()
 {
 #if defined(_MSC_VER) || defined(M_OS_WIN)
+	return "";
 #else
 	struct group *grp = getgrgid(getgid());
 	if (grp == NULL) return std::string();
