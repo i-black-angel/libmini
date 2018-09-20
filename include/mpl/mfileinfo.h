@@ -35,6 +35,7 @@ public:
 		sock,
 	};
 
+#ifdef M_OS_LINUX
 	enum Permission {
 		ReadUser				= S_IRUSR,
 		WriteUser				= S_IWUSR,
@@ -49,6 +50,8 @@ public:
 		ExecOther				= S_IXOTH,
 		ReadWriteExecOther		= S_IRWXO
 	};
+#endif
+
     MFileInfo();
 	MFileInfo(const char *s);
 	MFileInfo(const std::string &file);
@@ -89,8 +92,10 @@ public:
 	bool isFIFO() const;
 	bool isSock() const;
 
+#ifdef M_OS_LINUX
 	std::string readLink() const;
 	inline std::string symLinkTarget() const { return readLink(); }
+#endif
 
 	std::string owner() const;
 	uint32_t ownerId() const;

@@ -304,11 +304,14 @@ void MFileInfo::setFile(const std::string &file)
 	_origin = file;
 	_file = cleanPath(file);
 
+#if defined(_MSC_VER) || defined(M_OS_WIN)
+	if (stat(_file.c_str(), &_stat) < 0) 
+#else
 	if (lstat(_file.c_str(), &_stat) < 0) {
+#endif
 		_stat_ok = false;
-	} else {
+	else
 		_stat_ok = true;
-	}
 }
 
 bool MFileInfo::exists() const
@@ -416,53 +419,88 @@ bool MFileInfo::isWritable() const
 	return mpl_access(_file.c_str(), W_OK | F_OK);
 }
 
+
 bool MFileInfo::isExecutable() const
 {
+#if defined(_MSC_VER) || defined(M_OS_WIN)
+	return true;
+#else
 	return mpl_access(_file.c_str(), X_OK | F_OK);
+#endif
 }
+
 
 bool MFileInfo::isFile() const
 {
 	if (!_stat_ok) return false;
+#if defined(_MSC_VER) || defined(M_OS_WIN)
+	return (FILE_ATTRIBUTE_NORMAL & GetFileAttributes(_file.c_str())) ? true : false;
+#else	
 	return S_ISREG(_stat.st_mode);
+#endif
 }
 
 bool MFileInfo::isDir() const
 {
 	if (!_stat_ok) return false;
+#if defined(_MSC_VER) || defined(M_OS_WIN)
+	return (FILE_ATTRIBUTE_DIRECTORY & GetFileAttributes(_file.c_str())) ? true : false;
+#else	
 	return S_ISDIR(_stat.st_mode);
+#endif
 }
 
 bool MFileInfo::isSymLink() const
 {
 	if (!_stat_ok) return false;
+#if defined(_MSC_VER) || defined(M_OS_WIN)
+	return false;
+#else	
 	return S_ISLNK(_stat.st_mode);
+#endif
 }
 
 bool MFileInfo::isBlock() const
 {
 	if (!_stat_ok) return false;
+#if defined(_MSC_VER) || defined(M_OS_WIN)
+	return false;
+#else	
 	return S_ISBLK(_stat.st_mode);
+#endif
 }
 
 bool MFileInfo::isCharDev() const
 {
 	if (!_stat_ok) return false;
+#if defined(_MSC_VER) || defined(M_OS_WIN)
+	return false;
+#else
 	return S_ISCHR(_stat.st_mode);
+#endif
 }
 
 bool MFileInfo::isFIFO() const
 {
 	if (!_stat_ok) return false;
+#if defined(_MSC_VER) || defined(M_OS_WIN)
+	return false;
+#else
 	return S_ISFIFO(_stat.st_mode);
+#endif
 }
 
 bool MFileInfo::isSock() const
 {
 	if (!_stat_ok) return false;
+#if defined(_MSC_VER) || defined(M_OS_WIN)
+	return false;
+#else
 	return S_ISSOCK(_stat.st_mode);
+#endif
 }
 
+#ifdef M_OS_LINUX
 std::string MFileInfo::readLink() const
 {
 	struct stat sb;
@@ -501,14 +539,19 @@ std::string MFileInfo::readLink() const
 	
 	return res;
 }
+#endif
 
 std::string MFileInfo::owner() const
 {
 	if (!_stat_ok) return std::string();
+#if defined(_MSC_VER) || defined(M_OS_WIN)
+	return "";
+#else
 	struct passwd *pwd = getpwuid(_stat.st_uid);
 	if (pwd == NULL) return std::string();
 	// log_debug("passwd: %s", pwd->pw_passwd);
 	return std::string(pwd->pw_name);
+#endif
 }
 
 uint32_t MFileInfo::ownerId() const
@@ -519,10 +562,14 @@ uint32_t MFileInfo::ownerId() const
 
 std::string MFileInfo::group() const
 {
+#if defined(_MSC_VER) || defined(M_OS_WIN)
+	return "";
+#else
 	if (!_stat_ok) return std::string();
 	struct group *grp = getgrgid(_stat.st_gid);
 	if (grp == NULL) return std::string();
 	return std::string(grp->gr_name);
+#endif
 }
 
 uint32_t MFileInfo::groupId() const
@@ -534,15 +581,21 @@ uint32_t MFileInfo::groupId() const
 int MFileInfo::permissions() const
 {
 	if (!_stat_ok) return 0;
-	
+#if defined(_MSC_VER) || defined(M_OS_WIN)
+	return GetFileAttributes(_file.c_str());
+#else
 	return _stat.st_mode & (S_IRWXU | S_IRWXG | S_IRWXO);
+#endif
 }
 
 bool MFileInfo::permission(int perm) const
 {
 	if (!_stat_ok) return false;
-
+#if defined(_MSC_VER) || defined(M_OS_WIN)
+	return ((GetFileAttributes(_file.c_str()) & perm) != 0);
+#else
 	return _stat.st_mode & perm;
+#endif
 }
 
 size_t MFileInfo::size() const
@@ -578,6 +631,14 @@ MFileInfo::FileType MFileInfo::filetype() const
 {
 	if (!_stat_ok) return unknown;
 	FileType ft = unknown;
+#if defined(_MSC_VER) || defined(M_OS_WIN)
+	DWORD res = GetFileAttributes(_file.c_str());
+	if (res & FILE_ATTRIBUTE_NORMAL) {
+		ft = normal;
+	} else if (res & FILE_ATTRIBUTE_DIRECTORY) {
+		ft = directory;
+	}
+#else
 	if (S_ISREG(_stat.st_mode)) {
 		ft = normal;
 	} else if (S_ISDIR(_stat.st_mode)) {
@@ -593,6 +654,7 @@ MFileInfo::FileType MFileInfo::filetype() const
 	} else if (S_ISSOCK(_stat.st_mode)) {
 		ft = sock;
 	}
+#endif
 	return ft;
 }
 

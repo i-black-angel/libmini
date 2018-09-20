@@ -37,6 +37,8 @@
 #include <map>
 #include <stack>
 
+#include <sys/stat.h>
+
 #ifdef _MSC_VER
 # ifndef M_OS_WIN
 #  define M_OS_WIN
@@ -69,7 +71,6 @@
 # include <sys/socket.h>
 # include <sys/time.h>
 # include <sys/types.h>
-# include <sys/stat.h>
 # include <sys/statfs.h>
 # include <sys/file.h>
 # include <sys/epoll.h>
@@ -116,6 +117,9 @@ typedef     size_t         ssize_t;
 # define    usleep(n)       Sleep((n) / 1000)
 # define    close           _close
 # define    DIRECTORY_SEPARATOR   "\\"
+# define    R_OK            4
+# define    W_OK            2
+# define    F_OK            0
 #else  /* non-windows */
 # ifndef __socket_t_defined
 #  define __socket_t_defined
