@@ -111,7 +111,7 @@ void MLog::log(const std::string &file, const std::string &func,
 	} else {
 		FILE *fp = fopen(_logfile.c_str(), "a");
 		if (fp == NULL) {
-			std::string errstr = mpl::format("open %s failed: %s",
+			std::string errstr = mpl::format("open '%s' failed: %s",
 												 _logfile.c_str(), error().c_str());
 			fprintf(stderr, "%s\n", errstr.c_str());
 #ifdef M_OS_LINUX
