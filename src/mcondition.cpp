@@ -17,6 +17,39 @@
 
 MPL_BEGIN_NAMESPACE
 
+#if defined(_MSC_VER) || defined(M_OS_WIN)
+
+MCondition::MCondition()
+{
+	_cond = CreateEvent(NULL, FALSE, FALSE, NULL);
+}
+
+MCondition::~MCondition()
+{
+	CloseHandle(_cond);
+}
+
+bool MCondition::wait(MMutex &mutex, unsigned long timeout)
+{
+	if (timeout != ULONG_MAX) {
+		return (WaitForSingleObject(_cond, (DWORD)timeout) == WAIT_OBJECT_0);
+	} else {
+		return (WaitForSingleObject(_cond, INFINITE) == WAIT_OBJECT_0);
+	}
+}
+
+void MCondition::wake()
+{
+	SetEvent(_cond);
+}
+
+void MCondition::wakeAll()
+{
+	// not implement
+}
+
+#else
+
 MCondition::MCondition()
 {
 	pthread_cond_init(&_cond, NULL);
@@ -55,5 +88,7 @@ void MCondition::wakeAll()
 {
 	pthread_cond_broadcast(&_cond);
 }
+
+#endif
 
 MPL_END_NAMESPACE

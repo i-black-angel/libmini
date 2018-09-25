@@ -307,7 +307,7 @@ void MFileInfo::setFile(const std::string &file)
 #if defined(_MSC_VER) || defined(M_OS_WIN)
 	if (stat(_file.c_str(), &_stat) < 0) 
 #else
-	if (lstat(_file.c_str(), &_stat) < 0) {
+	if (lstat(_file.c_str(), &_stat) < 0) 
 #endif
 		_stat_ok = false;
 	else

@@ -29,10 +29,10 @@ public:
     virtual ~MEvent() { }
 
 	// timeout millseconds
-	inline void wait(unsigned long timeout = ULONG_MAX)
+	inline bool wait(unsigned long timeout = ULONG_MAX)
 		{
 			MScopedLock lock(_mutex);
-			_condition.wait(_mutex, timeout);
+			return _condition.wait(_mutex, timeout);
 		}
 
 	inline void signal()
