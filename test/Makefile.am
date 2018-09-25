@@ -19,7 +19,7 @@ noinst_PROGRAMS = hostaddress welcome assert mutex condition udpsocket
 noinst_PROGRAMS += thread udpclient error uuid fileinfo md5sum datetime
 noinst_PROGRAMS += application tcpclient tcpserver datahandler threadpool
 noinst_PROGRAMS += settings options dirt tstring file process
-noinst_PROGRAMS += signal sysinfo url httpserver
+noinst_PROGRAMS += signal sysinfo url httpserver rapidxml
 
 hostaddress_CPPFLAGS = -I$(top_srcdir)/include
 hostaddress_LDADD = ../src/libmpl.la
@@ -132,3 +132,6 @@ url_SOURCES = url.cpp
 httpserver_CPPFLAGS = -I$(top_srcdir)/include
 httpserver_LDADD = ../src/libmpl.la
 httpserver_SOURCES = httpserver.cpp
+
+rapidxml_CPPFLAGS = -I/usr/local/include/rapidxml
+rapidxml_SOURCES = rapidxml.cpp
