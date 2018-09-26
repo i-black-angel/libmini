@@ -40,7 +40,8 @@ public:
 	
 	static int readbuf(const std::string &file, char *buf, size_t bytes);
 	static int writebuf(const std::string &file, const char *buf, size_t bytes);
-
+	static int appendbuf(const std::string &file, const char *buf, size_t bytes);
+	
 	MFile &operator=(const MFile &other);
 	MFile &operator=(const char *s);
 	MFile &operator=(const std::string &str);

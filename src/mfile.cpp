@@ -18,6 +18,7 @@
 #include <mpl/merror.h>
 #include <mpl/mdir.h>
 #include <mpl/mfileinfo.h>
+#include <mpl/mstring.h>
 
 #ifdef _MSC_VER
 # pragma warning (push)
@@ -137,6 +138,35 @@ int MFile::writebuf(const std::string &file, const char *buf, size_t bytes)
 	
 	fclose(fp);
 #endif	// #ifndef M_OS_WIN
+	return n;
+}
+
+int MFile::appendbuf(const std::string &file, const char *buf, size_t bytes)
+{
+	MFileInfo finfo = file;
+	std::string path = finfo.absolutePath();
+	std::string fpath = finfo.absoluteFilePath();
+
+	if (!MDir::exists(path) && !MDir::mkpath(path))
+		return -1;
+	
+	FILE *fp = fopen(fpath.c_str(), "ab");
+	if (NULL == fp) {
+		std::string errstr = format("open '%s' failed: %s",
+										 fpath.c_str(), error().c_str());
+		fprintf(stderr, "%s\n", errstr.c_str());
+#ifdef M_OS_LINUX
+		syslog(LOG_ERR, "%s", errstr.c_str());
+#else
+		OutputDebugString(logstr.c_str());
+#endif /* M_OS_LINUX */
+		return -1;
+	}
+
+	int n = fwrite(buf, 1, bytes, fp);
+	
+	fflush(fp);
+	fclose(fp);
 	return n;
 }
 

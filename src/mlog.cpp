@@ -20,6 +20,7 @@
 #include <mpl/mprocess.h>
 #include <mpl/mstring.h>
 #include <mpl/merror.h>
+#include <mpl/mfile.h>
 
 #ifdef _MSC_VER
 # pragma warning (push)
@@ -47,21 +48,39 @@ void MLog::desposed()
 }
 
 MLog::MLog()
+	: _priority(kDebug)
+	, _performance(kNormal)
+	, _pattern(kSyslog)
 {
-	_priority = kDebug;
-	_performance = kNormal;
 }
 
 MLog::~MLog()
 {
 }
 
-void MLog::init(int pri, const char *logfile, int performance)
+void MLog::init(const char *logfile, int priority, int performance)
 {
-	_priority = pri;
 	if (logfile != NULL) {
 		_logfile = logfile;
+		_pattern = kFile;
 	}
+	_priority = priority;
+	_performance = performance;
+}
+
+void MLog::initdir(const char *logdir,
+				   const char *prefix,
+				   int priority,
+				   int performance)
+{
+	if (logdir != NULL) {
+		_logdir = logdir;
+		_pattern = kDir;
+	}
+	if (prefix != NULL)
+		_prefix = prefix;
+
+	_priority = priority;
 	_performance = performance;
 }
 
@@ -89,9 +108,9 @@ void MLog::log(const std::string &file, const std::string &func,
 
 	// DATETIME HOSTNAME APPLICATIONNAME[PID] FILE FUNC[LINE] 
 #if defined(_MSC_VER) || defined(M_OS_WIN)
-	const char *fmt = "%s %s %s[%ld] %s %s[%u]: <%s> %s";
+	const char *fmt = "%s %s %s[%ld] %s %s[%u]: <%s> %s\n";
 #else
-	const char *fmt = "%s %s %s[%lld] %s %s[%u]: <%s> %s";
+	const char *fmt = "%s %s %s[%lld] %s %s[%u]: <%s> %s\n";
 #endif
 	std::string logstr = format(fmt,
 								now().c_str(), hostname().c_str(),
@@ -100,30 +119,18 @@ void MLog::log(const std::string &file, const std::string &func,
 								strpriority(pri).c_str(),
 								buffer.c_str());
 
-	std::cout << logstr << std::endl;
+	std::cout << logstr;
 
-	if (_logfile.empty()) {
-#ifdef M_OS_LINUX
-		syslog(LOG_DEBUG, "%s", logstr.c_str());
-#else
-		OutputDebugString(logstr.c_str());
-#endif
-	} else {
-		FILE *fp = fopen(_logfile.c_str(), "a");
-		if (fp == NULL) {
-			std::string errstr = mpl::format("open '%s' failed: %s",
-												 _logfile.c_str(), error().c_str());
-			fprintf(stderr, "%s\n", errstr.c_str());
-#ifdef M_OS_LINUX
-			syslog(LOG_ERR, "%s", errstr.c_str());
-#else
-			OutputDebugString(logstr.c_str());
-#endif /* M_OS_LINUX */
-			return;
-		}
-		fprintf(fp, "%s\n", logstr.c_str());
-		fflush(fp);
-		fclose(fp);
+	switch (_pattern) {
+	case kFile:
+		logToFile(logstr);
+		break;
+	case kDir:
+		logToDir(logstr);
+		break;
+	default:
+		logToSyslog(logstr);
+		break;
 	}
 }
 
@@ -149,6 +156,28 @@ std::string MLog::strpriority(int pri) const
 		break;
 	}
 	return ret;
+}
+
+void MLog::logToFile(const std::string &logstr)
+{
+	MFile::appendbuf(_logfile.c_str(), logstr.c_str(), logstr.size());
+}
+
+void MLog::logToDir(const std::string &logstr)
+{
+	std::string logfile = _logdir + DIRECTORY_SEPARATOR
+		+ _prefix + MDateTime::currentDateTime().toString("%Y%m%d")
+		+ std::string(".log");
+	MFile::appendbuf(logfile.c_str(), logstr.c_str(), logstr.size());
+}
+
+void MLog::logToSyslog(const std::string &logstr)
+{
+#ifdef M_OS_LINUX
+		syslog(LOG_DEBUG, "%s", logstr.c_str());
+#else
+		OutputDebugString(logstr.c_str());
+#endif		
 }
 
 MPL_END_NAMESPACE

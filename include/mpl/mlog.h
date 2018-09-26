@@ -43,21 +43,39 @@ public:
 		kHigh
 	};
 
-	void init(int priority = mpl::MLog::kDebug,
-			  const char *logfile = NULL,
+	void init(const char *logfile = NULL,
+			  int priority = mpl::MLog::kDebug,
 			  int performance = mpl::MLog::kNormal);
+	void initdir(const char *logdir,
+				 const char *prefix = NULL,
+				 int priority = mpl::MLog::kDebug,
+				 int performance = mpl::MLog::kNormal);
 	void log(const std::string &srcfile, const std::string &srcfunc,
 			  uint32_t srcline, int priority,
 			  const char *__format, ...);
 	std::string strpriority(int pri) const;
 protected:
-	MLog();
 	static void desposed();
+	MLog();
+	MLog(const MLog &rhs);
+	MLog &operator=(const MLog &rhs);
+
+	enum Pattern {
+		kSyslog = 0,		/**< just log to standard output */
+		kFile = 1,			/**< log to single file */
+		kDir = 2			/**< log to directory, with multi files */
+	};
+	void logToFile(const std::string &logstr);
+	void logToDir(const std::string &logstr);
+	void logToSyslog(const std::string &logstr);
 private:
 	std::string _logfile;
+	std::string _logdir;
+	std::string _prefix;
 	int _priority;
 	int _performance;
-
+	Pattern _pattern;
+	
 	MMutex _mutex;
 	
 	static MLog *_ins;
@@ -66,6 +84,7 @@ private:
 MPL_END_NAMESPACE
 
 #define log_init                  mpl::MLog::instance()->init
+#define log_initdir               mpl::MLog::instance()->initdir
 #define log_emerg(__format, ...)  mpl::MLog::instance()->log(__FILE__, __FUNCTION__, __LINE__, \
 																 mpl::MLog::kEmerg, __format, ## __VA_ARGS__)
 #define log_alert(__format, ...)  mpl::MLog::instance()->log(__FILE__, __FUNCTION__, __LINE__, \

@@ -40,7 +40,7 @@ public:
 	int restart();
 	int elapsed() const;
 private:
-#ifdef M_OS_WIN
+#if defined(M_OS_WIN) || defined(_MSC_VER)
 	clock_t _start;		
 #else
 	struct timeval _start;

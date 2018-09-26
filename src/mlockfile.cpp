@@ -77,9 +77,13 @@ int MLockFile::lock()
 		}
 		return -1;
 	}
-	ftruncate(_fd, 0);
-	sprintf(buf, "%ld", getpid());
-	write(_fd, buf, strlen(buf));
+	if (ftruncate(_fd, 0) != 0)
+		return -1;
+
+	sprintf(buf, "%d", getpid());
+
+	if (write(_fd, buf, strlen(buf)) <= 0)
+		return -1;
 	return 0;
 }
 

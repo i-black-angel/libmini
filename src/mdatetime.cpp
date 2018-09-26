@@ -113,22 +113,6 @@ int MDateTime::dayOfYear() const
 {
 	return localtime(&_d)->tm_yday;
 }
-
-// int MDateTime::daysInMonth() const
-// {
-// }
-
-// int MDateTime::daysInYear() const
-// {
-// }
-
-// bool MDateTime::isNull() const
-// {
-// }
-
-// bool MDateTime::isValid() const
-// {
-// }
 	
 std::string MDateTime::toString(const std::string &format) const
 {
