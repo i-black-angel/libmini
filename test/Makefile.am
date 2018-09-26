@@ -133,5 +133,5 @@ httpserver_CPPFLAGS = -I$(top_srcdir)/include
 httpserver_LDADD = ../src/libmpl.la
 httpserver_SOURCES = httpserver.cpp
 
-rapidxml_CPPFLAGS = -I/usr/local/include/rapidxml
+rapidxml_CPPFLAGS = -I$(top_srcdir)/include
 rapidxml_SOURCES = rapidxml.cpp
