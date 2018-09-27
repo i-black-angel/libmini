@@ -46,6 +46,7 @@ void MCondition::wake()
 void MCondition::wakeAll()
 {
 	// not implement
+	wake();
 }
 
 #else

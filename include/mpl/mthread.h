@@ -67,7 +67,8 @@ protected:
 private:
 
 #ifdef M_OS_WIN
-	HANDLE _self;
+	HANDLE _handle;
+	unsigned int _id;
 #else
 	pthread_t _self;
 #endif /* M_OS_WIN */

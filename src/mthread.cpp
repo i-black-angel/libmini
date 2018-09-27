@@ -60,7 +60,8 @@ MPL_BEGIN_NAMESPACE
 #if defined(M_OS_WIN) || defined(_MSC_VER)
 
 MThread::MThread()
-	: _self(0)
+	: _handle(0)
+	, _id(0)
 {
 }
 
@@ -71,8 +72,8 @@ MThread::~MThread()
 bool MThread::start()
 {
 	LPSECURITY_ATTRIBUTES thread_attr = NULL;
-	_self = (HANDLE) _beginthreadex(NULL, 0, thread_routine, this, 0, NULL);
-	if (NULL == _self) {
+	_handle = (HANDLE)_beginthreadex(NULL, 0, thread_routine, this, 0, &_id);
+	if (NULL == _handle) {
 		perror("can't create thread");
 		return false;
 	}
@@ -87,9 +88,9 @@ void MThread::stop()
 
 int MThread::join()
 {
-	DWORD rc = WaitForSingleObject(_self, INFINITE);
+	DWORD rc = WaitForSingleObject(_handle, INFINITE);
 	if (WAIT_FAILED == rc) return -1;
-	BOOL rc2 = CloseHandle(_self);
+	BOOL rc2 = CloseHandle(_handle);
 	if (!rc2) return -1;
 	return 0;
 }
@@ -103,7 +104,7 @@ int MThread::detach()
 int MThread::cancel()
 {
 	// TODO:: must be rewrite later
-	BOOL res = TerminateThread(_self, 0);
+	BOOL res = TerminateThread(_handle, 0);
 	if (res) return 0;
 	return -1;
 }
@@ -111,7 +112,7 @@ int MThread::cancel()
 
 int64_t MThread::id()
 {
-	return _self;
+	return _id;
 }
 	
 void MThread::interrupt()

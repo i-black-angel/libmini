@@ -104,7 +104,7 @@ int MFile::readbuf(const std::string &file, char *buf, size_t bytes)
 	return n;
 #else
 	int n = -1;
-	FILE *fp = fopen(file.c_str(), "rb");
+	FILE *fp = fopen(file.c_str(), "r");
 	if (NULL == fp) {
 		log_error("open '%s' failed: %s", file.c_str(), error().c_str());
 		return -1;
@@ -141,7 +141,7 @@ int MFile::writebuf(const std::string &file, const char *buf, size_t bytes)
 
 	close(fd);
 #else
-	FILE *fp = fopen(fpath.c_str(), "wb");
+	FILE *fp = fopen(fpath.c_str(), "w");
 	if (NULL == fp) {
 		log_error("open '%s' failed: %s", fpath.c_str(), error().c_str());
 		return -1;
@@ -164,7 +164,7 @@ int MFile::appendbuf(const std::string &file, const char *buf, size_t bytes)
 	if (!MDir::exists(path) && !MDir::mkpath(path))
 		return -1;
 	
-	FILE *fp = fopen(fpath.c_str(), "ab");
+	FILE *fp = fopen(fpath.c_str(), "a");
 	if (NULL == fp) {
 		std::string errstr = format("open '%s' failed: %s",
 										 fpath.c_str(), error().c_str());
