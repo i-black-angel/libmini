@@ -851,6 +851,95 @@ private:
 	GenericStringBuffer &operator=(const GenericStringBuffer &);
 };
 
+enum PrettyFormatOptions {
+	kFormatDefault = 0,
+	kFormatSingleLineArray = 1
+};
+
+#ifndef RAPIDJSON_WRITE_DEFAULT_FLAGS
+#define RAPIDJSON_WRITE_DEFAULT_FLAGS kWriteNoFlags
+#endif
+
+enum WriteFlag {
+	kWriteNoFlags = 0,
+	kWriteValidateEncodingFlag = 1,
+	kWriteNanAndInfFlag = 2,
+	kWriteDefaultFlags = RAPIDJSON_WRITE_DEFAULT_FLAGS
+};
+
+// JSON writer
+template<typename OutputStream, typename SourceEncoding = UTF8<>, typename TargetEncoding = UTF8<>, typename StackAllocator = CrtAllocator, unsigned writeFlags = kWriteDefaultFlags>
+class Writer {
+public:
+	typedef typename SourceEncoding::Ch Ch;
+	static const int kDefaultMaxDecimalPlaces = 324;
+	
+    explicit Writer(OutputStream &os, StackAllocator *stackAllocator = 0, size_t levelDepth = kDefaultLevelDepth);
+
+	explicit Writer(StackAllocator *allocator = 0, size_t levelDepth = kDefaultLevelDepth);
+
+	void Reset(OutputStream &os);
+	bool IsComplete() const;
+	int GetMaxDecimalPlaces() const;
+	void SetMaxDecimalPlaces(int maxDecimalPlaces);
+	bool Null();
+	bool Bool(bool b);
+	bool Int(int i);
+	bool Uint(unsigned u);
+	bool Int64(int64_t i64);
+	bool Uint64(uint64_t u64);
+	bool Double(double d);
+	bool RawNumber(const Ch *str, SizeType length, bool copy = false);
+	bool String(const Ch *str, SizeType length, bool copy = false);
+	bool String(const std::basic_string<Ch> &str);
+	bool StartObject();
+	bool Key(const Ch *str, SizeType length, bool copy = false);
+	bool EndObject(SizeType memberCount = 0);
+	bool StartArray();
+	bool EndArray(SizeType elementCount = 0);
+	bool String(const Ch *str);
+	bool Key(const Ch *str);
+	bool RawValue(const Ch *json, size_t length, Type type);
+protected:
+	OutputStream *os_;
+};
+
+
+template <typename OutputStream, typename SourceEncoding = UTF8<>, typename TargetEncoding = UTF8<>, typename StackAllocator = CrtAllocator, unsigned writeFlags = kWriteDefaultFlags>
+class PrettyWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, StackAllocator, writeFlags> {
+public:
+	typedef Writer<OutputStream, SourceEncoding, TargetEncoding, StackAllocator, writeFlags> Base;
+	typedef typename Base::Ch Ch;
+
+	explicit PrettyWriter(OutputStream &os, StackAllocator *allocator = 0, size_t levelDepth = Base::kDefaultLevelDepth);
+	explicit PrettyWriter(StackAllocator *allocator = 0, size_t levelDepth = Base::kDefaultLevelDepth);
+
+	PrettyWriter &SetIndent(Ch indentChar, unsigned indentCharCount);
+	PrettyWriter &SetFormatOptions(PrettyFormatOptions options);
+	bool Null();
+	bool Bool(bool b);
+	bool Int(int i);
+	bool Uint(unsigned u);
+	bool Int64(int64_t i64);
+	bool Uint64(uint64_t u64);
+	bool Double(double d);
+	bool RawNumber(const Ch *str, SizeType length, bool copy = false);
+	bool String(const Ch *str, SizeType length, bool copy = false);
+	bool String(const std::basic_string<Ch> &str);
+	bool StartObject();
+	bool Key(const Ch *str, SizeType length, bool copy = false);
+	bool Key(const std::basic_string<Ch> &str);
+	bool EndObject(SizeType memberCount = 0);
+	bool StartArray();
+	bool EndArray(SizeType memberCount = 0);
+	bool String(const Ch *str);
+	bool Key(const Ch *str);
+	bool RawValue(const Ch *json, size_t length, Type type);
+private:
+	PrettyWriter(const PrettyWriter &);
+	PrettyWriter &operator=(const PrettyWriter &);
+};
+
 typedef GenericReader<UTF8<>, UTF8<> > Reader;
 typedef GenericStringStream<UTF8<> > StringStream;
 typedef GenericValue<UTF8<> > Value;
