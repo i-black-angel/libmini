@@ -18,7 +18,10 @@
 #include <mpl/merror.h>
 #include <mpl/mlog.h>
 #include <mpl/mprocess.h>
+
+#ifdef M_OS_LINUX
 #include <dirent.h>
+#endif
 
 #ifdef _MSC_VER
 # pragma warning (push)
@@ -31,10 +34,12 @@ static bool mpl_rm_file(const char *path, bool is_dir = false)
 {
 	if (path == NULL) return false;
 
+#ifdef M_OS_LINUX
 	int flag = is_dir ? AT_REMOVEDIR : 0;
 	if (unlinkat(AT_FDCWD, path, flag) == 0)
 		return true;
-
+#else
+#endif
 	log_error("cannot remove '%s': %s", path, error().c_str());
 	return false;
 }
@@ -116,7 +121,9 @@ bool MDir::exists(const std::string &name)
 bool MDir::mkpath(const std::string &path)
 {
 	int err = 0;
+#ifdef M_OS_LINUX
 	mode_t mode = S_IRWXU | S_IRWXG | S_IRWXO;
+#endif
 	std::string dirpath = MFileInfo(path).filePath();
 	char *str = new char[dirpath.size() + 1];
 	int len = dirpath.size();
@@ -126,7 +133,11 @@ bool MDir::mkpath(const std::string &path)
 		if ( str[i] == separator() ) {
 			str[i] = '\0';
 			if (strlen(str) > 0 && !MFileInfo::exists(str)) {
+#ifdef M_OS_LINUX
 				if ((err = mkdir(str, mode)) != 0) {
+#else
+				if ((err = _mkdir(str)) != 0) {
+#endif
 					log_error("mkdir %s failed: %s", str, error().c_str());
 					delete[] str;
 					return false;
@@ -137,7 +148,11 @@ bool MDir::mkpath(const std::string &path)
 	}
 	
 	if (strlen(str) > 0 && !MFileInfo::exists(str)) {
+#ifdef M_OS_LINUX
 		if ((err = mkdir(str, mode)) != 0) {
+#else
+		if ((err = _mkdir(str)) != 0) {
+#endif
 			log_error("mkdir %s failed: %s", str, error().c_str());
 			delete[] str;
 			return false;
@@ -152,6 +167,7 @@ bool MDir::rmpath(const std::string &entry)
 {
 	if (entry.empty()) return true;
 	
+#ifdef M_OS_LINUX
 	std::stack<std::string> entries;
 	std::string fullpath;
 	struct dirent *dirp;
@@ -195,6 +211,8 @@ bool MDir::rmpath(const std::string &entry)
 			entries.pop();
 		}
 	} // while entries.empty()
+#else
+#endif
 	return true;
 }
 

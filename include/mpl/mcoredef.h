@@ -109,7 +109,6 @@ typedef     size_t         ssize_t;
 # define	STDERR_FILENO	2	/* Standard error output.  */
 # define    getcwd          _getcwd
 # define    chdir           _chdir
-# define    mkdir           _mkdir
 # define    rmdir           _rmdir
 # define    snprintf        _snprintf
 # define    useconds_t      DWORD
