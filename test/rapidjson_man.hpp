@@ -653,15 +653,209 @@ public:
 
 	template<typename Generator>
 	GenericDocument &Populate(Generator &g);
+
+	template<unsigned parseFlags, typename SourceEncoding, typename InputStream>
+	GenericDocument &ParseStream(InputStream &is);
+
+	template <unsigned parseFlags, typename InputStream>
+	GenericDocument &ParseStream(InputStream &is);
+
+	template <typename InputStream>
+	GenericDocument &ParseStream(InputStream &is);
+
+	template <unsigned parseFlags>
+	GenericDocument &ParseInsitu(Ch *str);
+	GenericDocument &ParseInsitu(Ch *str);
+
+	template <unsigned parseFlags, typename SourceEncoding>
+	GenericDocument &Parse(const typename SourceEncoding::Ch *str);
+
+	template <unsigned parseFlags>
+	GenericDocument &Parse(const Ch *str);
+	GenericDocument &Parse(const Ch *str);
+
+	template <unsigned parseFlags, typename SourceEncoding>
+	GenericDocument &Parse(const typename SourceEncoding::Ch *str, size_t length);
+
+	template <unsigned parseFlags>
+	GenericDocument &Parse(const Ch *str, size_t length);
+	GenericDocument &Parse(const Ch *str, size_t length);
+
+	template <unsigned parseFlags, typename SourceEncoding>
+	GenericDocument &Parse(const std::basic_string<typename SourceEncoding::Ch> &str);
+
+	template <unsigned parseFlags>
+	GenericDocument &Parse(const std::basic_string<Ch> &str);
+	GenericDocument &Parse(const std::basic_string<Ch> &str);
+
+	bool HasParseError() const;
+	ParseErrorCode GetParseError() const;
+	size_t GetErrorOffset() const;
+	operator ParseResult() const;
+
+	Allocator &GetAllocator();
+	size_t GetStackCapacity() const;
+
+public:
+	bool Null();
+	bool Bool(bool b);
+	bool Int(int i);
+	bool Uint(unsigned i);
+	bool Int64(int64_t i);
+	bool Uint64(uint64_t i);
+	bool Double(double d);
+	bool RawNumber(const Ch *str, SizeType length, bool copy);
+	bool String(const Ch *str, SizeType length, bool copy);
+	bool StartObject();
+	bool Key(const Ch *str, SizeType length, bool copy);
+	bool EndObject(SizeType memberCount);
+	bool StartArray();
+	bool EndArray(SizeType elementCount);
 };
 
+// Helper class for accessing Value of array type.
+template <bool Const, typename ValueT>
+class GenericArray
+{
+public:
+	typedef GenericArray<true, ValueT> ConstArray;
+	typedef GenericArray<false, ValueT> Array;
+	typedef ValueT PlainType;
+	typedef typename internal::MaybeAddConst<Const,PlainType>::Type ValueType;
+	typedef ValueType *ValueIterator;
+	typedef const ValueT* ConstValueIterator;
+	typedef typename ValueType::AllocatorType AllocatorType;
+	typedef typename ValueType::StringRefType StringRefType;
 
+	template <typename, typename>
+	friend class GenericValue;
+	
+    GenericArray(const GenericArray &rhs);
+	GenericArray &operator=(const GenericArray &rhs);
+    ~GenericArray() {}
+
+	SizeType Size() const;
+	SizeType Capacity() const;
+	bool Empty() const;
+	void Clear() const;
+	ValueType &operator[](SizeType index) const;
+	ValueIterator Begin() const;
+	ValueIterator End() const;
+	GenericArray Reserve(SizeType newCapacity, AllocatorType &allocator) const;
+	GenericArray PushBack(ValueType &value, AllocatorType &allocator) const;
+	GenericArray PushBack(StringRefType value, AllocatorType &allocator) const;
+	GenericArray PopBack() const;
+	ValueIterator Erase(ConstValueIterator pos) const;
+	ValueIterator Erase(ConstValueIterator first, ConstValueIterator last) const;
+private:
+	GenericArray();
+	GenericArray(ValueType &value);
+	ValueType &value_;
+};
+
+template <bool Const, typename ValueT>
+class GenericObject {
+public:
+	typedef GenericObject<true, ValueT> ConstObject;
+	typedef GenericObject<false, ValueT> Object;
+	typedef ValueT PlainType;
+	typedef typename internal::MaybeAddConst<Const,PlainType>::Type ValueType;
+	typedef GenericMemberIterator<Const,typename ValueT::EncodingType,typename ValueT::AllocatorType> MemberIterator;
+	typedef GenericMemberIterator<true,typename ValueT::EncodingType,typename ValueT::AllocatorType> ConstMemberIterator;
+	typedef typename ValueType::AllocatorType AllocatorType;
+	typedef typename ValueType::StringRefType StringRefType;
+	typedef typename ValueType::EncodingType EncodingType;
+	typedef typename ValueType::Ch Ch;
+
+	template <typename, typename>
+	friend class GenericValue;
+
+	GenericObject(const GenericObject &rhs);
+	GenericObject &operator=(const GenericObject &rhs);
+	~GenericObject() {}
+
+	SizeType MemberCount() const;
+	bool ObjectEmpty() const;
+
+	template <typename T>
+	ValueType &operator[](T *name) const;
+
+	template <typename SourceAllocator>
+	ValueType &operator[](const GenericValue<EncodingType,SourceAllocator> &name) const;
+
+	ValueType &operator[](const std::basic_string<Ch> &name) const;
+	MemberIterator MemberBegin() const;
+	MemberIterator MemberEnd() const;
+	bool HasMember(const Ch *name) const;
+	bool HasMember(const std::basic_string<Ch> &name) const;
+
+	template <typename SourceAllocator>
+	bool HasMember(const GenericValue<EncodingType,SourceAllocator> &name) const;
+
+	MemberIterator FindMember(const Ch *name) const;
+
+	template <typename SourceAllocator>
+	MemberIterator FindMember(const GenericValue<EncodingType,SourceAllocator> &name) const;
+
+	MemberIterator FindMember(const std::basic_string<Ch> &name) const;
+	GenericObject AddMember(ValueType &name, ValueType &value, AllocatorType &allocator) const;
+	GenericObject AddMember(ValueType &name, StringRefType value, AllocatorType &allocator) const;
+	GenericObject AddMember(ValueType &name, std::basic_string<Ch> &value, AllocatorType &allocator) const;
+	GenericObject AddMember(StringRefType name, ValueType &value, AllocatorType &allocator) const;
+	void RemoveAllMembers();
+	bool RemoveMember(const Ch *name) const;
+	bool RemoveMember(const std::basic_string<Ch> &name) const;
+
+	template <typename SourceAllocator>
+	bool RemoveMember(const GenericValue<EncodingType,SourceAllocator> &name) const;
+	MemberIterator RemoveMember(MemberIterator m) const;
+	MemberIterator EraseMember(ConstMemberIterator pos) const;
+	MemberIterator EraseMember(ConstMemberIterator first, ConstMemberIterator last) const;
+	bool EraseMember(const Ch *name) const;
+	bool EraseMember(const std::basic_string<Ch> &name) const;
+
+	template <typename SourceAllocator>
+	bool EraseMember(const GenericValue<EncodingType,SourceAllocator> &name) const;
+private:
+	GenericObject();
+	GenericObject(ValueType &value);
+	ValueType &value_;
+};
+
+// stringbuffer.h
+#include <rapidjson/stringbuffer.h>
+template <typename Encoding, typename Allocator = CrtAllocator>
+class GenericStringBuffer {
+public:
+	typedef typename Encoding::Ch Ch;
+
+	GenericStringBuffer(Allocator *allocator = 0, size_t capacity = kDefaultCapacity)
+		: stack_(allocator, capacity) {}
+
+	void Put(Ch c);
+	void PutUnsafe(Ch c);
+	void Flush() {}
+	void Clear();
+	void ShrinkToFit();
+	void Reserve(size_t count);
+	Ch *Push(size_t count)	;
+	Ch *PushUnsafe(size_t count);
+	void Pop(size_t count);
+	const Ch *GetString() const;
+	size_t GetSize() const;
+
+	static const size_t kDefaultCapacity = 256;
+	mutable internal::Stack<Allocator> stack_;
+private:
+	GenericStringBuffer(const GenericStringBuffer &);
+	GenericStringBuffer &operator=(const GenericStringBuffer &);
+};
 
 typedef GenericReader<UTF8<>, UTF8<> > Reader;
 typedef GenericStringStream<UTF8<> > StringStream;
 typedef GenericValue<UTF8<> > Value;
 typedef GenericDocument<UTF8<> > Document;
-
+typedef GenericStringBuffer<UTF8<> > StringBuffer;
 typedef GenericInsituStringStream<UTF8<> > InsituStringStream;
 
 RAPIDJSON_NAMESPACE_END
