@@ -87,6 +87,7 @@ int MFile::writebuf(const char *buf, size_t bytes) const
 
 int MFile::readbuf(const std::string &file, char *buf, size_t bytes)
 {
+#ifdef M_OS_LINUX
 	int n = -1;
 	int fd = open(file.c_str(), O_RDONLY);
 	if (fd == -1) {
@@ -101,6 +102,19 @@ int MFile::readbuf(const std::string &file, char *buf, size_t bytes)
 
 	close(fd);
 	return n;
+#else
+	int n = -1;
+	FILE *fp = fopen(file.c_str(), "rb");
+	if (NULL == fp) {
+		log_error("open '%s' failed: %s", file.c_str(), error().c_str());
+		return -1;
+	}
+
+	n = fread(buf, 1, bytes, fp);
+
+	fclose(fp);
+	return n;
+#endif
 }
 
 int MFile::writebuf(const std::string &file, const char *buf, size_t bytes)
@@ -133,9 +147,9 @@ int MFile::writebuf(const std::string &file, const char *buf, size_t bytes)
 		return -1;
 	}
 
-	if ((n = fwrite(buf, 1, bytes, fp)) < 0)
-		log_error("write '%s' failed: %s", fpath.c_str(), error().c_str());
-	
+	n = fwrite(buf, 1, bytes, fp);
+
+	fflush(fp);
 	fclose(fp);
 #endif	// #ifndef M_OS_WIN
 	return n;
@@ -158,7 +172,7 @@ int MFile::appendbuf(const std::string &file, const char *buf, size_t bytes)
 #ifdef M_OS_LINUX
 		syslog(LOG_ERR, "%s", errstr.c_str());
 #else
-		OutputDebugString(logstr.c_str());
+		OutputDebugString(errstr.c_str());
 #endif /* M_OS_LINUX */
 		return -1;
 	}
