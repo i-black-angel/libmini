@@ -57,6 +57,83 @@ extern "C" {
 
 MPL_BEGIN_NAMESPACE
 
+#if defined(M_OS_WIN) || defined(_MSC_VER)
+
+MThread::MThread()
+	: _self(0)
+{
+}
+
+MThread::~MThread()
+{
+}
+
+bool MThread::start()
+{
+	LPSECURITY_ATTRIBUTES thread_attr = NULL;
+	_self = (HANDLE) _beginthreadex(NULL, 0, thread_routine, this, 0, NULL);
+	if (NULL == _self) {
+		perror("can't create thread");
+		return false;
+	}
+	return true;
+}
+
+void MThread::stop()
+{
+	interrupt();
+	join();
+}
+
+int MThread::join()
+{
+	DWORD rc = WaitForSingleObject(_self, INFINITE);
+	if (WAIT_FAILED == rc) return -1;
+	BOOL rc2 = CloseHandle(_self);
+	if (!rc2) return -1;
+	return 0;
+}
+
+int MThread::detach()
+{
+	// TODO:: must be rewrite later
+	return 0;
+}
+
+int MThread::cancel()
+{
+	// TODO:: must be rewrite later
+	BOOL res = TerminateThread(_self, 0);
+	if (res) return 0;
+	return -1;
+}
+	
+
+int64_t MThread::id()
+{
+	return _self;
+}
+	
+void MThread::interrupt()
+{
+	MScopedLock locker(_mutex);
+	_interrupt = true;
+}
+
+bool MThread::isInterrupted() const
+{
+	return _interrupt;
+}
+
+void MThread::exec()
+{
+	_interrupt = false;
+	
+	run();
+}
+
+#else
+
 MThread::MThread()
 {
 	_self = 0;
@@ -102,17 +179,6 @@ int64_t MThread::id()
 	return _self;
 }
 	
-// void MThread::setPriority(Priority priority)
-// {
-// 	MScopedLock locker(_mutex);
-// 	_priority = priority;
-// }
-
-// MThread::Priority MThread::priority() const
-// {
-// 	return _priority;
-// }
-
 void MThread::interrupt()
 {
 	MScopedLock locker(_mutex);
@@ -131,11 +197,25 @@ void MThread::exec()
 	run();
 }
 
+#endif
+
+
 // Begin functions
+#if defined(M_OS_WIN) || defined(_MSC_VER)
+
+int64_t threadId()
+{
+	return GetCurrentThreadId();
+}
+
+#else
+
 // get_thread_id
 int64_t threadId()
 {
 	return pthread_self();
 }
+
+#endif
 
 MPL_END_NAMESPACE
