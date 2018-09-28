@@ -17,6 +17,9 @@
 #define _RAPIDJSON_MAN_H_
 
 #include <rapidjson/document.h>
+#include <rapidjson/error/en.h>
+#include <rapidjson/stringbuffer.h>
+#include <rapidjson/prettywriter.h>
 
 // ----------VERY IMPORTENT-----------
 // 

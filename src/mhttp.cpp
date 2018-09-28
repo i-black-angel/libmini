@@ -48,8 +48,8 @@ MHttp::~MHttp()
 }
 
 MHttpServer::MHttpServer(int msec)
-	: _msec(msec),
-	  _interrupt(false)
+	: _msec(msec)
+	, _interrupt(false)
 {
 	_option = new struct mg_serve_http_opts();
 }
@@ -59,7 +59,7 @@ MHttpServer::~MHttpServer()
 	delete _option;
 }
 
-void MHttpServer::setDocumentRoot(const char *doc)
+void MHttpServer::documentRoot(const char *doc)
 {
 	_option->document_root = doc;
 }

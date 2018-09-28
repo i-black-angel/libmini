@@ -29,7 +29,7 @@ MPL_BEGIN_NAMESPACE
 class MHttp
 {
 public:
-    explicit MHttp();
+    MHttp();
     virtual ~MHttp();
 protected:
 	struct mg_mgr *_mgr;
@@ -46,11 +46,11 @@ public:
 	void stop();
 
 	int sleeptime() const { return _msec; }
-	void setSleeptime(int msec) { _msec = msec; }
+	void sleeptime(int msec) { _msec = msec; }
 	void interrupt() { MScopedLock locker(_mutex); _interrupt = true; }
 	bool isInterrupted() const { return _interrupt; }
 
-	void setDocumentRoot(const char *doc); /* doc must be const char * type */
+	void documentRoot(const char *doc); /* doc must be const char * type */
 	void disableDirectoryListing(); /* Enabled by default. */
 
 	void sendHttp(struct mg_connection *nc, const std::string &buf);
