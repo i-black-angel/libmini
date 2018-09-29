@@ -17,12 +17,5 @@
 
 MPL_BEGIN_NAMESPACE
 
-MJson::MJson()
-{
-}
-
-MJson::~MJson()
-{
-}
 
 MPL_END_NAMESPACE

@@ -20,12 +20,7 @@
 
 MPL_BEGIN_NAMESPACE
 
-class MJson
-{
-public:
-    explicit MJson();
-    virtual ~MJson();
-};
+// Should be using <rapidjson> header files directly.
 
 MPL_END_NAMESPACE
 

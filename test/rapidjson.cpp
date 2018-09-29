@@ -128,14 +128,16 @@ void json_read()
 	}
 }
 
-void json_write()
+void json_write(const std::string &url)
 {
 	rapidjson::Document doc;
 	rapidjson::Document::AllocatorType &allocator =  doc.GetAllocator();
 	doc.SetObject();
 
 	// 1. add basic type value
-	doc.AddMember("success_url", "https://www.google.com", allocator);
+	rapidjson::Value urlv(rapidjson::kStringType);
+	urlv.SetString(url, allocator);
+	doc.AddMember(urlv, "https://www.google.com", allocator);
 	doc.AddMember("price", 123, allocator);
 	doc.AddMember("yesorno", true, allocator);
 	doc.AddMember("height", 1.68, allocator);
@@ -177,6 +179,6 @@ int main(int argc, char *argv[])
 {
     setlocale(LC_ALL, "");
     json_read();
-	json_write();
+	json_write("success_url");
     return 0;
 }
