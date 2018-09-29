@@ -68,9 +68,9 @@ void read_xml_file()
 		}
 
 		// output string
-		// std::string outstr;
-		// rapidxml::print(std::back_inserter(outstr), doc, 0);
-		// std::cout << outstr << std::endl;
+		std::string outstr;
+		rapidxml::print(std::back_inserter(outstr), doc);
+		std::cout << outstr << std::endl;
 
 	} catch (std::exception &e) {
 		std::cout << e.what() << std::endl;
@@ -119,7 +119,7 @@ void read_xml()
 
 		// output string
 		std::string outstr;
-		rapidxml::print(std::back_inserter(outstr), doc, 0);
+		rapidxml::print(std::back_inserter(outstr), doc);
 		std::cout << outstr;
 		
 	} catch (std::exception &e) {
@@ -149,9 +149,18 @@ void write_xml()
 		color->append_node(doc.allocate_node(rapidxml::node_element, "green", "0.2"));
 		color->append_node(doc.allocate_node(rapidxml::node_element, "blue", "0.7"));
 		root->append_node(color);
-		
+
+
+		printf("-------------------------------\nno indenting\n-------------------------------\n");
+		// print no indenting
+		std::string noindent;
+		rapidxml::print(std::back_inserter(noindent), doc, rapidxml::print_no_indenting);
+		std::cout << noindent << std::endl;
+
+		printf("\n-------------------------------\npretty printing\n-------------------------------\n");
+		// pretty print
 		std::string outstr;
-		rapidxml::print(std::back_inserter(outstr), doc, 0);
+		rapidxml::print(std::back_inserter(outstr), doc);
 		std::cout << outstr;
 
 		std::ofstream out("/tmp/doc.xml");
