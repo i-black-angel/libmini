@@ -420,33 +420,6 @@ void MTcpServer::run()
 	} catch (std::exception e) {
 		log_error("%s", e.what());
 	}
-	// int retval = 0;
-
-	// for (; ;) {
-	// 	FD_ZERO(&_rfds);
-	// 	FD_SET(fd, &_rfds);
-	// 	FD_SET(_pipefd[0], &_rfds);
-
-	// 	_maxfds = std::max(fd, _pipefd[0]);
-
-	// 	retval = select(_maxfds + 1, &_rfds, NULL, NULL, NULL);
-	// 	if (retval < 0) {
-	// 		log_error("select: %s", error().c_str());
-	// 		break;
-	// 	}
-
-	// 	if (FD_ISSET(fd, &_rfds)) {
-	// 		MHostAddress address;
-	// 		int clientfd = _socket.accept(address);
-	// 		process(clientfd, address);
-	// 	}
-	// 	if (FD_ISSET(_pipefd[0], &_rfds)) {
-	// 		break;
-	// 	}
-	// }
-
-	// close(_pipefd[0]);
-	// close(_pipefd[1]);
 }
 
 void MTcpServer::connection(int clientfd, const mpl::MHostAddress &addr)

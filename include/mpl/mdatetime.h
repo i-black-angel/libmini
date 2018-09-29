@@ -26,16 +26,8 @@ class MTime
 {
 public:
     MTime();
-	// MTime(int h, int m, int s = 0, int ms = 0);
     virtual ~MTime();
-
-	// int hour() const;
-	// int minute() const;
-	// int second() const;
-	// int msec() const;
-	// std::string toString(const std::string &format = "") const;
-	// bool setHMS(int h, int m, int s, int ms = 0);
-
+	
 	void start();
 	int restart();
 	int elapsed() const;

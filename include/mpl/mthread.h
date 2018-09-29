@@ -24,22 +24,7 @@ MPL_BEGIN_NAMESPACE
 class MThread
 {
 public:
-
-	// enum Priority {
-    //     IdlePriority,
-
-    //     LowestPriority,
-    //     LowPriority,
-    //     NormalPriority,
-    //     HighPriority,
-    //     HighestPriority,
-
-    //     TimeCriticalPriority,
-
-    //     InheritPriority
-    // };
-
-    explicit MThread();
+    MThread();
     virtual ~MThread();
 
 	bool start();
@@ -50,9 +35,6 @@ public:
 	int cancel();
 	
 	int64_t id();
-	
-    // void setPriority(Priority priority);
-    // Priority priority() const;
 	
 	void interrupt();
 	bool isInterrupted() const;
@@ -72,8 +54,6 @@ private:
 #else
 	pthread_t _self;
 #endif /* M_OS_WIN */
-
-	// Priority _priority;
 
 	MMutex _mutex;
 	bool _interrupt;

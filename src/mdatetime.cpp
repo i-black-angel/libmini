@@ -100,10 +100,6 @@ int MDateTime::second() const
 	return localtime(&_d)->tm_sec;
 }
 
-// int MDateTime::msec() const
-// {
-// }
-
 int MDateTime::dayOfWeek() const
 {
 	return localtime(&_d)->tm_wday;

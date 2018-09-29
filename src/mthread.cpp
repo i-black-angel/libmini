@@ -57,7 +57,7 @@ extern "C" {
 
 MPL_BEGIN_NAMESPACE
 
-#if defined(M_OS_WIN) || defined(_MSC_VER)
+#ifdef M_OS_WIN
 
 MThread::MThread()
 	: _handle(0)
@@ -172,8 +172,7 @@ int MThread::detach()
 int MThread::cancel()
 {
 	return pthread_cancel(_self);
-}
-	
+}	
 
 int64_t MThread::id()
 {
@@ -198,11 +197,11 @@ void MThread::exec()
 	run();
 }
 
-#endif
+#endif /* M_OS_WIN */
 
 
 // Begin functions
-#if defined(M_OS_WIN) || defined(_MSC_VER)
+#ifdef M_OS_WIN
 
 int64_t threadId()
 {
@@ -217,6 +216,6 @@ int64_t threadId()
 	return pthread_self();
 }
 
-#endif
+#endif /* M_OS_WIN */
 
 MPL_END_NAMESPACE
