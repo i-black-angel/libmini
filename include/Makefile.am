@@ -28,7 +28,6 @@ mpl/msettings_p.h				\
 mpl/msettings_utf.h				\
 mpl/mthread.h					\
 mpl/mlog.h					\
-mpl/mxml.h					\
 mpl/mfileinfo.h					\
 mpl/mlockfile.h					\
 mpl/mstring.h					\
@@ -47,7 +46,6 @@ mpl/msysinfo.h					\
 mpl/mmutex.h					\
 mpl/mhostaddress.h				\
 mpl/mprocess.h					\
-mpl/mjson.h					\
 mpl/merror.h					\
 mpl/murl.h					\
 mpl/muuid.h					\

@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
     setlocale(LC_ALL, "");
 	mpl::MHttpServer srv;
 	srv.bind("7900");
-	srv.setDocumentRoot("/var/www/html");
+	srv.documentRoot("/var/www/html");
 	srv.start();
     return 0;
 }

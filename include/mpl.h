@@ -21,7 +21,6 @@
 #include <mpl/msettings.h>
 #include <mpl/mthread.h>
 #include <mpl/mlog.h>
-#include <mpl/mxml.h>
 #include <mpl/mfileinfo.h>
 #include <mpl/mstring.h>
 #include <mpl/mmongodb.h>
@@ -38,7 +37,6 @@
 #include <mpl/mmutex.h>
 #include <mpl/mhostaddress.h>
 #include <mpl/mprocess.h>
-#include <mpl/mjson.h>
 #include <mpl/merror.h>
 #include <mpl/muuid.h>
 #include <mpl/mhash.h>

@@ -20,7 +20,6 @@ mfileinfo.cpp					\
 mplstd.cpp					\
 mhostaddress.cpp				\
 mhttp.cpp					\
-mjson.cpp					\
 mlog.cpp					\
 mmongodb.cpp					\
 mprocess.cpp					\
@@ -32,7 +31,6 @@ mstring.cpp					\
 msysinfo.cpp					\
 mthread.cpp					\
 mcondition.cpp					\
-mxml.cpp					\
 merror.cpp					\
 muuid.cpp					\
 murl.cpp					\
@@ -42,4 +40,5 @@ mhash.cpp					\
 mhash_md5.h					\
 mhash_md5.c					\
 msettings_utf.c					\
+mongoose.h					\
 mongoose.c
