@@ -65,6 +65,10 @@ int main(int argc, char *argv[])
 			   week.toString("%Y-%m-%d").c_str(),
 			   yund.daysTo(week));
 	}
+
+	mpl::MDateTime today;
+	printf("short: %s, %s\n", today.shortWeekdayName().c_str(), today.shortMonthName().c_str());
+	printf("long: %s, %s\n", today.longWeekdayName().c_str(), today.longMonthName().c_str());
 	printf("elapsed time: %fs\n", etime.elapsed());
     return 0;
 }

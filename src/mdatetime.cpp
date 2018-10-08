@@ -22,6 +22,24 @@
 
 MPL_BEGIN_NAMESPACE
 
+static const char *shorWeekDay[] = {
+	"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
+};
+
+static const char *longWeekDay[] = {
+	"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+};
+
+static const char *shortMonth[] = {
+	"Jan", "Feb", "Mar", "Apr", "May", "Jun",
+	"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+};
+
+static const char *longMonth[] = {
+	"January", "February", "March", "April", "May", "June",
+	"July", "Auguest", "September", "October", "November", "December"
+};
+
 std::string now()
 {
 	return MDateTime::now();
@@ -334,6 +352,54 @@ std::string MDateTime::now(const std::string &format)
 MDateTime MDateTime::currentDateTime()
 {
 	return time(NULL);
+}
+
+std::string MDateTime::longWeekdayName() const
+{
+	return longWeekdayName(dayOfWeek());
+}
+
+std::string MDateTime::longWeekdayName(int weekday)
+{
+	if (weekday < 0 || weekday > 6) return "";
+
+	return longWeekDay[weekday];
+}
+
+std::string MDateTime::longMonthName() const
+{
+	return longMonthName(month());
+}
+
+std::string MDateTime::longMonthName(int month)
+{
+	if (month < 1 || month > 12) return "";
+
+	return longMonth[month - 1];
+}
+
+std::string MDateTime::shortWeekdayName() const
+{
+	return shortWeekdayName(dayOfWeek());
+}
+
+std::string MDateTime::shortWeekdayName(int weekday)
+{
+	if (weekday < 0 || weekday > 6) return "";
+
+	return shorWeekDay[weekday];
+}
+
+std::string MDateTime::shortMonthName() const
+{
+	return shortMonthName(month());
+}
+
+std::string MDateTime::shortMonthName(int month)
+{
+	if (month < 1 || month > 12) return "";
+
+	return shortMonth[month - 1];
 }
 
 std::ostream &operator<<(std::ostream &out, const MDateTime &datetime)

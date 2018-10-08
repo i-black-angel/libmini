@@ -50,17 +50,16 @@ public:
     MDateTime(const MDateTime &other);
     virtual ~MDateTime();
 
-	inline bool isValid() const { return _valid; }
-	
-	MDateTime addDays(int days) const;
-	MDateTime addSecs(int64_t s) const;
-	int daysTo(const MDateTime &other) const;
-	int64_t secsTo(const MDateTime &other) const;
-	
 	MDateTime &operator=(const MDateTime &other);
 	MDateTime &operator=(time_t val);
 	MDateTime &operator=(const std::string &text);
 	MDateTime &operator=(const char *sz);
+
+	inline bool isValid() const { return _valid; }
+	MDateTime addDays(int days) const;
+	MDateTime addSecs(int64_t s) const;
+	int daysTo(const MDateTime &other) const;
+	int64_t secsTo(const MDateTime &other) const;
 	
 	int year() const;
 	int month() const;
@@ -68,7 +67,6 @@ public:
 	int hour() const;
 	int minute() const;
 	int second() const;
-	int msec() const;
 	int dayOfWeek() const;
 	int dayOfYear() const;
 	
@@ -92,6 +90,15 @@ public:
 
 	static std::string now(const std::string &format = "");
 	static MDateTime currentDateTime();
+
+	std::string longWeekdayName() const;
+	std::string longMonthName() const;
+	std::string shortWeekdayName() const;
+	std::string shortMonthName() const;
+	static std::string longWeekdayName(int weekday);
+	static std::string longMonthName(int month);
+	static std::string shortWeekdayName(int weekday);
+	static std::string shortMonthName(int month);
 protected:
 	bool setDateTime(const std::string &text);
 	void setDateTime(int y, int m, int d, int H = 0, int M = 0, int S = 0);
