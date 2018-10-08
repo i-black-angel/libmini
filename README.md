@@ -1,3 +1,5 @@
-# libmpl
-Mini Public Library, mpl
-A simple and easy use C++ public library.
+# libmpl - C/C++ Mini Public Library
+
+![](https://img.shields.io/badge/license-Apache2-green.svg "License")
+
+libmpl is a simple and easy use C++ public library. 
