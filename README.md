@@ -21,7 +21,7 @@ This simple example demonstrate how to use libmpl.
 
 int main(int argc, char *argv[])
 {
-	std::cout << mpl::welcome() << std::endl;
+    std::cout << mpl::welcome() << std::endl;
     return 0;
 }
 ~~~~~~~~~~
