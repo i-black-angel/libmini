@@ -17,6 +17,8 @@
 
 int main(int argc, char *argv[])
 {
+	mpl::MTime etime;			// demostrate how to use mtime
+
     std::cout << mpl::now() << std::endl;
 	mpl::MDateTime datetime = mpl::MDateTime::currentDateTime();
 	std::cout << datetime.year() << std::endl;
@@ -63,5 +65,6 @@ int main(int argc, char *argv[])
 			   week.toString("%Y-%m-%d").c_str(),
 			   yund.daysTo(week));
 	}
+	printf("elapsed time: %fs\n", etime.elapsed());
     return 0;
 }

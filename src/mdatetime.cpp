@@ -27,6 +27,49 @@ std::string now()
 	return MDateTime::now();
 }
 
+MTime::MTime()
+{
+	start();
+}
+
+MTime::~MTime()
+{
+}
+
+void MTime::start()
+{
+#ifdef M_OS_WIN
+	_start = clock();
+#else
+	gettimeofday(&_start, NULL);
+#endif /* M_OS_LINUX */
+}
+
+double MTime::restart()
+{
+	double te = elapsed();
+	// reset _START
+	start();
+	return te;
+}
+
+double MTime::elapsed() const
+{
+#ifdef M_OS_WIN
+	double timeElapsed = 0;
+	timeElapsed = (double)(clock() - _start) / CLOCKS_PER_SEC;
+	return timeElapsed;
+#else
+	double timeElapsed = 0;
+	struct timeval end;
+	gettimeofday(&end, NULL);
+	timeElapsed = (end.tv_sec - _start.tv_sec) * 1000000
+		+ (end.tv_usec - _start.tv_usec);
+	timeElapsed /= 1000000.0;
+	return timeElapsed;
+#endif /* M_OS_WIN */
+}
+
 MDateTime::MDateTime()
 {
 	_d = time(NULL);

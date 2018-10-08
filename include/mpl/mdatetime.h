@@ -29,10 +29,10 @@ public:
     virtual ~MTime();
 	
 	void start();
-	int restart();
-	int elapsed() const;
+	double restart();
+	double elapsed() const;
 private:
-#if defined(M_OS_WIN) || defined(_MSC_VER)
+#ifdef M_OS_WIN
 	clock_t _start;		
 #else
 	struct timeval _start;
