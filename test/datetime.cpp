@@ -32,5 +32,36 @@ int main(int argc, char *argv[])
 
 	mpl::MDateTime dt = 0x7FFFFFFF;
 	std::cout << dt << std::endl;
+
+	mpl::MDateTime dtnow;
+	mpl::MDateTime s = dtnow.addDays(27);
+	printf("addDays(27) testing: %s\n", s.toString().c_str());
+	printf("%s wday = %d\n", s.toString().c_str(), s.dayOfWeek());
+
+	mpl::MDateTime yund = "20190101";
+	std::cout << yund.isValid() << std::endl;
+	int days = dtnow.daysTo(yund);
+	printf("daysTo(%s): %d\n", yund.toString().c_str(), days);
+
+	mpl::MDateTime week = std::string("2019-01-07");
+	week = "2018-10-09 12:00:00";
+	std::cout << week.isValid() << std::endl;
+	std::cout << week.dayOfWeek() << std::endl;
+	std::cout << week.toString("%Y%m%d") << std::endl;
+
+	std::cout << mpl::MDateTime().toString("%Y%m%d") << std::endl;
+	std::cout << mpl::MDateTime("20180917").toString("%Y-%m-%d") << std::endl;
+
+	if (week < yund) {
+		printf("'%s' daysTo '%s' is %d\n",
+			   week.toString("%Y-%m-%d").c_str(),
+			   yund.toString("%Y-%m-%d").c_str(),
+			   week.daysTo(yund));
+	} else {
+		printf("'%s' daysTo '%s' is %d\n",
+			   yund.toString("%Y-%m-%d").c_str(),
+			   week.toString("%Y-%m-%d").c_str(),
+			   yund.daysTo(week));
+	}
     return 0;
 }

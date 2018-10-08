@@ -611,19 +611,19 @@ void MFileInfo::refresh()
 
 MDateTime MFileInfo::lastStatusChanged() const
 {
-	if (!_stat_ok) return MDateTime(0);
+	if (!_stat_ok) return MDateTime(0l);
 	return MDateTime(_stat.st_ctime);
 }
 
 MDateTime MFileInfo::lastModified() const
 {
-	if (!_stat_ok) return MDateTime(0);
+	if (!_stat_ok) return MDateTime(0l);
 	return MDateTime(_stat.st_mtime);
 }
 
 MDateTime MFileInfo::lastRead() const
 {
-	if (!_stat_ok) return MDateTime(0);
+	if (!_stat_ok) return MDateTime(0l);
 	return MDateTime(_stat.st_atime);
 }
 

@@ -52,7 +52,15 @@ int main(int argc, char *argv[])
     std::cout << addr8.toString() << std::endl;
     std::cout << addr8 << std::endl;
     std::cout << addr6 << std::endl;
-	
+
+
+	// mpl::MHostAddress addr;
+	// for (size_t i = 0; i < 0xffffffff; ++i) {
+	// 	addr.setAddress(i);
+	// 	printf("'%s' = %u\n", addr.address().c_str(), i);
+	// 	usleep(100000);
+	// }
+
 #ifdef _MSC_VER
 	WSACleanup();
 #endif

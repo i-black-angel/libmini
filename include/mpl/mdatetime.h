@@ -44,12 +44,23 @@ class MDateTime
 public:
     MDateTime();
 	MDateTime(time_t val);
-	explicit MDateTime(int y, int m, int d, int H = 0, int M = 0, int S = 0);
+	MDateTime(const char *sz);
+	MDateTime(const std::string &text);
+	MDateTime(int y, int m, int d, int H = 0, int M = 0, int S = 0);
     MDateTime(const MDateTime &other);
     virtual ~MDateTime();
 
+	inline bool isValid() const { return _valid; }
+	
+	MDateTime addDays(int days) const;
+	MDateTime addSecs(int64_t s) const;
+	int daysTo(const MDateTime &other) const;
+	int64_t secsTo(const MDateTime &other) const;
+	
 	MDateTime &operator=(const MDateTime &other);
 	MDateTime &operator=(time_t val);
+	MDateTime &operator=(const std::string &text);
+	MDateTime &operator=(const char *sz);
 	
 	int year() const;
 	int month() const;
@@ -62,6 +73,14 @@ public:
 	int dayOfYear() const;
 	
 	time_t data() const { return _d; }
+
+	// FORMAT controls the output.  Interpreted sequences are:
+	// %Y   year
+	// %m   month
+	// %d   day
+	// %H   hour
+	// %M   minute
+	// %S   second
 	std::string toString(const std::string &format = "") const;
 	
     bool operator==(const MDateTime &other) const { return _d == other._d; }
@@ -73,8 +92,12 @@ public:
 
 	static std::string now(const std::string &format = "");
 	static MDateTime currentDateTime();
+protected:
+	bool setDateTime(const std::string &text);
+	void setDateTime(int y, int m, int d, int H = 0, int M = 0, int S = 0);
 private:
 	time_t _d;
+	bool _valid;
 };
 
 std::ostream &operator<<(std::ostream &, const MDateTime &);
