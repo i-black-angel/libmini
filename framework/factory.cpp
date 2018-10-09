@@ -13,33 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _MSERIALPORT_H_
-#define _MSERIALPORT_H_
+#include <stdlib.h>
+#include "factory.h"
 
-#include <mpl/mcoredef.h>
+#ifdef _MSC_VER
+# pragma warning (push)
+# pragma warning (disable: 4996)
+#endif
 
-MPL_BEGIN_NAMESPACE
+Factory *Factory::_ins = NULL;
 
-class MSerialPort
+Factory *Factory::instance()
 {
-public:
-    explicit MSerialPort();
-    virtual ~MSerialPort();
+	if (NULL == _ins) {
+		_ins = new Factory();
+		atexit(desposed);
+	}
+	return _ins;
+}
 
-	int openSerial(const char *name, uint32_t baudrate,
-				   uint32_t databites, char parity, uint32_t stopbits);
-	ssize_t readData(void *buf, size_t nbytes);
-	ssize_t writeData(const void *buf, size_t nbytes);
-	void closeSerial();
+void Factory::desposed()
+{
+	if (NULL != _ins) {
+		delete _ins; _ins = NULL;
+	}
+}
 
-	int baudrate(uint32_t nbaudrate);
-	int parity(uint32_t databits, char nparity,  uint32_t stopbits);
-
-	inline int fd() const { return _fd; }
-private:
-	int _fd;
-};
-
-MPL_END_NAMESPACE
-
-#endif /* _MSERIALPORT_H_ */
+#ifdef _MSC_VER
+# pragma warning (pop)
+#endif

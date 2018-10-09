@@ -13,33 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _MSERIALPORT_H_
-#define _MSERIALPORT_H_
+#ifndef _FACTORY_H_
+#define _FACTORY_H_
 
-#include <mpl/mcoredef.h>
-
-MPL_BEGIN_NAMESPACE
-
-class MSerialPort
+// Singleton pattern
+class Factory
 {
 public:
-    explicit MSerialPort();
-    virtual ~MSerialPort();
-
-	int openSerial(const char *name, uint32_t baudrate,
-				   uint32_t databites, char parity, uint32_t stopbits);
-	ssize_t readData(void *buf, size_t nbytes);
-	ssize_t writeData(const void *buf, size_t nbytes);
-	void closeSerial();
-
-	int baudrate(uint32_t nbaudrate);
-	int parity(uint32_t databits, char nparity,  uint32_t stopbits);
-
-	inline int fd() const { return _fd; }
+	// TODO::add your CLASS construction code here.
+	// Hello *createHello() const;
+public:
+	static Factory *instance();
+protected:
+	Factory() { }
+	static void desposed();
 private:
-	int _fd;
+	static Factory *_ins;
 };
 
-MPL_END_NAMESPACE
-
-#endif /* _MSERIALPORT_H_ */
+#endif /* _FACTORY_H_ */
