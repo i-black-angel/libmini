@@ -109,6 +109,12 @@ void read_xml()
 
 		// xml_node<>
 		rapidxml::xml_node<> *xml = doc.first_node("plugins");
+
+		// count_children, count_attributes
+		int childcount = rapidxml::count_children(xml);
+		int attrcount = rapidxml::count_attributes(xml);
+		printf("childcount: %d, attrcount: %d\n", childcount, attrcount);
+		
 		for (rapidxml::xml_node<> *plugin = xml->first_node("plugin"); plugin; plugin = plugin->next_sibling()) {
 			std::string filename = plugin->first_attribute("filename")->value();
 			std::string name = plugin->first_node("name")->value();
