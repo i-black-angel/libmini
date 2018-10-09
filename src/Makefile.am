@@ -41,4 +41,5 @@ mhash_md5.h					\
 mhash_md5.c					\
 msettings_utf.c					\
 mongoose.h					\
-mongoose.c
+mongoose.c					\
+mserialport.cpp

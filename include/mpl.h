@@ -45,5 +45,6 @@
 #include <mpl/mlockfile.h>
 #include <mpl/mdatahandler.h>
 #include <mpl/mthreadpool.h>
+#include <mpl/mserialport.h>
 
 #endif /* _MPL_H_ */

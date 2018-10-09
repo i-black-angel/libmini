@@ -52,4 +52,5 @@ mpl/muuid.h					\
 mpl/mhash.h					\
 mpl/mqueue.h					\
 mpl/mthreadpool.h				\
-mpl/mevent.h
+mpl/mevent.h					\
+mpl/mserialport.h
