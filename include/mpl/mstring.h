@@ -35,6 +35,8 @@ std::string toUTF8(const std::string &str);
 std::string toGBK(const std::string &str);
 #define format toXString
 
+std::vector<std::string> split(const std::string &src, const std::string &delim);
+
 class MString : public std::string
 {
 public:

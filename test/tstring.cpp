@@ -15,6 +15,8 @@
  */
 #include <mpl.h>
 
+typedef std::vector<std::string> string_array;
+
 int main(int argc, char *argv[])
 {
 	std::string shortopts = "hVc:v";
@@ -29,5 +31,11 @@ int main(int argc, char *argv[])
 	// shortopts += "x:";
 	std::cout << shortopts.size() << std::endl;
 	printf("%s\n", shortopts.c_str());
+
+	string_array arr = mpl::split("hello/name//", "/");
+	std::cout << arr.size() << std::endl;
+	for (size_t i = 0; i < arr.size(); ++i) {
+		std::cout << "'" << arr[i] << "'" << std::endl;
+	}
     return 0;
 }

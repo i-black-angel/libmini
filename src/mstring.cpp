@@ -220,6 +220,24 @@ std::string toGBK(const std::string &str)
 #endif
 }
 
+std::vector<std::string> split(const std::string &src, const std::string &delim)
+{
+	std::vector<std::string> res;
+
+	if (src.empty() || delim.empty()) 
+		return res;
+	
+	std::string::size_type start = 0;
+	std::string::size_type pos = std::string::npos;
+	while ((pos = src.find(delim, start)) != std::string::npos) {
+		res.push_back(src.substr(start, pos - start));
+		start = pos + delim.size();
+	}
+
+	res.push_back(src.substr(start));
+	return res;
+}
+
 MString::MString()
 {
 }
