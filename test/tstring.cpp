@@ -37,5 +37,17 @@ int main(int argc, char *argv[])
 	for (size_t i = 0; i < arr.size(); ++i) {
 		std::cout << "'" << arr[i] << "'" << std::endl;
 	}
+
+	std::string hello = "hello world!";
+	mpl::toupper(hello);
+	std::cout << hello << std::endl;
+	mpl::tolower(hello);
+	std::cout << hello << std::endl;
+
+	std::string filename = "  trim testing!  ";
+	printf("trim_front: '%s'\n", mpl::trim_front(filename).c_str());
+	printf("trim_back: '%s'\n", mpl::trim_back(filename).c_str());
+	printf("trim: '%s'\n", mpl::trim(filename).c_str());
+
     return 0;
 }

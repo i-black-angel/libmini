@@ -238,6 +238,31 @@ std::vector<std::string> split(const std::string &src, const std::string &delim)
 	return res;
 }
 
+std::string trim(const std::string &src)
+{
+	return trim_front(trim_back(src));
+}
+
+std::string trim_front(const std::string &src)
+{
+	return src.substr(src.find_first_not_of(" \n\r\t"));
+}
+
+std::string trim_back(const std::string &src)
+{
+	return src.substr(0, src.find_last_not_of(" \n\r\t") + 1);
+}
+
+void tolower(std::string &src)
+{
+	transform(src.begin(), src.end(), src.begin(), ::tolower);
+}
+
+void toupper(std::string &src)
+{
+	transform(src.begin(), src.end(), src.begin(), ::toupper);
+}
+
 MString::MString()
 {
 }

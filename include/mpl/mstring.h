@@ -36,6 +36,11 @@ std::string toGBK(const std::string &str);
 #define format toXString
 
 std::vector<std::string> split(const std::string &src, const std::string &delim);
+std::string trim(const std::string &src);
+std::string trim_front(const std::string &src);
+std::string trim_back(const std::string &src);
+void tolower(std::string &src);
+void toupper(std::string &src);
 
 class MString : public std::string
 {
