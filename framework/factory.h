@@ -16,14 +16,16 @@
 #ifndef _FACTORY_H_
 #define _FACTORY_H_
 
-// Singleton pattern
+// Singleton design-pattern
 class Factory
 {
 public:
-	// TODO::add your CLASS construction code here.
-	// Hello *createHello() const;
-public:
 	static Factory *instance();
+	virtual ~Factor() { }
+	
+	// TODO::add your CLASS construction code here.
+	// virtual Product *createProduct() const;
+
 protected:
 	Factory() { }
 	static void desposed();
