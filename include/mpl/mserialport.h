@@ -23,7 +23,7 @@ MPL_BEGIN_NAMESPACE
 class MSerialPort
 {
 public:
-    explicit MSerialPort();
+    /*explicit */MSerialPort();
     virtual ~MSerialPort();
 
 	int openSerial(const char *name, uint32_t baudrate,
@@ -35,9 +35,15 @@ public:
 	int baudrate(uint32_t nbaudrate);
 	int parity(uint32_t databits, char nparity,  uint32_t stopbits);
 
+#ifndef M_OS_WIN
 	inline int fd() const { return _fd; }
-private:
+#endif
+private:	
+#ifdef M_OS_WIN
+	HANDLE _hComm;
+#else
 	int _fd;
+#endif
 };
 
 MPL_END_NAMESPACE
