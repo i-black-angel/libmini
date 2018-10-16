@@ -40,6 +40,10 @@
 #include <string.h>
 #include <sys/types.h>
 /* #include <stdalign.h> */
+#ifdef _MSC_VER
+#define alignof __alignof
+#define __alignof_is_defined 1
+#else
 #ifndef __cplusplus
 
 #define alignas _Alignas
@@ -48,6 +52,7 @@
 #define __alignas_is_defined 1
 #define __alignof_is_defined 1
 
+#endif
 #endif
 
 #ifdef _LIBC

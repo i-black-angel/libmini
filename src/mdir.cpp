@@ -242,10 +242,16 @@ std::string MDir::homePath()
 
 std::string MDir::tempPath()
 {
-	char *val = getenv("TMPDIR");
+	char *val = getenv("TMP");
 	std::string temp = (val == NULL) ? "" : val;
 	if (temp.empty()) {
+#ifdef M_OS_LINUX
 		temp = "/tmp";
+#else
+		TCHAR lpTempPathBuffer[MAX_PATH];
+		GetTempPath(MAX_PATH, lpTempPathBuffer);
+		temp = lpTempPathBuffer;
+#endif
 	}
 	return MFileInfo::cleanPath(temp);
 }
