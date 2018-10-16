@@ -36,7 +36,7 @@
 #include <deque>
 #include <map>
 #include <stack>
-
+#include <stdexcept>
 #include <sys/stat.h>
 
 #ifdef _MSC_VER

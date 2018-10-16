@@ -16,8 +16,7 @@
 #include <mpl/mserialport.h>
 #include <mpl/merror.h>
 
-#ifdef M_OS_WIN
-#else
+#ifndef M_OS_WIN
 #include <termios.h>
 #endif
 

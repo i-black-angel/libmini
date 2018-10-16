@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 	MouseServer server;
 	server.bind(12700);
 	server.start();
-
+	
 	MouseServer ftpserver;
 	ftpserver.bind(12780);
 	ftpserver.start();
@@ -45,16 +45,5 @@ int main(int argc, char *argv[])
 	while (true) {
 		sleep(1);
 	}
-	// mpl::MSocket sock(mpl::MSocket::TcpSocket);
-	// sock.bind(12700);
-	// sock.listen();
-
-	// while (true) {
-	// 	mpl::MHostAddress addr;
-	// 	int fd = sock.accept(addr);
-	// 	std::cout << "accept " << addr.toString() << " fd:" << fd << std::endl;
-	// 	std::cout << "getsockname " << sock.sockname().toString() << std::endl;
-	// 	std::cout << "getpeername " << sock.peername(fd).toString() << std::endl;
-	// }
     return 0;
 }

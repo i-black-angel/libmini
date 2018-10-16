@@ -18,9 +18,10 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-	mpl::MSocket sock(mpl::MSocket::TcpSocket);
+	mpl::MSocket sock;
 	mpl::MHostAddress address("localhost", 12700);
 
+	sock.socket();
 	sock.connect(address);
 	std::cout << sock.sockname().toString() << std::endl;
 

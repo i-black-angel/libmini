@@ -47,11 +47,6 @@ MSocket::MSocket()
 {
 }
 
-MSocket::MSocket(int sockfd)
-{
-	_sockfd = sockfd;
-}
-
 MSocket::MSocket(const MSocket &copy)
 {
 	_sockfd = copy._sockfd;
@@ -88,9 +83,6 @@ int MSocket::socket(SocketType socketType)
 		break;
 	}
 	_sockfd = ::socket(AF_INET, type, 0);
-	if (_sockfd < 0) {
-		log_error("socket error: %s", error().c_str());
-	}
 	return _sockfd;
 }
 
@@ -146,9 +138,6 @@ bool MSocket::connect(const std::string &address, uint16_t port)
 bool MSocket::connect(const MHostAddress &address)
 {
 	if (_sockfd < 0) return false;
-
-	// set _sockfd to be non-block
-	//fcntl(_sockfd, F_SETFL, fcntl(_sockfd, F_GETFL)| O_NONBLOCK);
 	
 	struct sockaddr_in addr;
 	addr.sin_family = AF_INET;
@@ -161,6 +150,18 @@ bool MSocket::connect(const MHostAddress &address)
 	}
 	log_debug ("connect %s success", address.toString().c_str());
 	return true;
+}
+
+ssize_t MSocket::send(const void *buf, size_t n)
+{
+	if (_sockfd < 0) return -1;
+	return ::send(_sockfd, buf, n, 0);
+}
+
+ssize_t MSocket::recv(void *buf, size_t n)
+{
+	if (_sockfd < 0) return -1;
+	return ::recv(_sockfd, buf, n, 0);
 }
 
 bool MSocket::listen(int backlog)
@@ -221,6 +222,22 @@ bool MSocket::recvbuf(int bufsize)
 	return setSocketOption(SO_RCVBUF, (const char *)&bufsize, sizeof(int));
 }
 
+int MSocket::sendbuf() const
+{
+	int bufsize = 0;
+	socklen_t optlen = sizeof(socklen_t);
+	::getsockopt(_sockfd, SOL_SOCKET, SO_SNDBUF, &bufsize, &optlen);
+	return bufsize;
+}
+
+int MSocket::recvbuf() const
+{
+	int bufsize = 0;
+	socklen_t optlen = sizeof(socklen_t);
+	::getsockopt(_sockfd, SOL_SOCKET, SO_RCVBUF, &bufsize, &optlen);
+	return bufsize;
+}
+
 bool MSocket::sendtimeout(int sec, long usec)
 {
 	struct timeval timeout = {sec, usec};
@@ -233,6 +250,16 @@ bool MSocket::recvtimeout(int sec, long usec)
 	return setSocketOption(SO_RCVTIMEO, &timeout, sizeof(struct timeval));
 }
 
+bool MSocket::nonblock(int block)
+{
+	if (_sockfd < 0) return false;
+#ifdef M_OS_WIN
+	return ::ioctlsocket(_sockfd, FIONBIO, (unsigned long *)&val) != -1;
+#else
+	return ::fcntl(_sockfd, F_SETFL, fcntl(_sockfd, F_GETFL) | (block ? O_NONBLOCK : ~O_NONBLOCK)) != -1;
+#endif /* M_OS_WIN */
+}
+	
 bool MSocket::setSocketOption(int optname, const void *optval, socklen_t optlen)
 {
 	if (_sockfd < 0) return false;
@@ -252,32 +279,39 @@ bool MSocket::operator==(const MSocket &sock) const
 	return isEqual(sock);
 }
 
-MTcpSocket::MTcpSocket()
-	: MSocket()
+MTcpClient::MTcpClient()
+	: _connectFunctor(NULL)
+	, _disconnectFunctor(NULL)
+	, _arg1(NULL)
+	, _arg2(NULL)
+	, _init(false)
 {
 }
 
-MTcpSocket::MTcpSocket(int fd)
-	: MSocket(fd)
+MTcpClient::~MTcpClient()
 {
 }
 
-MTcpSocket::~MTcpSocket()
+bool MTcpClient::init(const std::string &addr, int16_t port,
+					  ConnectFunctor confunc, void *arg1,
+					  DisconnectFunctor disfunc, void *arg2)
 {
+	if (!_addr.setAddress(addr)) { _init = false; return _init; }
+	_addr.setPort(port);
+	if (NULL != confunc) {
+		_connectFunctor = confunc;
+		_arg1 = arg1;
+	}
+	if (NULL != disfunc) {
+		_disconnectFunctor = disfunc;
+		_arg2 = arg2;
+	}
+	_init = true;
+	return _init;
 }
 
-ssize_t MTcpSocket::send(const void *buf, size_t n)
+void MTcpClient::run()
 {
-	if (_sockfd < 0) return -1;
-
-	return ::send(_sockfd, buf, n, 0);
-}
-
-ssize_t MTcpSocket::recv(void *buf, size_t n)
-{
-	if (_sockfd < 0) return -1;
-
-	return ::recv(_sockfd, buf, n, 0);
 }
 
 MTcpServer::MTcpServer(size_t bufsize)
@@ -364,7 +398,7 @@ void MTcpServer::run()
 		_socket.recvbuf(_bufsize);
 		
 		// epoll_create
-		if ((_epollfd = epoll_create(EVENTS_MAX_SIZE)) == -1) {
+		if ((_epollfd = epoll_create(eventsMaxSize)) == -1) {
 			log_error("epoll_create error: %s", error().c_str());
 			return;
 		}
@@ -383,7 +417,7 @@ void MTcpServer::run()
 
 		while (!isInterrupted()) {
 			// epoll_wait
-			nfds = epoll_wait(_epollfd, _events, EVENTS_MAX_SIZE, -1);
+			nfds = epoll_wait(_epollfd, _events, eventsMaxSize, -1);
 			if (nfds == -1) {
 				log_error("epoll_wait: %s", error().c_str());
 				break;
@@ -481,9 +515,11 @@ void MTcpServer::hasClosed(int clientfd)
 }
 
 MUdpSocket::MUdpSocket()
-	: MSocket()
 {
-	socket();
+	using namespace std;
+	
+	if (socket(UdpSocket) == -1)
+		throw runtime_error(string("socket error: ") + error());
 }
 
 MUdpSocket::~MUdpSocket()

@@ -31,13 +31,16 @@ public:
 	ssize_t readData(void *buf, size_t nbytes);
 	ssize_t writeData(const void *buf, size_t nbytes);
 	void closeSerial();
-
+	
+#ifdef M_OS_WIN
+    inline HANDLE fd() const { return _hComm; }
+#else
+	inline int fd() const { return _fd; }
+#endif
+protected:
 	int baudrate(uint32_t nbaudrate);
 	int parity(uint32_t databits, char nparity,  uint32_t stopbits);
 
-#ifndef M_OS_WIN
-	inline int fd() const { return _fd; }
-#endif
 private:	
 #ifdef M_OS_WIN
 	HANDLE _hComm;
@@ -45,6 +48,7 @@ private:
 	int _fd;
 #endif
 };
+
 
 MPL_END_NAMESPACE
 

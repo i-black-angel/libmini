@@ -20,8 +20,12 @@
 #include <mpl/mhostaddress.h>
 #include <mpl/mthread.h>
 
+typedef void (*ConnectFunctor)(void *arg);
+typedef void (*DisconnectFunctor)(void *arg);
+
 MPL_BEGIN_NAMESPACE
 
+// MSocket
 class MSocket
 {
 public:
@@ -31,20 +35,21 @@ public:
         SctpSocket,
         UnknownSocketType = -1
     };
-	
-    explicit MSocket();
-	explicit MSocket(int sockfd);
+
+	MSocket();
 	MSocket(const MSocket &copy);
     virtual ~MSocket();
 
 	MSocket &operator=(const MSocket &other);
 	
-	int socket(SocketType socketType = mpl::MSocket::TcpSocket);
+	int socket(SocketType socketType = MSocket::TcpSocket);
 	int accept(MHostAddress &);
 	bool bind(const MHostAddress &address);
 	bool bind(uint16_t port);
 	bool connect(const std::string &address, uint16_t port);
 	bool connect(const MHostAddress &address);
+	ssize_t send(const void *buf, size_t nbytes);
+	ssize_t recv(void *buf, size_t nbytes);
 	void close();
 	bool listen(int backlog = 1024);
 	
@@ -52,8 +57,11 @@ public:
 	MHostAddress peername(int fd) const;
 	SocketType socketType() const;
 
+	bool nonblock(int block = 1);
 	bool sendbuf(int bufsize);
 	bool recvbuf(int bufsize);
+	int sendbuf() const;
+	int recvbuf() const;
 	bool sendtimeout(int sec, long usec);
 	bool recvtimeout(int sec, long usec);
 	bool setSocketOption(int optname, const void *optval, socklen_t optlen);
@@ -69,22 +77,36 @@ protected:
 	int _sockfd;
 };
 
-class MTcpSocket : public MSocket
+class MTcpClient : public MThread
 {
 public:
-    explicit MTcpSocket();
-	explicit MTcpSocket(int fd);
-    virtual ~MTcpSocket();
+	MTcpClient();
+    virtual ~MTcpClient();
 
-	ssize_t send(const void *buf, size_t n);
-	ssize_t recv(void *buf, size_t n);
+	bool init(const std::string &addr, int16_t port,
+			  ConnectFunctor confunc = NULL, void *arg1 = NULL,
+			  DisconnectFunctor disfunc = NULL, void *arg2 = NULL);
+protected:
+	virtual void run();			// override
+	
+private:
+	MHostAddress _addr;
+	bool _init;
+	
+	ConnectFunctor _connectFunctor;
+	DisconnectFunctor _disconnectFunctor;
+	void *_arg1;
+	void *_arg2;
+
+	MSocket _socket;
 };
 
-// TODO::How to write it in Class
-#define EVENTS_MAX_SIZE 512
+// MTcpServer
 class MTcpServer : public MThread
 {
 public:
+	static const int eventsMaxSize = 512;
+
     explicit MTcpServer(size_t bufsize = 1024);
     virtual ~MTcpServer();
 
@@ -104,17 +126,15 @@ protected:
 	virtual void process(int clientfd, const uint8_t *data, size_t len);
 	virtual void hasClosed(int clientfd);
 
-	MTcpSocket _socket;
+	MSocket _socket;
 	bool _init;
 	
-	// epoll module
 	int _pipefd[2];
 
+	// epoll module
 	int _epollfd;
 	struct epoll_event _ev;
-	struct epoll_event _events[EVENTS_MAX_SIZE];
-	// fd_set _rfds;
-	// int _maxfds;
+	struct epoll_event _events[eventsMaxSize];
 
 	std::vector<int> _clients;
 	uint8_t *_buf;
