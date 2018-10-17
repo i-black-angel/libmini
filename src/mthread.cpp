@@ -15,6 +15,11 @@
  */
 #include <mpl/mthread.h>
 
+#ifdef _MSC_VER
+# pragma warning (push)
+# pragma warning (disable: 4996)
+#endif
+
 #ifdef M_OS_WIN
 
 #ifdef __cplusplus
@@ -220,3 +225,7 @@ int64_t threadId()
 #endif /* M_OS_WIN */
 
 MPL_END_NAMESPACE
+
+#ifdef _MSC_VER
+# pragma warning (pop)
+#endif

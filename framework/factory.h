@@ -21,7 +21,7 @@ class Factory
 {
 public:
 	static Factory *instance();
-	virtual ~Factor() { }
+	virtual ~Factory() { }
 	
 	// TODO::add your CLASS construction code here.
 	// virtual Product *createProduct() const;

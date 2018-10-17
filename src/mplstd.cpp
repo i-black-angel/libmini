@@ -15,6 +15,11 @@
  */
 #include <mpl/mplstd.h>
 
+#ifdef _MSC_VER
+# pragma warning (push)
+# pragma warning (disable: 4996)
+#endif
+
 #ifdef M_OS_WIN
 
 void gettimeofday (struct timeval *tv, void *dummy)
@@ -137,4 +142,8 @@ ssize_t wc(const char *file)
 }
 
 MPL_END_NAMESPACE
+
+#ifdef _MSC_VER
+# pragma warning (pop)
+#endif
 

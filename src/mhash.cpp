@@ -18,6 +18,11 @@
 #include <mpl/merror.h>
 #include "mhash_md5.h"
 
+#ifdef _MSC_VER
+# pragma warning (push)
+# pragma warning (disable: 4996)
+#endif
+
 /* Return PTR, aligned upward to the next multiple of ALIGNMENT.
    ALIGNMENT must be nonzero.  The caller must arrange for ((char *)
    PTR) through ((char *) PTR + ALIGNMENT - 1) to be addressable
@@ -104,3 +109,7 @@ std::string sha512sum(const std::string &file)
 }
 
 MPL_END_NAMESPACE
+
+#ifdef _MSC_VER
+# pragma warning (pop)
+#endif

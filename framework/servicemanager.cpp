@@ -15,6 +15,7 @@
  */
 #include <mpl.h>
 #include "servicemanager.h"
+#incluce "configuration.h"
 
 #ifdef _MSC_VER
 # pragma warning (push)
@@ -56,6 +57,8 @@ int ServiceManager::parseArgs(int argc, char *argv[])
 		path = opt.getstr('c');
 	}
 	Configuration::instance()->load(path);
+
+	return 0;
 }
 
 int ServiceManager::exec(int argc, char *argv[])

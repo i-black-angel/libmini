@@ -17,6 +17,11 @@
 #include <mpl/merror.h>
 #include <mpl/mlog.h>
 
+#ifdef _MSC_VER
+# pragma warning (push)
+# pragma warning (disable: 4996)
+#endif
+
 MPL_BEGIN_NAMESPACE
 
 int mpl_sendto(int fd, const void *buf, size_t n,
@@ -650,3 +655,7 @@ void MUdpServer::process(const uint8_t *data, size_t len, const MHostAddress &ho
 }
 
 MPL_END_NAMESPACE
+
+#ifdef _MSC_VER
+# pragma warning (pop)
+#endif

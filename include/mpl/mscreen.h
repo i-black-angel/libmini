@@ -13,25 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mpl/mmongodb.h>
+#ifndef _MSCREEN_H_
+#define _MSCREEN_H_
 
-#ifdef _MSC_VER
-# pragma warning (push)
-# pragma warning (disable: 4996)
-#endif
+#include <mpl/mcoredef.h>
 
 MPL_BEGIN_NAMESPACE
 
-MMongoDB::MMongoDB()
-{
-}
-
-MMongoDB::~MMongoDB()
-{
-}
+bool grabWindow(const std::string &imageFile);
+bool grab(int x, int y, int width, int height, const std::string &imageFile);
+void screenClick(int x, int y);
 
 MPL_END_NAMESPACE
 
-#ifdef _MSC_VER
-# pragma warning (pop)
-#endif
+#endif /* _MSCREEN_H_ */

@@ -15,6 +15,11 @@
  */
 #include <mpl/mcondition.h>
 
+#ifdef _MSC_VER
+# pragma warning (push)
+# pragma warning (disable: 4996)
+#endif
+
 MPL_BEGIN_NAMESPACE
 
 #if defined(_MSC_VER) || defined(M_OS_WIN)
@@ -93,3 +98,7 @@ void MCondition::wakeAll()
 #endif
 
 MPL_END_NAMESPACE
+
+#ifdef _MSC_VER
+# pragma warning (pop)
+#endif
