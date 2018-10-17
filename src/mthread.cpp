@@ -62,6 +62,7 @@ MPL_BEGIN_NAMESPACE
 MThread::MThread()
 	: _handle(0)
 	, _id(0)
+	, _interrupt(false)
 {
 }
 

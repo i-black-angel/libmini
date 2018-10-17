@@ -80,22 +80,27 @@ std::string md5sum(const std::string &file)
 
 std::string sha1sum(const std::string &file)
 {
+	return "";
 }
 
 std::string sha224sum(const std::string &file)
 {
+	return "";
 }
 
 std::string sha256sum(const std::string &file)
 {
+	return "";
 }
 
 std::string sha384sum(const std::string &file)
 {
+	return "";
 }
 
 std::string sha512sum(const std::string &file)
 {
+	return "";
 }
 
 MPL_END_NAMESPACE
