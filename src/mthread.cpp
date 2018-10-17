@@ -142,8 +142,9 @@ void MThread::exec()
 #else
 
 MThread::MThread()
+	: _self(0)
+	, _interrupt(false)
 {
-	_self = 0;
 }
 
 MThread::~MThread()
