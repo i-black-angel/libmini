@@ -114,7 +114,6 @@ typedef     size_t         ssize_t;
 # define    useconds_t      DWORD
 # define    sleep(n)        Sleep((n) * 1000)
 # define    usleep(n)       Sleep((n) / 1000)
-# define    close           _close
 # define    DIRECTORY_SEPARATOR   "\\"
 # define    R_OK            4
 # define    W_OK            2

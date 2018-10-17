@@ -184,6 +184,26 @@ int MFile::appendbuf(const std::string &file, const char *buf, size_t bytes)
 	return n;
 }
 
+namespace file {
+	int appendLine(const std::string &file, const std::string &line)
+	{
+		try {
+			std::fstream ofile;
+			ofile.open(file, std::ios::app);
+			if (ofile.is_open())
+			{
+				ofile << line << std::endl;
+				ofile.close();
+				return line.size();
+			}
+		}
+		catch (std::exception &e) {
+			std::cerr << e.what() << std::endl;
+		}
+		return -1;
+	}
+}
+
 MPL_END_NAMESPACE
 
 #ifdef _MSC_VER

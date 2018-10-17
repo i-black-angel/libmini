@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <mpl/mscreen.h>
-#ifdef M_OS_WIN
+#ifdef _MSC_VER
 #include <atlimage.h>
-#endif /* M_OS_WIN */
+#endif
+#include <mpl/mscreen.h>
+
+MPL_BEGIN_NAMESPACE
 
 bool grabWindow(const std::string &imageFile)
 {
@@ -50,7 +52,7 @@ bool grab(int x, int y, int nWidth, int nHeight, const std::string &imageFile)
 	return true;
 }
 
-void screenClick(int x, int y);
+void screenClick(int x, int y)
 {
 #ifdef M_OS_WIN
 	HDC hdcSrc = GetDC(NULL);
@@ -65,3 +67,5 @@ void screenClick(int x, int y);
 				0, 0, 0, 0);
 #endif
 }
+
+MPL_END_NAMESPACE

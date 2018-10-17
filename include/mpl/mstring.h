@@ -20,6 +20,7 @@
 
 MPL_BEGIN_NAMESPACE
 
+std::string toString(char val);
 std::string toString(int val);
 std::string toString(unsigned val);
 std::string toString(long val);

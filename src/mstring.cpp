@@ -53,6 +53,11 @@ std::string hex2str(const uint8_t *data, size_t len)
 	return buffer;
 }
 
+std::string toString(char val)
+{
+	return toXString("%c", val);
+}
+
 std::string toString(int val)
 {
 	return toXString("%d", val);

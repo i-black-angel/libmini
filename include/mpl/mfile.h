@@ -24,6 +24,10 @@
 
 MPL_BEGIN_NAMESPACE
 
+namespace file {
+	int appendLine(const std::string &file, const std::string &line);
+}
+
 class MFile
 {
 public:
