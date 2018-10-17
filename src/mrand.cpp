@@ -15,6 +15,11 @@
  */
 #include <mpl/mrand.h>
 
+#ifdef _MSC_VER
+# pragma warning (push)
+# pragma warning (disable: 4996)
+#endif
+
 MPL_BEGIN_NAMESPACE
 
 int rand()
@@ -43,3 +48,7 @@ double range(double low, double high)
 }
 
 MPL_END_NAMESPACE
+
+#ifdef _MSC_VER
+# pragma warning (pop)
+#endif

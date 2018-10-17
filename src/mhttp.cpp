@@ -17,6 +17,11 @@
 #include <mpl/mlog.h>
 #include "mongoose.h"
 
+#ifdef _MSC_VER
+# pragma warning (push)
+# pragma warning (disable: 4996)
+#endif
+
 static void mpl_ev_handler(struct mg_connection *nc, int ev, void *ev_data, void *user_data)
 {
     switch (ev) {
@@ -124,3 +129,7 @@ MHttpClient::~MHttpClient()
 }
 
 MPL_END_NAMESPACE
+
+#ifdef _MSC_VER
+# pragma warning (pop)
+#endif
