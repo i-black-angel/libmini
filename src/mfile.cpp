@@ -189,7 +189,7 @@ namespace file {
 	{
 		try {
 			std::fstream ofile;
-			ofile.open(file, std::ios::app);
+			ofile.open(file.c_str(), std::ios::app);
 			if (ofile.is_open())
 			{
 				ofile << line << std::endl;
