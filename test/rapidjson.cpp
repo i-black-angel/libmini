@@ -15,6 +15,7 @@
  */
 #include <stdio.h>
 #include <fstream>
+#ifdef HAVE_RAPIDJSON_H
 #include <rapidjson/document.h>
 #include <rapidjson/error/en.h>
 #include <rapidjson/stringbuffer.h>
@@ -174,11 +175,14 @@ void json_write(const std::string &url)
 	std::ofstream out("/tmp/jwrite.json");
 	out << buffer.GetString();
 }
+#endif
 
 int main(int argc, char *argv[])
 {
     setlocale(LC_ALL, "");
+#ifdef HAVE_RAPIDJSON_H
     json_read();
 	json_write("success_url");
+#endif
     return 0;
 }

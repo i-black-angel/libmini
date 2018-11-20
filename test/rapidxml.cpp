@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 #include <iostream>
+#ifdef HAVE_RAPIDXML_H
 #include <rapidxml/rapidxml.hpp>
 #include <rapidxml/rapidxml_print.hpp>
 #include <rapidxml/rapidxml_utils.hpp>
@@ -175,12 +176,15 @@ void write_xml()
 		std::cout << e.what() << std::endl;
 	}
 }
+#endif /* HAVE_RAPIDXML_H */
 
 int main(int argc, char *argv[])
 {
     setlocale(LC_ALL, "");
+#ifdef HAVE_RAPIDJSON_H
     read_xml_file();
 	read_xml();
 	write_xml();
+#endif
     return 0;
 }
