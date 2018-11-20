@@ -39,19 +39,16 @@ public:
 	void interrupt();
 	bool isInterrupted() const;
 
-	//  This is internal function. It should be private, however then
-	//  it would not be accessible from the main C routine of the thread.
-	void exec();
-
 protected:
 	virtual void run() = 0;
 
 private:
-
 #ifdef M_OS_WIN
+	static unsigned int threadRoutine(void *arg);
 	HANDLE _handle;
 	unsigned int _id;
 #else
+	static void *threadRoutine(void *arg);
 	pthread_t _self;
 #endif /* M_OS_WIN */
 

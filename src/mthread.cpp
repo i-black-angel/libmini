@@ -20,49 +20,18 @@
 # pragma warning (disable: 4996)
 #endif
 
-#ifdef M_OS_WIN
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-	static unsigned int __stdcall thread_routine(void *arg)
-	{
-		mpl::MThread *self = (mpl::MThread *) arg;
-		if (NULL != self) {
-			self->exec();
-		}
-		return 0;
-	}
-	
-#ifdef __cplusplus
-}
-#endif
-
-#else  /* LINUX */
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-	static void *thread_routine(void *arg)
-	{
-		mpl::MThread *self = (mpl::MThread *) arg;
-		if (NULL != self) {
-			self->exec();
-		}
-		return NULL;
-	}
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* M_OS_WIN */
-
 MPL_BEGIN_NAMESPACE
 
 #ifdef M_OS_WIN
+
+unsigned int MThread::threadRoutine(void *arg)
+{
+	MThread *self = (MThread *) arg;
+	if (NULL != self) {
+		self->run();
+	}
+	return 0;
+}
 
 MThread::MThread()
 	: _handle(0)
@@ -77,8 +46,10 @@ MThread::~MThread()
 
 bool MThread::start()
 {
+	_interrupt = false;			// reset interrupt variable
+	
 	LPSECURITY_ATTRIBUTES thread_attr = NULL;
-	_handle = (HANDLE)_beginthreadex(NULL, 0, thread_routine, this, 0, &_id);
+	_handle = (HANDLE)_beginthreadex(NULL, 0, threadRoutine, this, 0, &_id);
 	if (NULL == _handle) {
 		perror("can't create thread");
 		return false;
@@ -132,14 +103,16 @@ bool MThread::isInterrupted() const
 	return _interrupt;
 }
 
-void MThread::exec()
-{
-	_interrupt = false;
-	
-	run();
-}
-
 #else
+
+void *MThread::threadRoutine(void *arg)
+{
+	MThread *self = (MThread *) arg;
+	if (NULL != self) {
+		self->run();
+	}
+	return NULL;
+}
 
 MThread::MThread()
 	: _self(0)
@@ -153,8 +126,10 @@ MThread::~MThread()
 
 bool MThread::start()
 {
+	_interrupt = false;			// reset interrupt variable
+
 	int res = 0;
-	res = pthread_create(&_self, NULL, thread_routine, this);
+	res = pthread_create(&_self, NULL, threadRoutine, this);
 	if (0 != res)
 		perror("create thread");
 	return res == 0;
@@ -195,13 +170,6 @@ void MThread::interrupt()
 bool MThread::isInterrupted() const
 {
 	return _interrupt;
-}
-
-void MThread::exec()
-{
-	_interrupt = false;
-	
-	run();
 }
 
 #endif /* M_OS_WIN */
