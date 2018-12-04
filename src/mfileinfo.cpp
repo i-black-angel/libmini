@@ -526,8 +526,7 @@ std::string MFileInfo::readLink() const
 	}
 
 	if (r > sb.st_size) {
-		log_error("symlink increased in size "
-				  "between lstat() and readlink()");
+		log_error("symlink increased in size between lstat() and readlink()");
 		::free(linkname);
 		return std::string();
 	}

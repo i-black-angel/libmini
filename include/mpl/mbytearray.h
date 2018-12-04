@@ -13,36 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _MCONDITION_H_
-#define _MCONDITION_H_
+#ifndef _MBYTEARRAY_H_
+#define _MBYTEARRAY_H_
 
 #include <mpl/mcoredef.h>
-#include <mpl/mmutex.h>
-#include <limits.h>
 
 MPL_BEGIN_NAMESPACE
 
-class MCondition
+class MByteArray : public std::vector<uint8_t>
 {
 public:
-    MCondition();
-    virtual ~MCondition();
-
-	bool wait(MMutex &mutex, unsigned long timeout = ULONG_MAX);
-
-	void wake();
-	void wakeAll();
-
-private:
-	M_DISABLE_COPY(MCondition)
-
-#ifdef M_OS_WIN
-	HANDLE _cond;
-#else
-	pthread_cond_t _cond;
-#endif /* M_OS_WIN */
+	MByteArray(const uint8_t *buf, size_t size) : std::vector<uint8_t>(buf, buf + size) { }
+	MByteArray(size_t n) : std::vector<uint8_t>(n) { }
 };
-
+	
 MPL_END_NAMESPACE
 
-#endif /* _MCONDITION_H_ */
+#endif /* _MBYTEARRAY_H_ */
