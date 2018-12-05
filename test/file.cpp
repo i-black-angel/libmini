@@ -17,7 +17,7 @@
 
 int main(int argc, char *argv[])
 {
-	char buf[1024] = {0x00};
+	char data[1024] = {0x00};
 	const char *fname = "/etc/resolv.conf";
 	mpl::MFileInfo fileinfo = fname;
 	if (fileinfo.isSymLink()) {
@@ -25,14 +25,36 @@ int main(int argc, char *argv[])
 	} else {
 		std::cout << "file size: " << fileinfo.size() << std::endl;
 	}
-	int n = mpl::MFile(fname).readbuf(buf, sizeof(buf));
-	if (n > 0) {
-		std::cout << n << std::endl;
-		std::cout << buf << std::endl;
+	int nbytes = mpl::MFile(fname).readbuf(data, sizeof(data));
+	if (nbytes > 0) {
+		std::cout << nbytes << std::endl;
+		std::cout << data << std::endl;
 	}
 
-	memset(buf, 0x00, sizeof(buf));
-	strcpy(buf, "hello world!\n");
-	std::cout << mpl::MFile("/tmp/abc").writebuf(buf, strlen(buf)) << std::endl;
+	memset(data, 0x00, sizeof(data));
+	strcpy(data, "hello world!\n");
+	std::cout << mpl::MFile("/tmp/abc").writebuf(data, strlen(data)) << std::endl;
+	mpl::file::appendLine("/tmp/hello", "hello world!");
+
+
+	// Read huge file
+	const char *hugefile = "/tmp/hello";
+	int fd = open(hugefile, O_RDONLY);
+	if (fd == -1) return -1;
+	int n = -1, pos = 0;
+	uint8_t buf[8192] = { 0x00 };
+	size_t size = sizeof(data);
+	lseek(fd, 0, SEEK_SET);
+	while ((n = read(fd, buf, size)) == size) {
+		// do_something(buf, size)...
+		printf("do_something(buf, size)\n");
+		pos += n;
+		lseek(fd, pos, SEEK_SET);
+	}
+	if (n > 0) {
+        // do_something(buf, size)...
+		printf("(n > 0) do_something(buf, size)\n");
+	}
+	close(fd);
     return 0;
 }

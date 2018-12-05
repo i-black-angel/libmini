@@ -238,7 +238,7 @@ std::string MFileInfo::slash()
 #endif /* M_OS_WIN */
 }
 
-bool MFileInfo::isslash(char ch)
+bool MFileInfo::isSlash(char ch)
 {
 #ifdef M_OS_WIN
 	return ((ch == '/') || (ch == '\\'));
@@ -250,7 +250,7 @@ bool MFileInfo::isslash(char ch)
 bool MFileInfo::isAbsoluteFileName(const std::string &filename)
 {
 	if (filename.empty()) return false;
-	return isslash(filename[0]) || (mpl_filesystem_prefix_len(filename) != 0);
+	return isSlash(filename[0]) || (mpl_filesystem_prefix_len(filename) != 0);
 }
 
 MFileInfo::MFileInfo() : _stat_ok(false)
@@ -269,7 +269,7 @@ MFileInfo::MFileInfo(const std::string &file) : _stat_ok(false)
 
 MFileInfo::MFileInfo(const MFileInfo &fileinfo)
 {
-	inner_copy(fileinfo);
+	innerCopy(fileinfo);
 }
 
 MFileInfo::~MFileInfo()
@@ -278,7 +278,7 @@ MFileInfo::~MFileInfo()
 
 MFileInfo& MFileInfo::operator=(const MFileInfo &fileinfo)
 {
-	inner_copy(fileinfo);
+	innerCopy(fileinfo);
 	return *this;
 }
 
@@ -301,7 +301,7 @@ bool MFileInfo::operator==(const MFileInfo &fileinfo) const
 
 void MFileInfo::setFile(const std::string &file)
 {
-	_origin = file;
+	_data = file;
 	_file = cleanPath(file);
 
 #if defined(_MSC_VER) || defined(M_OS_WIN)
@@ -314,7 +314,7 @@ void MFileInfo::setFile(const std::string &file)
 		_stat_ok = true;
 }
 
-bool MFileInfo::exists() const
+bool MFileInfo::isExists() const
 {
 	return exists(_file);
 }
@@ -324,15 +324,10 @@ bool MFileInfo::exists(const std::string &file)
 	return mpl_access(cleanPath(file), F_OK);
 }
 
-std::string MFileInfo::filePath() const
-{
-	return _file;
-}
-
 std::string MFileInfo::absoluteFilePath() const
 {
 	if (isAbsolute()) 
-		return filePath();
+		return _file;
 
 	return cleanPath(process::pwd() + "/" + _file);
 }
@@ -347,18 +342,18 @@ std::string MFileInfo::canonicalFilePath() const
 		return file;
 	}
 
-	return filePath();
+	return _file;
 }
 
-std::string MFileInfo::filename() const
+std::string MFileInfo::fileName() const
 {
-	std::string file = basename();
+	std::string file = baseName();
 	size_t idx = file.find_last_of(".");
 	if (idx == std::string::npos) { return file; }
     return file.substr(0, idx);	
 }
 
-std::string MFileInfo::basename() const
+std::string MFileInfo::baseName() const
 {
 	std::string file = _file;
 	size_t idx = file.find_last_of(slash().c_str());
@@ -366,7 +361,7 @@ std::string MFileInfo::basename() const
 	return file.substr(idx + 1);
 }
 
-std::string MFileInfo::dirname() const
+std::string MFileInfo::dirName() const
 {
 	std::string file = _file;
 	size_t idx = file.find_last_of(slash().c_str());
@@ -377,7 +372,7 @@ std::string MFileInfo::dirname() const
 
 std::string MFileInfo::suffix() const
 {
-	std::string file = basename();
+	std::string file = baseName();
 	size_t idx = file.find_last_of(".");
 	if (idx == std::string::npos) { return std::string(""); }
     return file.substr(idx + 1);
@@ -385,7 +380,7 @@ std::string MFileInfo::suffix() const
 
 std::string MFileInfo::path() const
 {
-	return dirname();
+	return dirName();
 }
 
 std::string MFileInfo::absolutePath() const
@@ -605,7 +600,7 @@ size_t MFileInfo::size() const
 
 void MFileInfo::refresh()
 {
-	setFile(_origin);
+	setFile(_data);
 }
 
 MDateTime MFileInfo::lastStatusChanged() const
@@ -626,7 +621,7 @@ MDateTime MFileInfo::lastRead() const
 	return MDateTime(_stat.st_atime);
 }
 
-MFileInfo::FileType MFileInfo::filetype() const
+MFileInfo::FileType MFileInfo::fileType() const
 {
 	if (!_stat_ok) return unknown;
 	FileType ft = unknown;
@@ -657,9 +652,9 @@ MFileInfo::FileType MFileInfo::filetype() const
 	return ft;
 }
 
-std::string MFileInfo::filetypeString() const
+std::string MFileInfo::fileTypeString() const
 {
-	switch(filetype()) {
+	switch(fileType()) {
 	case MFileInfo::fifo:
 		return "fifo";
 	case MFileInfo::chardev:

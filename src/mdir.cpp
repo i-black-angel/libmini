@@ -60,7 +60,7 @@ MDir::MDir(const std::string &str)
 
 MDir::MDir(const MDir &other)
 {
-	inner_copy(other);
+	innerCopy(other);
 }
 
 MDir::~MDir()
@@ -82,7 +82,7 @@ bool MDir::isRoot() const
 	return _dir == rootPath();
 }
 
-bool MDir::exists() const
+bool MDir::isExists() const
 {
 	return exists(_dir);
 }
@@ -108,7 +108,7 @@ bool MDir::cd(const std::string &name)
 	return false;
 }
 
-bool MDir::cdup()
+bool MDir::cdUp()
 {
 	return cd("..");
 }
@@ -121,9 +121,9 @@ bool MDir::exists(const std::string &name)
 bool MDir::mkpath(const std::string &path)
 {
 	int err = 0;
-#ifdef M_OS_LINUX
+
+	// mode: rwxrwxrwx
 	mode_t mode = S_IRWXU | S_IRWXG | S_IRWXO;
-#endif
 	std::string dirpath = MFileInfo(path).filePath();
 	char *str = new char[dirpath.size() + 1];
 	int len = dirpath.size();
@@ -133,11 +133,7 @@ bool MDir::mkpath(const std::string &path)
 		if ( str[i] == separator() ) {
 			str[i] = '\0';
 			if (strlen(str) > 0 && !MFileInfo::exists(str)) {
-#ifdef M_OS_LINUX
 				if ((err = mkdir(str, mode)) != 0) {
-#else
-				if ((err = _mkdir(str)) != 0) {
-#endif
 					log_error("mkdir %s failed: %s", str, error().c_str());
 					delete[] str;
 					return false;
@@ -148,11 +144,7 @@ bool MDir::mkpath(const std::string &path)
 	}
 	
 	if (strlen(str) > 0 && !MFileInfo::exists(str)) {
-#ifdef M_OS_LINUX
 		if ((err = mkdir(str, mode)) != 0) {
-#else
-		if ((err = _mkdir(str)) != 0) {
-#endif
 			log_error("mkdir %s failed: %s", str, error().c_str());
 			delete[] str;
 			return false;
@@ -167,7 +159,6 @@ bool MDir::rmpath(const std::string &entry)
 {
 	if (entry.empty()) return true;
 	
-#ifdef M_OS_LINUX
 	std::stack<std::string> entries;
 	std::string fullpath;
 	struct dirent *dirp;
@@ -211,8 +202,7 @@ bool MDir::rmpath(const std::string &entry)
 			entries.pop();
 		}
 	} // while entries.empty()
-#else
-#endif
+	
 	return true;
 }
 
@@ -273,7 +263,7 @@ bool MDir::isAbsolutePath(const std::string &path)
 
 MDir &MDir::operator=(const MDir &other)
 {
-	inner_copy(other);
+	innerCopy(other);
 	return *this;
 }
 

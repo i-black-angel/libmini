@@ -32,9 +32,9 @@ public:
 	bool isDir() const;
 	bool isRoot() const;
 	bool isReadable() const;
-	bool exists() const;
+	bool isExists() const;
 	bool cd(const std::string &name);
-	bool cdup();
+	bool cdUp();
 	
 	inline std::string dir() const { return _dir; }
 	std::string absolutePath() const;
@@ -67,7 +67,7 @@ public:
 
 private:
 	void setPath(const std::string &name);
-	inline void inner_copy(const MDir &o) {
+	inline void innerCopy(const MDir &o) {
 		_dir = o._dir;
 	}
 	std::string _dir;

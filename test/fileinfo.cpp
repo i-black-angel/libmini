@@ -18,44 +18,46 @@
 int main(int argc, char *argv[])
 {
 	mpl::MFileInfo file = "/tmp/./tmpflie";
-	printf ("origin: %s\n", file.origin().c_str());
+	printf ("origin: %s\n", file.data().c_str());
 	std::cout << file.filePath() << std::endl;
-	std::cout << file.dirname() << std::endl;
-	std::cout << file.filename() << std::endl;
-	std::cout << "exists: " << (file.exists() ? "true" : "false") << std::endl;
-	if (file.filetype() == mpl::MFileInfo::symbolic_link) {
+	std::cout << file.fileName() << std::endl;
+	std::cout << file.dirName() << std::endl;
+	std::cout << "exists: " << (file.isExists() ? "true" : "false") << std::endl;
+	if (file.fileType() == mpl::MFileInfo::symbolic_link) {
 		std::cout << file.readLink() << std::endl;
 	}
 	
 	file = "/etc/./sys/.././ts.conf";
-	printf ("%s %s an absolute filename\n", file.filePath().c_str(), file.isAbsolute() ? "is" : "is not");
-	if (file.isSymLink()) {
-		std::cout << file.readLink() << std::endl;
-	}
-	std::cout << file.canonicalFilePath() << std::endl;
+	if (file.isExists()) {
+		printf ("%s %s an absolute filename\n", file.fileName().c_str(), file.isAbsolute() ? "is" : "is not");
+		if (file.isSymLink()) {
+			std::cout << file.readLink() << std::endl;
+		}
+		std::cout << file.canonicalFilePath() << std::endl;
 
-	printf("permissions: 0x%x\n", file.permissions());
+		printf("permissions: 0x%x\n", file.permissions());
 
-	if (file.permissions() & mpl::MFileInfo::ReadUser) {
-		std::cout << "user read permission" << std::endl;
-	}
-	if (file.permissions() & mpl::MFileInfo::WriteUser) {
-		std::cout << "user write permission" << std::endl;
-	}
-	if (file.permissions() & mpl::MFileInfo::ExecUser) {
-		std::cout << "user execute permission" << std::endl;
-	}
-	if (file.permissions() & mpl::MFileInfo::ReadGroup) {
-		std::cout << "group read permission" << std::endl;
-	}
-	if (file.permissions() & mpl::MFileInfo::WriteGroup) {
-		std::cout << "group write permission" << std::endl;
-	}
+		if (file.permissions() & mpl::MFileInfo::ReadUser) {
+			std::cout << "user read permission" << std::endl;
+		}
+		if (file.permissions() & mpl::MFileInfo::WriteUser) {
+			std::cout << "user write permission" << std::endl;
+		}
+		if (file.permissions() & mpl::MFileInfo::ExecUser) {
+			std::cout << "user execute permission" << std::endl;
+		}
+		if (file.permissions() & mpl::MFileInfo::ReadGroup) {
+			std::cout << "group read permission" << std::endl;
+		}
+		if (file.permissions() & mpl::MFileInfo::WriteGroup) {
+			std::cout << "group write permission" << std::endl;
+		}
 
-	printf("last modified: %s\n", file.lastModified().toString().c_str());
-
+		printf("last modified: %s\n", file.lastModified().toString().c_str());
+	}
+	
 	mpl::MFileInfo dirpath = "../hello";
-	std::cout << dirpath.filePath() << std::endl;
+	std::cout << dirpath.fileName() << std::endl;
 	std::cout << dirpath.absoluteFilePath() << std::endl;
 	std::cout << dirpath.canonicalFilePath() << std::endl;
 
@@ -64,7 +66,7 @@ int main(int argc, char *argv[])
 	std::cout << dirpath.canonicalPath() << std::endl;
 	
 	mpl::MFileInfo homepath = "~/docker";
-	std::cout << homepath.filePath() << std::endl;
+	std::cout << homepath.fileName() << std::endl;
 	std::cout << "isdir: " << (homepath.isDir() ? "true" : "false") << std::endl;
     return 0;
 }

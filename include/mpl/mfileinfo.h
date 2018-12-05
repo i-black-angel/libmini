@@ -35,7 +35,6 @@ public:
 		sock,
 	};
 
-#ifdef M_OS_LINUX
 	enum Permission {
 		ReadUser				= S_IRUSR,
 		WriteUser				= S_IWUSR,
@@ -50,7 +49,6 @@ public:
 		ExecOther				= S_IXOTH,
 		ReadWriteExecOther		= S_IRWXO
 	};
-#endif
 
     MFileInfo();
 	MFileInfo(const char *s);
@@ -58,22 +56,20 @@ public:
 	MFileInfo(const MFileInfo &fileinfo);
     virtual ~MFileInfo();
 
-	void setFile(const std::string &file);
-
-	std::string origin() const { return _origin; }
-	std::string filePath() const;
+	std::string data() const { return _data; }
+	std::string filePath() const { return _file; }
 	std::string absoluteFilePath() const;
 	std::string canonicalFilePath() const;
-	std::string dirname() const;
-	std::string basename() const;
-	std::string filename() const;
+	std::string dirName() const;
+	std::string baseName() const;
+	std::string fileName() const;
 	std::string suffix() const;
 
 	std::string path() const;
 	std::string absolutePath() const;
 	std::string canonicalPath() const;
 
-	bool exists() const;		// F_OK
+	bool isExists() const;		// F_OK
 	bool isReadable() const;	// R_OK
 	bool isWritable() const;	// W_OK
 	bool isExecutable() const;	// X_OK
@@ -81,8 +77,8 @@ public:
 	inline bool isRelative() const { return !isAbsolute(); }
 	inline bool isAbsolute() const { return isAbsoluteFileName(_file); }
 
-	FileType filetype() const;
-	std::string filetypeString() const;
+	FileType fileType() const;
+	std::string fileTypeString() const;
 	
 	bool isFile() const;
 	bool isDir() const;
@@ -123,19 +119,23 @@ public:
 	static bool exists(const std::string &file);
 	static std::string slash();
 	static char separator();
-	static bool isslash(char ch);
+	static bool isSlash(char ch);
 	static bool isAbsoluteFileName(const std::string &filename);
 	static bool isRelativeFileName(const std::string &filename);
 	static std::string cleanPath(const std::string &path);
+
+protected:
+	void setFile(const std::string &file);
+
 private:
-	inline void inner_copy(const MFileInfo &other) {
-		_origin = other._origin;
+	inline void innerCopy(const MFileInfo &other) {
+		_data = other._data;
 		_file = other._file;
 		_stat = other._stat;
 		_stat_ok = other._stat_ok;
 	}
 
-	std::string _origin;
+	std::string _data;
 	std::string _file;
 	struct stat _stat;
 	bool _stat_ok;

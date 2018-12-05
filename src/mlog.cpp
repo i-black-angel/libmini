@@ -160,7 +160,7 @@ std::string MLog::strpriority(int pri) const
 
 void MLog::logToFile(const std::string &logstr)
 {
-	MFile::appendbuf(_logfile.c_str(), logstr.c_str(), logstr.size());
+	file::appendbuf(_logfile.c_str(), logstr.c_str(), logstr.size());
 }
 
 void MLog::logToDir(const std::string &logstr)
@@ -168,7 +168,7 @@ void MLog::logToDir(const std::string &logstr)
 	std::string logfile = _logdir + DIRECTORY_SEPARATOR
 		+ _prefix + MDateTime::currentDateTime().toString("%Y%m%d")
 		+ std::string(".log");
-	MFile::appendbuf(logfile.c_str(), logstr.c_str(), logstr.size());
+	file::appendbuf(logfile.c_str(), logstr.c_str(), logstr.size());
 }
 
 void MLog::logToSyslog(const std::string &logstr)

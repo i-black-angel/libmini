@@ -24,8 +24,12 @@
 
 MPL_BEGIN_NAMESPACE
 
-namespace file {
+namespace file
+{
 	int appendLine(const std::string &file, const std::string &line);
+	int readbuf(const std::string &file, char *buf, size_t bytes);
+	int writebuf(const std::string &file, const char *buf, size_t bytes);
+	int appendbuf(const std::string &file, const char *buf, size_t bytes);
 }
 
 class MFile
@@ -42,10 +46,6 @@ public:
 	int readbuf(char *buf, size_t bytes) const;
 	int writebuf(const char *buf, size_t bytes) const;
 	
-	static int readbuf(const std::string &file, char *buf, size_t bytes);
-	static int writebuf(const std::string &file, const char *buf, size_t bytes);
-	static int appendbuf(const std::string &file, const char *buf, size_t bytes);
-	
 	MFile &operator=(const MFile &other);
 	MFile &operator=(const char *s);
 	MFile &operator=(const std::string &str);
@@ -54,7 +54,7 @@ public:
 	bool operator!=(const MFile &f) const
 		{ return !operator==(f); }
 private:
-	inline void inner_copy(const MFile &o) {
+	inline void innerCopy(const MFile &o) {
 		_fname = o._fname;
 	}
 	std::string _fname;
