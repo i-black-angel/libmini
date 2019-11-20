@@ -130,6 +130,7 @@ std::string toUTF8(const std::string &str)
 
 	char *utf8 = new char[str.size() * 2 + 1]; // twice of gbk
 	size_t outbytes = str.size() * 2;
+	memset(utf8, 0x0, outbytes + 1);
 		
 	char *inptr = gbk;
 	char *outptr = utf8;
@@ -190,6 +191,7 @@ std::string toGBK(const std::string &str)
 
 	char *gbk = new char[str.size() * 2 + 1]; // twice size
 	size_t outbytes = str.size() * 2;
+	memset(gbk, 0x0, outbytes + 1);
 		
 	char *inptr = utf8;
 	char *outptr = gbk;
