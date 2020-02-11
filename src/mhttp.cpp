@@ -113,7 +113,7 @@ void MHttpServer::sendHttp(struct mg_connection *nc, const std::string &buf)
 	// Use chunked encoding in order to avoid calculating Content-Length
 	mg_printf(nc, "%s", "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n\r\n");
 
-	// Output JSON object which holds CPU usage data
+	// Output JSON object which holds BUF data
 	mg_printf_http_chunk(nc, "%s", buf.c_str());
 
 	// Send empty chunk, the end of response
